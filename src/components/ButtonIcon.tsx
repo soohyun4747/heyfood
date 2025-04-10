@@ -4,6 +4,7 @@ export interface IIconProps {
 	color?: string;
 	hoverColor?: string;
 	hover?: boolean;
+	size?: number;
 }
 
 export interface IButtonIconProps extends IIconProps {

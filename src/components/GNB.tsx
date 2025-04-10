@@ -1,6 +1,6 @@
 import { IUserType, UserType } from '@/stores/userStore';
 import { Button } from './Button';
-import { User } from './icons/User';
+import { User } from '@/icons/User';
 
 export function GNB({ type }: { type: IUserType }) {
 	return (

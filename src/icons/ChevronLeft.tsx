@@ -1,6 +1,6 @@
-import { IIconProps } from "../ButtonIcon";
+import { IIconProps } from '../ButtonIcon';
 
-export function ChevronRight(props: IIconProps) {
+export function ChevronLeft(props: IIconProps) {
 	return (
 		<svg
 			width={60}
@@ -11,14 +11,14 @@ export function ChevronRight(props: IIconProps) {
 			className='flex-grow-0 flex-shrink-0 w-[60px] h-[60px] relative'
 			preserveAspectRatio='none'>
 			<path
-				d='M25 17.5L37.5 30L25 42.5'
+				d='M35 17.5L22.5 30L35 42.5'
 				stroke={
 					props.hover
 						? props.hoverColor ?? '#F2AB27'
 						: props.color ?? 'white'
 				}
-				stroke-width={5}
-				stroke-linecap='square'
+				strokeWidth={5}
+				strokeLinecap='square'
 			/>
 		</svg>
 	);

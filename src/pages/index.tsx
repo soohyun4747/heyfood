@@ -1,29 +1,28 @@
-import { ButtonIcon, IIconProps } from '@/components/ButtonIcon';
 import { ButtonMono } from '@/components/ButtonMono';
-import { ArrowRight } from '@/components/icons/ArrowRight';
-import { ChevronDown } from '@/components/icons/ChevronDown';
 import { PromiseCard } from '@/components/PromiseCard';
 import { ReviewCarousel } from '@/components/ReviewCarousel';
-import { TabMenu } from '@/components/TabMenu';
+import { LandingMenusTab } from '@/components/LandingMenusTab';
+import { ArrowRight } from '@/icons/ArrowRight';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
-import { JSX } from 'react';
+import { useRouter } from 'next/router';
 
-export function Landing() {
+function LandingPage() {
+	const router = useRouter();
+	
 	return (
 		<Common meta={<Meta />}>
-			<div className='flex flex-col jusity-center'>
-				<div className='w-full h-[668px] items-center bg-gray-300'>
-					<div className='w-full flex justify-center pt-[98px]'>
-						<span className='text-gray-900 text-center text-[48px] font-bold leading-[150%] tracking-[-0.25px]'>
-							선물 같은 도시락,
-							<br />
+			<>
+				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 h-[668px] relative gap-[345px] py-[98px] bg-[#d9d9d9]'>
+					<p className='flex-grow-0 flex-shrink-0 text-5xl font-bold text-center text-[#0f0e0e] leading-[150%]'>
+						<span className='flex-grow-0 flex-shrink-0 text-5xl font-bold text-center text-[#0f0e0e]'>
+							선물 같은 도시락,{' '}
+						</span>
+						<br />
+						<span className='flex-grow-0 flex-shrink-0 text-5xl font-bold text-center text-[#0f0e0e]'>
 							행사를 빛내는 특별한 한 끼
 						</span>
-					</div>
-					{/* <div className='w-full flex items-center b-0 pb-[33px]'>
-						<ButtonIcon icon={ChevronDown} />
-					</div> */}
+					</p>
 				</div>
 				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-[60px] px-[120px] py-40'>
 					<div className='flex flex-col justify-start items-center flex-grow-0 flex-shrink-0 relative gap-3'>
@@ -58,19 +57,20 @@ export function Landing() {
 						value={'브랜드 스토리'}
 					/>
 				</div>
-				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-[60px] px-[120px] py-40 bg-[#ffc966]'>
+				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-[40px] px-[120px] py-40 bg-[#ffc966]'>
 					<div className='flex flex-col justify-start items-center flex-grow-0 flex-shrink-0 relative gap-5'>
 						<p className='flex-grow-0 flex-shrink-0 text-[50px] font-bold text-center text-[#0f0e0e]'>
 							헤이델리박스 메뉴
 						</p>
-						<TabMenu />
+						<LandingMenusTab />
 					</div>
 					<ButtonMono
 						value={'더보기'}
 						icon={ArrowRight}
+						onClick={() => router.push('/menu')}
 					/>
 				</div>
-				<div className='flex flex-col justify-start items-center flex-grow-0 flex-shrink-0 w-[1440px] gap-[60px] px-[120px] py-40'>
+				<div className='flex flex-col justify-start items-center flex-grow-0 flex-shrink-0 self-stretch gap-[60px] px-[120px] py-40'>
 					<div className='flex flex-col justify-start items-center flex-grow-0 flex-shrink-0 relative gap-2'>
 						<p className='flex-grow-0 flex-shrink-0 text-[50px] font-bold text-center text-[#0f0e0e]'>
 							헤이델리박스의 약속
@@ -108,9 +108,9 @@ export function Landing() {
 						</div>
 					</div>
 				</div>
-				<div className='flex justify-center items-start flex-grow-0 flex-shrink-0 w-[1440px] relative gap-[60px] px-[120px] py-40 bg-[#fffbea]'>
+				<div className='flex justify-center items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-[60px] px-[120px] py-40 bg-[#fffbea]'>
 					<div className='self-stretch flex-grow-0 flex-shrink-0 w-[564px] h-[562px] relative rounded-3xl bg-[#d9d9d9]' />
-					<div className='flex flex-col justify-start items-start flex-grow relative gap-3'>
+					<div className='flex flex-col justify-start items-start relative gap-3'>
 						<p className='flex-grow-0 flex-shrink-0 text-[32px] font-bold text-left text-[#0f0e0e]'>
 							<span className='flex-grow-0 flex-shrink-0 text-[32px] font-bold text-left text-[#0f0e0e]'>
 								정성 가득한 한 끼로{' '}
@@ -174,8 +174,8 @@ export function Landing() {
 						</p>
 					</div>
 				</div>
-				<div className='flex justify-center items-start flex-grow-0 flex-shrink-0 w-[1440px] h-[790px] relative'>
-					<div className='flex flex-col justify-start items-center absolute left-[523.5px] top-40 gap-2'>
+				<div className='flex justify-center items-start flex-grow-0 flex-shrink-0 self-stretch h-[790px] relative pt-40'>
+					<div className='flex flex-col justify-start items-center gap-2'>
 						<p className='text-[50px] font-bold text-center text-[#0f0e0e]'>
 							서비스 이용 후기
 						</p>
@@ -201,16 +201,15 @@ export function Landing() {
 						}}
 					/>
 				</div>
-				<div className='flex flex-col justify-start items-center flex-grow-0 flex-shrink-0 w-[1440px] relative gap-[60px] px-[120px] py-40'>
-					<div className='self-stretch flex-grow-0 flex-shrink-0 h-[480px] relative'>
-						<div className='w-[1200px] h-[480px] absolute left-[-1px] top-[-1px] rounded-3xl bg-[#d9d9d9]' />
-						<div className='flex flex-col justify-start items-center w-[440px] absolute left-[380px] top-[116px] gap-[52px]'>
-							<p className='self-stretch flex-grow-0 flex-shrink-0 w-[440px] text-[50px] font-bold text-center text-[#0f0e0e]'>
-								<span className='self-stretch flex-grow-0 flex-shrink-0 w-[440px] text-[50px] font-bold text-center text-[#0f0e0e]'>
+				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-[60px] px-[120px] py-40'>
+					<div className='flex flex-col justify-center items-center self-stretch flex-grow-0 flex-shrink-0 h-[480px] overflow-hidden gap-2.5 rounded-3xl bg-[#d9d9d9]'>
+						<div className='flex flex-col justify-start items-center flex-grow-0 flex-shrink-0 relative gap-[52px]'>
+							<p className='flex-grow-0 flex-shrink-0 text-[50px] font-bold text-center text-[#0f0e0e]'>
+								<span className='flex-grow-0 flex-shrink-0 text-[50px] font-bold text-center text-[#0f0e0e]'>
 									더욱 다양한 맞춤형
 								</span>
 								<br />
-								<span className='self-stretch flex-grow-0 flex-shrink-0 w-[440px] text-[50px] font-bold text-center text-[#0f0e0e]'>
+								<span className='flex-grow-0 flex-shrink-0 text-[50px] font-bold text-center text-[#0f0e0e]'>
 									서비스를 알아보세요
 								</span>
 							</p>
@@ -218,9 +217,9 @@ export function Landing() {
 						</div>
 					</div>
 				</div>
-			</div>
+			</>
 		</Common>
 	);
 }
 
-export default Landing;
+export default LandingPage;

@@ -4,8 +4,8 @@ export function ChevronDown(props: IIconProps) {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
-			width='48'
-			height='48'
+			width={props.size ?? '48'}
+			height={props.size ?? '48'}
 			viewBox='0 0 48 48'
 			fill='none'>
 			<path
@@ -15,8 +15,8 @@ export function ChevronDown(props: IIconProps) {
 						? props.hoverColor ?? '#F2AB27'
 						: props.color ?? 'white'
 				}
-				stroke-width='4'
-				stroke-linecap='square'
+				strokeWidth='4'
+				strokeLinecap='square'
 			/>
 		</svg>
 	);

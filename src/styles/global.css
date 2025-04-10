@@ -5,25 +5,28 @@
 body {
 	margin: 0;
 	font-family: 'NEXONLv1Gothic';
-	overflow: hidden;
 }
 td {
 	padding: 0;
 }
 
 
+#__next {
+	height: 100%;
+}
+
 @font-face {
-	font-family: 'NEXONLv1GothicLight';
+	font-family: 'NEXONLv1Gothic';
 	font-weight: 300;
-	src: url('../fonts/NEXONLv1GothicLight.ttf') format('ttf');
+	src: url('../fonts/NEXONLv1GothicLight.ttf') format('truetype');
 }
 @font-face {
-	font-family: 'NEXONLv1GothicRegular';
+	font-family: 'NEXONLv1Gothic';
 	font-weight: 400;
-	src: url('../fonts/NEXONLv1GothicRegular.ttf') format('ttf');
+	src: url('../fonts/NEXONLv1GothicRegular.ttf') format('truetype');
 }
 @font-face {
-	font-family: 'NEXONLv1GothicBold';
+	font-family: 'NEXONLv1Gothic';
 	font-weight: 700;
-	src: url('../fonts/NEXONLv1GothicBold.ttf') format('ttf');
+	src: url('../fonts/NEXONLv1GothicBold.ttf') format('truetype');
 }
