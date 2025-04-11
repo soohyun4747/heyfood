@@ -1,13 +1,8 @@
 import { ButtonMono } from '@/components/ButtonMono';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
-import {
-	ChangeEvent,
-	Dispatch,
-	SetStateAction,
-	SyntheticEvent,
-	useState,
-} from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 const initPhoneNumbers = [
 	'010',
@@ -40,11 +35,12 @@ const emailDomains = [
 
 function InquiryPage() {
 	const [name, setName] = useState<string>();
-	const [phone1, setPhone1] = useState<string>();
+	const [phone1, setPhone1] = useState<string>('010');
 	const [phone2, setPhone2] = useState<string>();
 	const [phone3, setPhone3] = useState<string>();
 	const [emailId, setEmailId] = useState<string>();
 	const [emailDomain, setEmailDomain] = useState<string>();
+	const [emailDomainSelectVal, setEmailDomainSelectVal] = useState<string>();
 	const [event, setEvent] = useState<string>();
 	const [delivery, setDelivery] = useState<string>();
 	const [dosirakType, setDosirakType] = useState<string>();
@@ -60,11 +56,72 @@ function InquiryPage() {
 		}
 	};
 
-	const onSelectEmailDomain = (
-		e: SyntheticEvent<HTMLSelectElement, Event>
-	) => {
-		if (e.currentTarget.value !== '직접 입력') {
-			setEmailDomain(e.currentTarget.value);
+	const onSelectEmailDomain = (e: React.ChangeEvent<HTMLSelectElement>) => {
+		if (e.target.value !== '직접 입력') {
+			setEmailDomain(e.target.value);
+			setEmailDomainSelectVal(e.target.value);
+		}
+	};
+
+	const checkAllFilled = () => {
+		if (
+			name &&
+			phone1 &&
+			phone2 &&
+			phone3 &&
+			event &&
+			delivery &&
+			dosirakType &&
+			inquiry
+		) {
+			return true;
+		}
+		return false;
+	};
+
+	const handleInquirySubmit = async () => {
+		if (!checkAllFilled()) {
+			alert('필수 항목들을 모두 채워주세요.');
+			return;
+		}
+		// 전화번호, 이메일 조합
+		const phoneNumber = `${phone1}-${phone2}-${phone3}`;
+		const email = `${emailId}@${emailDomain}`;
+
+		// EmailJS 템플릿에 전달할 파라미터 객체
+		const templateParams = {
+			name,
+			phoneNumber,
+			email,
+			event,
+			dosirakType,
+			inquiry,
+		};
+
+		try {
+			// EmailJS 서비스 호출
+			// 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', 'YOUR_PUBLIC_KEY'를 EmailJS 콘솔에서 발급받은 값으로 대체해야 합니다.
+			await emailjs.send(
+				'service_6yr6exn',
+				'template_gxezdpu',
+				templateParams,
+				'ij-BVq_WZjD6bDiRt'
+			);
+			alert('문의 내용이 전송되었습니다.');
+			// 전송 성공 후 상태 초기화 또는 다른 처리를 할 수 있습니다.
+		} catch (error: any) {
+			console.error('문의 전송 실패:', error);
+			alert('문의 전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
+		}
+	};
+
+	const onChangeEmailDomainInput = (e: ChangeEvent<HTMLInputElement>) => {
+		setEmailDomain(e.target.value);
+		if (
+			emailDomainSelectVal !== '직접 입력' &&
+			e.target.value !== emailDomainSelectVal
+		) {
+			setEmailDomainSelectVal('직접 입력');
 		}
 	};
 
@@ -156,9 +213,7 @@ function InquiryPage() {
 							<div className='flex justify-start items-center gap-6 w-full overflow-hidden'>
 								<select
 									className='ui dropdown focus:outline-0'
-									onSelect={(e) =>
-										setPhone1(e.currentTarget.value)
-									}>
+									onChange={(e) => setPhone1(e.target.value)}>
 									{initPhoneNumbers.map((value) => (
 										<option value={value}>{value}</option>
 									))}
@@ -202,7 +257,7 @@ function InquiryPage() {
 						</svg>
 						<div className='flex justify-start items-center w-full relative gap-12'>
 							<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
-								이메일
+								이메일 (선택)
 							</p>
 							<svg
 								width={1}
@@ -234,9 +289,7 @@ function InquiryPage() {
 									className='min-w-0 flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 									placeholder='도메인 입력'
 									value={emailDomain}
-									onChange={(e) =>
-										setEmailDomain(e.target.value)
-									}
+									onChange={onChangeEmailDomainInput}
 								/>
 								<svg
 									width={2}
@@ -255,8 +308,9 @@ function InquiryPage() {
 									/>
 								</svg>
 								<select
+									value={emailDomainSelectVal}
 									className='ui dropdown focus:outline-0'
-									onSelect={onSelectEmailDomain}>
+									onChange={onSelectEmailDomain}>
 									{emailDomains.map((value) => (
 										<option value={value}>{value}</option>
 									))}
@@ -447,7 +501,10 @@ function InquiryPage() {
 							/>
 						</svg>
 					</div>
-                    <ButtonMono value={'문의하기'}/>
+					<ButtonMono
+						value={'문의하기'}
+						onClick={handleInquirySubmit}
+					/>
 				</div>
 			</div>
 		</Common>

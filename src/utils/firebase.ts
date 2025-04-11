@@ -1,6 +1,13 @@
 import { db, storage } from '@/configs/firebaseConfig';
 import { IUser } from '@/stores/userStore';
-import { addDoc, collection, getDocs } from 'firebase/firestore';
+import {
+	addDoc,
+	collection,
+	doc,
+	getDoc,
+	getDocs,
+	setDoc,
+} from 'firebase/firestore';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -51,5 +58,41 @@ export const fetchCollectionData = async (
 		return documents;
 	} catch (err) {
 		console.error('Error fetching collection:', err);
+	}
+};
+
+export const fetchDataWithDocId = async (
+	collectionName: string,
+	id: string,
+	setData?: Dispatch<SetStateAction<any>>
+) => {
+	try {
+		const docRef = doc(db, collectionName, id);
+		const docSnap = await getDoc(docRef);
+
+		if (docSnap.exists()) {
+			const data = { id: docSnap.id, ...docSnap.data() };
+			if (setData) {
+				setData(data);
+			}
+			return data as any;
+		} else {
+			console.error(`No such document with id ${id}!`);
+		}
+	} catch (err) {
+		console.error('Error fetching document:', err);
+	}
+};
+
+export const addData = async (collectionName: string, data: any) => {
+	try {
+		const docRef = doc(db, collectionName, data.id); // "users" collection and custom document ID
+		const { id, ...dataWithoutId } = data;
+
+		await setDoc(docRef, dataWithoutId);
+		return true;
+	} catch (error) {
+		console.error('Error adding document:', error);
+		return false;
 	}
 };

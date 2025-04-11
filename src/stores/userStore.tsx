@@ -6,8 +6,8 @@ export interface IUser {
 	name: string;
 	email?: string;
 	phone: string;
-	address: string;
-	addressDetail: string;
+	address?: string;
+	addressDetail?: string;
 	createdAt: Timestamp;
     userType: IUserType;
 	updatedAt?: Timestamp;
