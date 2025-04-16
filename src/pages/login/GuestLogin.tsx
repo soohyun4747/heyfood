@@ -1,5 +1,6 @@
 import { ButtonRect } from '@/components/ButtonRect';
 import { ButtonRectYellow } from '@/components/ButtonRectYellow';
+import { CheckRound } from '@/components/CheckRound';
 import { UserType, useUserStore } from '@/stores/userStore';
 import { addData, fetchDataWithDocId } from '@/utils/firebase';
 import { formatPhoneNumberE164 } from '@/utils/string';
@@ -22,6 +23,8 @@ export function GuestLogin() {
 	const [confirmationResult, setConfirmationResult] = useState<any>(null);
 	const [isVerified, setIsVerified] = useState(false);
 	const [credentialUser, setCredentialUser] = useState<User>();
+	const [agreementCheck, setAgreementCheck] = useState(false);
+
 	const setUser = useUserStore((state) => state.setUser);
 	const auth = getAuth();
 	const router = useRouter();
@@ -82,7 +85,8 @@ export function GuestLogin() {
 			setIsVerified(true);
 			// 추가로 비회원 주문 진행 등 필요한 로직을 여기에 구현할 수 있습니다.
 		} catch (error: any) {
-			alert('인증번호 확인 실패: ' + error.message);
+			alert('인증을 실패하였습니다.');
+			console.log('인증번호 확인 실패: ' + error.message);
 		}
 	};
 
@@ -112,44 +116,30 @@ export function GuestLogin() {
 	};
 
 	return (
-		<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-10'>
-			<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-6'>
-				<p className='flex-grow-0 flex-shrink-0 text-[15px] text-center text-[#909090]'>
+		<div className='flex flex-col justify-start items-start self-stretch  gap-10'>
+			<div className='flex flex-col justify-start items-center self-stretch  gap-6'>
+				<p className=' text-[15px] text-center text-[#909090]'>
 					헤이델리박스 회원이 되시면 다양한 혜택을 누리실 수 있습니다.
 				</p>
-				<div className='flex justify-end items-center self-stretch flex-grow-0 flex-shrink-0 gap-2'>
-					<div className='hover:cursor-pointer flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2 border-t-0 border-r-0 border-b border-l-0 border-[#a0a0a0]'>
-						<p className='flex-grow-0 flex-shrink-0 text-[13px] text-center text-[#a0a0a0]'>
+				<div className='flex justify-end items-center self-stretch  gap-2'>
+					<div className='hover:cursor-pointer flex justify-center items-center  gap-2 border-t-0 border-r-0 border-b border-l-0 border-[#a0a0a0]'>
+						<p className=' text-[13px] text-center text-[#a0a0a0]'>
 							회원가입 하기
 						</p>
 					</div>
 				</div>
 			</div>
-			<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3'>
-				<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2'>
-					<div className='flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-2 pb-0.5'>
-						<svg
-							width={24}
-							height={24}
-							viewBox='0 0 24 24'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='flex-grow-0 flex-shrink-0 w-6 h-6 relative'
-							preserveAspectRatio='none'>
-							<path
-								d='M3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12Z'
-								stroke='#FFCD70'
-								stroke-width={2}
-								stroke-linecap='round'
-								stroke-linejoin='round'
-							/>
-						</svg>
-					</div>
-					<p className='flex-grow-0 flex-shrink-0 text-base text-left text-[#0f0e0e]'>
+			<div className='flex flex-col justify-start items-start self-stretch  gap-3'>
+				<div className='flex justify-start items-center self-stretch  gap-2'>
+					<CheckRound
+						checked={agreementCheck}
+						onClick={() => setAgreementCheck((prev) => !prev)}
+					/>
+					<p className=' text-base text-left text-[#0f0e0e]'>
 						비회원 이용약관 및 개인정보 수집 이용동의
 					</p>
 				</div>
-				<div className='flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 h-[238px] relative overflow-hidden gap-2 p-4 border border-[#d9d9d9] overflow-y-auto'>
+				<div className='flex justify-start items-start self-stretch  h-[238px] relative overflow-hidden gap-2 p-4 border border-[#d9d9d9] overflow-y-auto'>
 					<p className='flex-grow w-[416px] text-xs text-left text-[#909090]'>
 						<span className='flex-grow w-[416px] text-xs text-left text-[#909090]'>
 							헤이델리박스는 비회원 주문 서비스를 위하여 다음과
@@ -198,9 +188,9 @@ export function GuestLogin() {
 					</p>
 				</div>
 			</div>
-			<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-12'>
-				<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3'>
-					<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-6 px-6 py-[19px] border border-[#d9d9d9]'>
+			<div className='flex flex-col justify-start items-start self-stretch  gap-12'>
+				<div className='flex flex-col justify-start items-start self-stretch  gap-3'>
+					<div className='flex justify-start items-center self-stretch  gap-6 px-6 py-[19px] border border-[#d9d9d9]'>
 						<input
 							className='flex-grow text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 							placeholder='이름'
@@ -208,8 +198,8 @@ export function GuestLogin() {
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</div>
-					<div className='flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-2'>
-						<div className='flex justify-start items-center flex-grow-0 flex-shrink-0 w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9]'>
+					<div className='flex justify-start items-start self-stretch  gap-2'>
+						<div className='flex justify-start items-center  w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9]'>
 							<input
 								className='flex-grow text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 								placeholder='휴대폰 번호'
@@ -223,8 +213,8 @@ export function GuestLogin() {
 							onClick={sendVerificationCode}
 						/>
 					</div>
-					<div className='flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-2'>
-						<div className='flex justify-start items-center flex-grow-0 flex-shrink-0 w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9]'>
+					<div className='flex justify-start items-start self-stretch  gap-2'>
+						<div className='flex justify-start items-center  w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9]'>
 							<input
 								className='flex-grow text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 								placeholder='인증번호'
@@ -239,14 +229,14 @@ export function GuestLogin() {
 						/>
 					</div>
 				</div>
-				<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-8'>
-					<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-3'>
+				<div className='flex flex-col justify-start items-start self-stretch  gap-8'>
+					<div className='flex flex-col justify-start items-start self-stretch  gap-3'>
 						<ButtonRect
 							disabled={isVerified && name ? false : true}
 							value='완료'
 							onClick={goToOrder}
 						/>
-						<div className='hover:cursor-pointer flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 h-[68px] relative gap-[60px] px-8 py-5'>
+						<div className='hover:cursor-pointer flex justify-center items-center self-stretch  h-[68px] relative gap-[60px] px-8 py-5'>
 							<p
 								style={{
 									color:
@@ -254,7 +244,7 @@ export function GuestLogin() {
 											? '#F2AB27'
 											: '#909090',
 								}}
-								className='flex-grow-0 flex-shrink-0 text-lg font-bold text-center'>
+								className=' text-lg font-bold text-center'>
 								비회원 주문조회
 							</p>
 						</div>

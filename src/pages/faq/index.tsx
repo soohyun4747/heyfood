@@ -48,12 +48,12 @@ export function FaqPage() {
 
 	return (
 		<Common meta={<Meta />}>
-			<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-[60px] px-[120px] pt-[100px] pb-40 min-h-full'>
-				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2'>
-					<p className='flex-grow-0 flex-shrink-0 text-5xl font-bold text-center text-[#0f0e0e] leading-[150%]'>
+			<div className='flex flex-col justify-start items-center self-stretch  gap-[60px] px-[120px] pt-[100px] pb-40 min-h-content'>
+				<div className='flex flex-col justify-start items-center self-stretch  gap-2'>
+					<p className=' text-5xl font-bold text-center text-[#0f0e0e] leading-[150%]'>
 						자주묻는 질문
 					</p>
-					<p className='flex-grow-0 flex-shrink-0 text-base text-center text-[#0f0e0e] leading-[160%]'>
+					<p className=' text-base text-center text-[#0f0e0e] leading-[160%]'>
 						고객분들이 자주 묻는 질문을 정리했습니다.
 					</p>
 				</div>
@@ -62,19 +62,19 @@ export function FaqPage() {
 					selectedIdx={selectedCategoryIdx}
 					onClickMenu={onClickCategory}
 				/>
-				<div className='flex flex-col justify-start items-start flex-grow-0 flex-shrink-0 w-[1200px] relative gap-5'>
-					<p className='flex-grow-0 flex-shrink-0 text-lg text-left'>
-						<span className='flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-[#909090]'>
+				<div className='flex flex-col justify-start items-start  w-[1200px] relative gap-5'>
+					<p className=' text-lg text-left'>
+						<span className=' text-lg font-medium text-left text-[#909090]'>
 							총{' '}
 						</span>
-						<span className='flex-grow-0 flex-shrink-0 text-lg font-bold text-left text-[#0f0e0e]'>
+						<span className=' text-lg font-bold text-left text-[#0f0e0e]'>
 							{filteredCategoryFaqs.length.toLocaleString()}개
 						</span>
-						<span className='flex-grow-0 flex-shrink-0 text-lg font-medium text-left text-[#909090]'>
+						<span className=' text-lg font-medium text-left text-[#909090]'>
 							의 게시물이 있습니다.
 						</span>
 					</p>
-					<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative'>
+					<div className='flex flex-col justify-start items-start self-stretch  relative'>
 						<svg
 							width={1200}
 							height={3}

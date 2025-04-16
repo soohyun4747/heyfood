@@ -5,6 +5,7 @@ import { useMenuStore } from '@/stores/menuStore';
 import { useRouter } from 'next/router';
 import { ChevronLeft } from '@/icons/ChevronLeft';
 import { ChevronRight } from '@/icons/ChevronRight';
+import { MenuCard } from './MenuCard';
 
 export interface IMenu {
 	id: string;
@@ -124,42 +125,13 @@ export function LandingMenusTab() {
 							transform: `translateX(-${slideIdx * 1236}px)`,
 						}}>
 						{filteredCategoryMenus.map((menu) => (
-							<div
+							<MenuCard
+								key={menu.name}
 								onClick={() => onClickMenu(menu)}
-								key={menu.id}
-								className='hover:cursor-pointer flex flex-col gap-8 items-center h-[528px] w-[380px] p-6 rounded-3xl bg-white hover:shadow-[0px_4px_12px_0px_rgba(0,0,0,0.15)]'>
-								<div className='w-full h-80'>
-									<img
-										src={menu.imagePaths[0] ?? ''}
-										alt={menu.name}
-										className='w-[332px] h-[320px] object-cover rounded-3xl'
-										loading='lazy'
-									/>
-								</div>
-								<svg
-									width={332}
-									height={1}
-									viewBox='0 0 332 1'
-									fill='none'
-									xmlns='http://www.w3.org/2000/svg'
-									className='w-full'
-									preserveAspectRatio='none'>
-									<line
-										y1='0.5'
-										x2={332}
-										y2='0.5'
-										stroke='#E5E5E5'
-									/>
-								</svg>
-								<div className='flex flex-col gap-2 w-full'>
-									<p className='w-[332px] text-2xl text-center text-[#0f0e0e]'>
-										{menu.name}
-									</p>
-									<p className='w-[332px] text-base text-center text-[#909090] truncate'>
-										{menu.description}
-									</p>
-								</div>
-							</div>
+								src={menu.imagePaths[0]}
+								title={menu.name}
+								description={menu.description}
+							/>
 						))}
 					</div>
 				</div>

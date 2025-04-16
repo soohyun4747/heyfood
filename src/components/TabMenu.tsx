@@ -8,7 +8,7 @@ interface ITabMenuProps {
 
 export function TabMenu(props: ITabMenuProps) {
 	return (
-		<div className='flex justify-start items-start flex-grow-0 flex-shrink-0 gap-6'>
+		<div className='flex justify-start items-start  gap-6'>
 			{props.menus.map((category, i) => (
 				<div
 					key={i}
@@ -17,14 +17,14 @@ export function TabMenu(props: ITabMenuProps) {
 							i === props.selectedIdx ? '#f2ab27' : 'white',
 					}}
 					onClick={() => props.onClickMenu(i)}
-					className='hover:cursor-pointer flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2 px-6 py-2 border-b-[3px]'>
+					className='hover:cursor-pointer flex justify-center items-center  gap-2 px-6 py-2 border-b-[3px]'>
 					<p
 						style={{
 							color:
 								i === props.selectedIdx ? '#f2ab27' : '#909090',
 							fontWeight: i === props.selectedIdx ? '700' : '400',
 						}}
-						className='flex-grow-0 flex-shrink-0 text-xl text-center'>
+						className=' text-xl text-center'>
 						{category.name}
 					</p>
 				</div>

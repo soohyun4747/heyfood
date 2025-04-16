@@ -28,29 +28,29 @@ function MenuDetailPage() {
 
 	return (
 		<Common meta={<Meta />}>
-			<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-[60px] px-[120px] pt-[100px] pb-40 bg-white'>
-				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2'>
-					<p className='self-stretch flex-grow-0 flex-shrink-0 text-5xl font-bold text-center text-[#0f0e0e]'>
+			<div className='flex flex-col justify-start items-center self-stretch  gap-[60px] px-[120px] pt-[100px] pb-40 bg-white'>
+				<div className='flex flex-col justify-start items-center self-stretch  gap-2'>
+					<p className='self-stretch  text-5xl font-bold text-center text-[#0f0e0e]'>
 						메뉴 정보
 					</p>
 				</div>
-				<div className='flex justify-center items-start flex-grow-0 flex-shrink-0 relative gap-[60px]'>
+				<div className='flex justify-center items-start  gap-[60px]'>
 					<img
 						src={menu?.imagePaths[0] ?? ''}
 						alt={menu?.name}
 						className='size-[600px] object-cover rounded-3xl'
 						loading='lazy'
 					/>
-					<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 w-[540px] relative gap-10 py-4'>
-						<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-6'>
-							<p className='self-stretch flex-grow-0 flex-shrink-0 w-[540px] text-[32px] font-bold text-left text-[#0f0e0e]'>
+					<div className='flex flex-col justify-start items-start self-stretch  w-[540px] relative gap-10 py-4'>
+						<div className='flex flex-col justify-start items-start self-stretch  gap-6'>
+							<p className='self-stretch  w-[540px] text-[32px] font-bold text-left text-[#0f0e0e]'>
 								{menu?.name}
 							</p>
-							<div className='flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-0.5'>
-								<p className='flex-grow-0 flex-shrink-0 text-[26px] font-light text-left text-[#f2ab27]'>
+							<div className='flex justify-start items-center  gap-0.5'>
+								<p className=' text-[26px] font-light text-left text-[#f2ab27]'>
 									{menu?.price.toLocaleString()}
 								</p>
-								<p className='flex-grow-0 flex-shrink-0 text-2xl text-left text-[#f2ab27]'>
+								<p className=' text-2xl text-left text-[#f2ab27]'>
 									원
 								</p>
 							</div>

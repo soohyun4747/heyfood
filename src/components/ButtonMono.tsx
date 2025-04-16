@@ -15,17 +15,18 @@ export function ButtonMono(props: IButtonMonoProps) {
 			onMouseEnter={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
 			onClick={props.onClick}
-			className='flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-4 px-8 py-[13px] rounded-[100px] border-2 border-gray-900 hover:bg-gray-900 hover:cursor-pointer'>
+			className='flex justify-center items-center w-[211px] px-8 py-[13px] rounded-[100px] border-2 border-gray-900 hover:bg-gray-900 hover:cursor-pointer'>
 			<p
 				style={{ color: hover ? 'white' : '#0F0E0E' }}
-				className='select-none flex-grow text-lg text-left'>
+				className={`select-none flex-grow text-lg ${props.icon ? 'text-left' : 'text-center'}`}>
 				{props.value}
 			</p>
-			{props.icon && props.icon({
-				color: '#0F0E0E',
-				hoverColor: 'white',
-				hover: hover,
-			})}
+			{props.icon &&
+				props.icon({
+					color: '#0F0E0E',
+					hoverColor: 'white',
+					hover: hover,
+				})}
 		</div>
 	);
 }

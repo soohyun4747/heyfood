@@ -23,12 +23,11 @@ const initPhoneNumbers = [
 	'064',
 ];
 
-const emailDomains = [
+export const emailDomains = [
 	'직접 입력',
 	'gmail.com',
 	'naver.com',
 	'daum.net',
-	'hanmail.net',
 	'nate.com',
 	'hotmail.com',
 ];
@@ -212,7 +211,7 @@ function InquiryPage() {
 							</svg>
 							<div className='flex justify-start items-center gap-6 w-full overflow-hidden'>
 								<select
-									className='ui dropdown focus:outline-0'
+									className='ui dropdown focus:outline-0 hover:cursor-pointer'
 									onChange={(e) => setPhone1(e.target.value)}>
 									{initPhoneNumbers.map((value) => (
 										<option value={value}>{value}</option>
@@ -309,7 +308,7 @@ function InquiryPage() {
 								</svg>
 								<select
 									value={emailDomainSelectVal}
-									className='ui dropdown focus:outline-0'
+									className='ui dropdown focus:outline-0 hover:cursor-pointer'
 									onChange={onSelectEmailDomain}>
 									{emailDomains.map((value) => (
 										<option value={value}>{value}</option>

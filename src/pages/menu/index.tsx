@@ -1,4 +1,5 @@
 import { ICategory, IMenu } from '@/components/LandingMenusTab';
+import { MenuCard } from '@/components/MenuCard';
 import { TabMenu } from '@/components/TabMenu';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
@@ -55,9 +56,9 @@ function MenuPage() {
 
 	return (
 		<Common meta={<Meta />}>
-			<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-[60px] px-[120px] pt-[100px] pb-40 bg-white'>
-				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2'>
-					<p className='flex-grow-0 flex-shrink-0 text-5xl font-bold text-center text-[#0f0e0e]'>
+			<div className='flex flex-col justify-start items-center self-stretch  gap-[60px] px-[120px] pt-[100px] pb-40 bg-white'>
+				<div className='flex flex-col justify-start items-center self-stretch  gap-2'>
+					<p className=' text-5xl font-bold text-center text-[#0f0e0e]'>
 						메뉴
 					</p>
 				</div>
@@ -68,42 +69,14 @@ function MenuPage() {
 				/>
 				<div className='grid grid-cols-3 gap-x-8 gap-y-16'>
 					{filteredCategoryMenus.map((menu) => (
-						<div
+						<MenuCard
+							shadowed
+							key={menu.name}
 							onClick={() => onClickMenu(menu)}
-							key={menu.id}
-							className='hover:cursor-pointer flex flex-col gap-8 items-center h-[528px] w-[380px] p-6 rounded-3xl bg-white shadow-[0px_4px_12px_0px_rgba(0,0,0,0.15)]'>
-							<div className='w-full h-80'>
-								<img
-									src={menu.imagePaths[0] ?? ''}
-									alt={menu.name}
-									className='w-[332px] h-[320px] object-cover rounded-3xl'
-									loading='lazy'
-								/>
-							</div>
-							<svg
-								width={332}
-								height={1}
-								viewBox='0 0 332 1'
-								fill='none'
-								xmlns='http://www.w3.org/2000/svg'
-								className='w-full'
-								preserveAspectRatio='none'>
-								<line
-									y1='0.5'
-									x2={332}
-									y2='0.5'
-									stroke='#E5E5E5'
-								/>
-							</svg>
-							<div className='flex flex-col gap-2 w-full'>
-								<p className='w-[332px] text-2xl text-center text-[#0f0e0e]'>
-									{menu.name}
-								</p>
-								<p className='w-[332px] text-base text-center text-[#909090] truncate'>
-									{menu.description}
-								</p>
-							</div>
-						</div>
+							src={menu.imagePaths[0]}
+							title={menu.name}
+							description={menu.description}
+						/>
 					))}
 				</div>
 			</div>

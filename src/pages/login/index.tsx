@@ -1,11 +1,21 @@
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
 import { UserLogin } from './UserLogin';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { GuestLogin } from './GuestLogin';
+import { useUserStore } from '@/stores/userStore';
+import { useRouter } from 'next/router';
 
 function LoginPage() {
 	const [selectedIdx, setSelectedIdx] = useState(0);
+	const user = useUserStore((state) => state.user);
+	const router = useRouter();
+
+	useEffect(() => {
+		if (user) {
+			router.push('/');
+		}
+	}, [user]);
 
 	return (
 		<Common meta={<Meta />}>

@@ -8,7 +8,7 @@ export function Hamburger(props: IIconProps) {
 			viewBox='0 0 24 25'
 			fill='none'
 			xmlns='http://www.w3.org/2000/svg'
-			className='flex-grow-0 flex-shrink-0 w-6 h-6 relative'
+			className=' w-6 h-6 relative'
 			preserveAspectRatio='none'>
 			<path
 				d='M20 18.5H4M20 12.5H4M20 6.5H4'

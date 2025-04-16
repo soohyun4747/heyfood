@@ -96,3 +96,19 @@ export const addData = async (collectionName: string, data: any) => {
 		return false;
 	}
 };
+
+export async function checkUser(email: string) {
+	try {
+		const response = await fetch('/api/check-user', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ email }),
+		});
+		const data = await response.json();
+		if (data.exists) {
+			return data.user;
+		}
+	} catch (error) {
+		console.error('사용자 확인 중 오류 발생:', error);
+	}
+}

@@ -1,4 +1,9 @@
-interface IButtonProps {
+export interface IButtonBasicProps {
+	value: string;
+	onClick?: () => void;
+}
+
+interface IButtonProps extends IButtonBasicProps {
 	color?: string;
 	value: string;
 	onClick?: () => void;

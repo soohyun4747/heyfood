@@ -29,12 +29,17 @@ export function UserLogin() {
 					'users',
 					user.uid
 				)) as IUser | undefined;
+
 				if (userData) {
 					setUser({ ...userData, userType: UserType.user });
-				}
 
-				// 사용자 정보 저장 후 menu 페이지로 이동
-				router.push('/order');
+					localStorage.setItem('email', email);
+					localStorage.setItem('password', password);
+					// 사용자 정보 저장 후 menu 페이지로 이동
+					router.push('/order');
+				} else {
+					alert('로그인을 실패하였습니다');
+				}
 			} catch (error: any) {
 				alert('로그인 실패: ' + error.message);
 			}
@@ -42,20 +47,20 @@ export function UserLogin() {
 	};
 
 	return (
-		<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-12'>
-			<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-10'>
-				<p className='flex-grow-0 flex-shrink-0 text-[15px] text-center text-[#909090]'>
-					<span className='flex-grow-0 flex-shrink-0 text-[15px] text-center text-[#909090]'>
+		<div className='flex flex-col justify-start items-start self-stretch  gap-12'>
+			<div className='flex flex-col justify-start items-center self-stretch  gap-10'>
+				<p className=' text-[15px] text-center text-[#909090]'>
+					<span className=' text-[15px] text-center text-[#909090]'>
 						헤이델리박스 회원으로 로그인하시면 제공하는
 					</span>
 					<br />
-					<span className='flex-grow-0 flex-shrink-0 text-[15px] text-center text-[#909090]'>
+					<span className=' text-[15px] text-center text-[#909090]'>
 						다양한 서비스를 이용할 수 있습니다.
 					</span>
 				</p>
 				<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0'>
-					<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-6 px-6 py-[22px] border border-[#d9d9d9]'>
-						<p className='flex-grow-0 flex-shrink-0 w-[110px] text-base text-left text-[#0f0e0e]'>
+					<div className='flex justify-start items-center self-stretch  gap-6 px-6 py-[22px] border border-[#d9d9d9]'>
+						<p className=' w-[110px] text-base text-left text-[#0f0e0e]'>
 							이메일
 						</p>
 						<input
@@ -65,8 +70,8 @@ export function UserLogin() {
 							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</div>
-					<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-6 px-6 py-[22px] border-t-0 border-r border-b border-l border-[#d9d9d9]'>
-						<p className='flex-grow-0 flex-shrink-0 w-[110px] text-base text-left text-[#0f0e0e]'>
+					<div className='flex justify-start items-center self-stretch  gap-6 px-6 py-[22px] border-t-0 border-r border-b border-l border-[#d9d9d9]'>
+						<p className=' w-[110px] text-base text-left text-[#0f0e0e]'>
 							비밀번호
 						</p>
 						<input
@@ -80,13 +85,13 @@ export function UserLogin() {
 					</div>
 				</div>
 			</div>
-			<div className='flex flex-col justify-center items-center self-stretch flex-grow-0 flex-shrink-0 gap-8'>
+			<div className='flex flex-col justify-center items-center self-stretch  gap-8'>
 				<ButtonRect
 					disabled={email && password ? false : true}
 					value={'로그인'}
 					onClick={handleLogin}
 				/>
-				<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-3'>
+				<div className='flex justify-start items-center self-stretch  gap-3'>
 					<p className='flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
 						아이디 찾기
 					</p>

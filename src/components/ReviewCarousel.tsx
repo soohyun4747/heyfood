@@ -39,9 +39,8 @@ export const ReviewCarousel: React.FC = () => {
 	const allReviews = [...reviews, ...reviews];
 
 	return (
-		<div className=''>
-			{/* inline-flex와 whitespace-nowrap로 내부 컨테이너의 너비가 콘텐츠 만큼 확장되게 함 */}
-			<div className='inline-flex gap-8 animate-scroll'>
+		<div className='overflow-x-hidden'>
+			<div className='inline-flex gap-8 animate-scroll h-[380px] items-center'>
 				{allReviews.map((review, index) => (
 					<ReviewCard
 						key={index}

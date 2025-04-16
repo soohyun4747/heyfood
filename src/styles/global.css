@@ -5,6 +5,7 @@
 body {
 	margin: 0;
 	font-family: 'NEXONLv1Gothic';
+	overflow-x: hidden;
 }
 td {
 	padding: 0;
