@@ -12,3 +12,5 @@ export const formatPhoneNumberE164 = (num: string) => {
 	}
 	return num; // 기본적으로 num을 그대로 반환 (필요에 따라 수정)
 };
+
+export const regex = /^(?=.*[A-Za-z])(?=.*\d).{8,16}$/;

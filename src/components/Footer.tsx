@@ -9,9 +9,6 @@ export function Footer() {
 					<p className=' text-base text-center text-[#0f0e0e]'>
 						이용약관
 					</p>
-					<p className=' text-base text-center text-[#0f0e0e]'>
-						이메일무단수집거부
-					</p>
 				</div>
 				<div className='flex flex-col justify-start items-start self-stretch  gap-10'>
 					<div className='self-stretch  h-0.5 opacity-[0.24] bg-[#0f0e0e]' />

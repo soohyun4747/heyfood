@@ -8,7 +8,8 @@ export interface IItem {
 
 interface IItemsStore {
 	items: IItem[];
-	setItems: (menu: IMenu, count: number) => void;
+	setItems: (items: IItem[]) => void;
+	setItem: (menu: IMenu, count: number) => void;
 	onPlusItem: (menu: IMenu) => void;
 	onMinusItem: (menu: IMenu) => void;
 	onResetItems: () => void;
@@ -17,14 +18,19 @@ interface IItemsStore {
 export const useItemsStore = create<IItemsStore>((set) => {
 	return {
 		items: [],
-		setItems: (menu, count) =>
+		setItems: (items) =>
+			set((state) => {
+				state.items = items;
+				return { ...state };
+			}),
+		setItem: (menu, count) =>
 			set((state) => {
 				const item = state.items.find(
 					(item) => item.menu.id === menu.id
 				);
 				if (item) {
 					if (count <= 0) {
-						//count가 0이거나 더 작으면 cart에서 아예 빼버리기
+						//count가 0이거나 더 작으면 아예 빼버리기
 						state.items = state.items.filter(
 							(item) => item.count === 0
 						);

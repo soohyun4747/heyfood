@@ -32,9 +32,7 @@ export function UserLogin() {
 
 				if (userData) {
 					setUser({ ...userData, userType: UserType.user });
-
-					localStorage.setItem('email', email);
-					localStorage.setItem('password', password);
+                    
 					// 사용자 정보 저장 후 menu 페이지로 이동
 					router.push('/order');
 				} else {

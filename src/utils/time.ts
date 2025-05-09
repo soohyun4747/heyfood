@@ -31,21 +31,9 @@ export const timeSlots = [
 	'15:00',
 	'15:30',
 	'16:00',
-  ];
+];
 
 export const dayLetters = ['일', '월', '화', '수', '목', '금', '토'];
-
-function get3YearsArray(): number[] {
-	const currentYear = new Date().getFullYear();
-	const endYear = currentYear + 2;
-	const years: number[] = [];
-
-	for (let year = currentYear; year <= endYear; year++) {
-		years.push(year);
-	}
-
-	return years;
-}
 
 export const getDatesInMonth = (year: number, month: number): Date[][] => {
 	let startDate = new Date(year, month, 1); // Month is zero-based
@@ -85,3 +73,54 @@ export const getDatesInMonth = (year: number, month: number): Date[][] => {
 export const convertDateStrToTimestamp = (dateStr: string) => {
 	return Timestamp.fromDate(new Date(dateStr));
 };
+
+export function formatTimestampWithMinutes(timestamp: Timestamp) {
+	// Firestore Timestamp → Date 객체로 변환 후 KST(+9h) 보정
+	const date = timestamp.toDate();
+	date.setHours(date.getHours() + 9);
+
+	// 월·일 두 자리 포맷팅
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+
+	// 요일 한글 배열에서 추출
+	const dayOfWeek = dayLetters[date.getDay()];
+
+	// 오전/오후 구분
+	let hours = date.getHours();
+	const mins = date.getMinutes();
+	const isAM = hours < 12;
+	const period = isAM ? '오전' : '오후';
+
+	// 12시간제 변환
+	if (!isAM && hours > 12) hours -= 12;
+	if (hours === 0) hours = 12;
+
+	// 분 두 자리 포맷팅
+	const minuteStr = String(mins).padStart(2, '0');
+
+	return `${month}월 ${day}일 (${dayOfWeek}), ${period} ${hours}시 ${minuteStr}분`;
+}
+
+export function formatDateKR(date: Date): string {
+	// 월·일 두 자리 포맷팅
+	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const day = String(date.getDate()).padStart(2, '0');
+
+	// 요일 한글 배열에서 추출
+	const weekdayKR = dayLetters[date.getDay()];
+
+	// 시·분 및 오전/오후 구분
+	let hours = date.getHours();
+	const mins = date.getMinutes();
+	const isAM = hours < 12;
+	const period = isAM ? '오전' : '오후';
+
+	// 12시간제 변환
+	if (!isAM && hours > 12) hours -= 12;
+	if (hours === 0) hours = 12;
+
+	const minuteStr = String(mins).padStart(2, '0');
+
+	return `${month}월 ${day}일 (${weekdayKR}), ${period} ${hours}시 ${minuteStr}분`;
+}

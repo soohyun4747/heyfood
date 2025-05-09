@@ -79,6 +79,16 @@ function MenuPage() {
 						/>
 					))}
 				</div>
+				<div className='flex flex-col w-[1200px] relative gap-1.5 px-6 py-5 bg-[#fffbea]'>
+					<p className='text-base font-bold text-left text-[#5c5c5c]'>
+						패키지 디자인 추가 옵션
+					</p>
+					<p className='text-sm text-left text-[#5c5c5c]'>
+						행사 및 기념일에 어울리는 맞춤형 스티커 제작 서비스를
+						제공합니다. 주문/결제 단계에서 원하시는 문구를 입력할 수
+						있어요.
+					</p>
+				</div>
 			</div>
 		</Common>
 	);

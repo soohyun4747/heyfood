@@ -3,9 +3,9 @@ import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
 import { emailDomains } from '@/pages/inquiry';
 import { checkUser } from '@/utils/firebase';
+import { regex } from '@/utils/string';
 import { ChangeEvent, useState } from 'react';
 
-const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/;
 
 function SignUpBasicInfoPage() {
 	const [emailId, setEmailId] = useState<string>();

@@ -134,7 +134,7 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 			content={
 				<div className='flex flex-col gap-[32px] w-full flex-1 overflow-hidden'>
 					<div className='w-full flex flex-col gap-[12px]'>
-						<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-3'>
+						<div className='flex justify-start items-center self-stretch relative gap-3'>
 							<div
 								onClick={
 									!monthLeftDisabled()
@@ -240,7 +240,7 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 								</div>
 							))}
 						</div>
-						<div className='flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 px-3 py-2 bg-[#f8f8f8]'>
+						<div className='flex justify-center items-center self-stretch relative gap-2 px-3 py-2 bg-[#f8f8f8]'>
 							<p className='flex-grow w-[330px] text-[10px] text-center text-[#5c5c5c]'>
 								배송 날짜 기준 최소 이틀 전에 주문이 가능합니다
 							</p>
@@ -250,18 +250,18 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 						<div
 							onMouseEnter={() => setInfoHover(true)}
 							onMouseLeave={() => setInfoHover(false)}
-							className='flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-1'>
-							<p className='flex-grow-0 flex-shrink-0 text-base font-bold text-left text-[#0f0e0e]'>
+							className='flex justify-start items-center relative gap-1'>
+							<p className='text-base font-bold text-left text-[#0f0e0e]'>
 								배달 시간
 							</p>
-							<div className='hover:cursor-pointer flex justify-start items-center flex-grow-0 flex-shrink-0 relative gap-2 pb-0.5'>
+							<div className='hover:cursor-pointer flex justify-start items-center relative gap-2 pb-0.5'>
 								<svg
 									width={16}
 									height={17}
 									viewBox='0 0 16 17'
 									fill='none'
 									xmlns='http://www.w3.org/2000/svg'
-									className='flex-grow-0 flex-shrink-0 w-4 h-4 relative'
+									className='w-4 h-4 relative'
 									preserveAspectRatio='none'>
 									<path
 										d='M8 8.5L8 11.5M8 6.27637V6.25M2 8.5C2 5.18629 4.68629 2.5 8 2.5C11.3137 2.5 14 5.18629 14 8.5C14 11.8137 11.3137 14.5 8 14.5C4.68629 14.5 2 11.8137 2 8.5Z'
@@ -275,12 +275,12 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 						</div>
 						{infoHover && (
 							<div className='flex justify-center items-center gap-2 p-2 rounded-md bg-[#0f0e0e] absolute top-0 right-0'>
-								<p className='flex-grow-0 flex-shrink-0 text-xs text-center text-white'>
-									<span className='flex-grow-0 flex-shrink-0 text-xs text-center text-white'>
+								<p className='text-xs text-center text-white'>
+									<span className='text-xs text-center text-white'>
 										09:00~16:00 이외의 시간에는{' '}
 									</span>
 									<br />
-									<span className='flex-grow-0 flex-shrink-0 text-xs text-center text-white'>
+									<span className='text-xs text-center text-white'>
 										전화 또는 문의하기 페이지를 통해
 										연락주세요.
 									</span>
@@ -293,12 +293,12 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 
 								// 기본 스타일: border-bottom과 gap 등. 13시 이후(포맷상 "13:00"부터)는 추가로 w-[200px] 적용
 								let containerClasses =
-									'hover:cursor-pointer select-none flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 px-5 py-3.5 border-b border-neutral-200';
+									'hover:cursor-pointer select-none flex justify-start items-center self-stretch relative gap-2 px-5 py-3.5 border-b border-neutral-200';
 
 								// 선택된 경우 체크된 스타일 적용 (배경색 변경 및 요소 간 정렬 변경)
 								if (isSelected) {
 									containerClasses =
-										'hover:cursor-pointer select-none flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 relative px-5 py-3.5 bg-[#ffebc4] border-b';
+										'hover:cursor-pointer select-none flex justify-between items-center self-stretch relative px-5 py-3.5 bg-[#ffebc4] border-b';
 								}
 
 								return (
@@ -306,7 +306,7 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 										key={time}
 										onClick={() => handleTimeClick(time)}
 										className={containerClasses}>
-										<p className='flex-grow-0 flex-shrink-0 w-[46px] h-[29px] text-base font-semibold text-left text-[#0f0e0e]'>
+										<p className='w-[46px] text-base font-semibold text-left text-[#0f0e0e]'>
 											{time}
 										</p>
 										{isSelected && (
@@ -316,7 +316,7 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 												viewBox='0 0 20 20'
 												fill='none'
 												xmlns='http://www.w3.org/2000/svg'
-												className='flex-grow-0 flex-shrink-0 w-5 h-5 relative'
+												className='w-5 h-5 relative'
 												preserveAspectRatio='none'>
 												<rect
 													x='0.5'

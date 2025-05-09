@@ -2,6 +2,7 @@ import { IUserType, UserType } from '@/stores/userStore';
 import { Button } from './Button';
 import { User } from '@/icons/User';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 export function GNB({ type }: { type: IUserType }) {
 	const router = useRouter();
@@ -9,7 +10,14 @@ export function GNB({ type }: { type: IUserType }) {
 	return (
 		<div className='flex justify-between items-center px-[120px] py-[30px]'>
 			<div className='flex items-center gap-[200px]'>
-				<div></div>
+				<Image
+					src={'/images/logo.png'}
+					alt={'logo'}
+					width={206.32}
+					height={30}
+					onClick={() => router.push('/')}
+					className='cursor-pointer'
+				/>
 				<div className='flex items-center gap-[44px]'>
 					<div
 						onClick={() => router.push('/heydelibox')}
@@ -42,7 +50,9 @@ export function GNB({ type }: { type: IUserType }) {
 							로그인
 						</div>
 					) : (
-						<div onClick={() => router.push('/profile')}>
+						<div
+							className='hover:cursor-pointer select-none'
+							onClick={() => router.push('/profile')}>
 							<User />
 						</div>
 					)}

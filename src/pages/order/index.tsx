@@ -26,11 +26,13 @@ function OrderPage() {
 	const [dateTimeDrawerOpen, setDateTimeDrawerOpen] = useState(false);
 	const [dateTime, setDateTime] = useState<Date>();
 	const [cartModalOpen, setCartModalOpen] = useState(false);
+	const [sameAddressDateNoticeModal, setSameAddressDateNoticeModal] =
+		useState(false);
 
-	const user = useUserStore((state) => state.user);
-	const { items, setItems, onPlusItem, onMinusItem, onResetItems } =
+	const { user, setUser } = useUserStore();
+	const { items, setItem, setItems, onPlusItem, onMinusItem, onResetItems } =
 		useItemsStore();
-	const onAddCart = useCartStore((state) => state.onAddCart);
+	const { cart, editBundleIdx, onAddCart, onRemoveCart } = useCartStore();
 
 	const router = useRouter();
 
@@ -39,11 +41,21 @@ function OrderPage() {
 			? `${user?.address} ${user?.addressDetail}`
 			: undefined;
 
+	const bundleId =
+		dateTime && addressFull ? dateTime + addressFull : undefined;
+
 	useEffect(() => {
 		if (!user) {
-			router.push('/');
+			router.push('/login');
 		}
 	}, [user]);
+
+	// useEffect(() => {
+	// 	if (editBundleIdx !== undefined) {
+	// 		setItems(JSON.parse(JSON.stringify(cart[editBundleIdx].items)));
+	// 		setDateTime(cart[editBundleIdx].dateTime);
+	// 	}
+	// }, [editBundleIdx]);
 
 	// 초기 데이터 로드
 	useEffect(() => {
@@ -103,9 +115,9 @@ function OrderPage() {
 	) => {
 		const numVal = Number(e.target.value);
 		if (isNaN(numVal)) {
-			setItems(menu, count ?? 0);
+			setItem(menu, count ?? 0);
 		} else {
-			setItems(menu, numVal);
+			setItem(menu, numVal);
 		}
 	};
 
@@ -121,35 +133,56 @@ function OrderPage() {
 		}
 	};
 
+	const onClickAddToCart = () => {
+		if (bundleId) {
+			const oBundleIdx = cart.findIndex(
+				(bundle) => bundle.id === bundleId
+			);
+			if (oBundleIdx > -1) {
+				setSameAddressDateNoticeModal(true);
+			} else {
+				addToCart();
+			}
+		}
+	};
+
 	const addToCart = () => {
-		if (dateTime && addressFull) {
+		if (bundleId && dateTime && user?.address && user?.addressDetail) {
 			onAddCart({
-				id: dateTime + addressFull,
+				id: bundleId,
 				dateTime: dateTime,
-				addressFull: addressFull,
+				address: user?.address,
+				addressDetail: user?.addressDetail,
 				items: items,
 			});
+			setCartModalOpen(true);
+			setDateTime(undefined);
+			onResetItems();
 		}
+	};
 
-		setCartModalOpen(true);
-		setDateTime(undefined);
-		onResetItems();
+	const replaceCartBundle = () => {
+		if (bundleId) {
+			onRemoveCart(bundleId);
+			setSameAddressDateNoticeModal(false);
+			addToCart();
+		}
 	};
 
 	return (
 		<div className='h-screen flex flex-col overflow-hidden'>
 			<GNBOrder />
-			<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-[60px] px-[120px] pb-[100px] bg-white h-[calc(100%-131px-96px)] overflow-y-auto'>
-				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2'>
-					<p className='flex-grow-0 flex-shrink-0 text-[50px] font-bold text-center text-[#0f0e0e]'>
+			<div className='flex flex-col justify-start items-center self-stretch gap-[60px] px-[120px] pb-[100px] bg-white h-[calc(100%-131px-96px)] overflow-y-auto'>
+				<div className='flex flex-col justify-start items-center self-stretch relative gap-2'>
+					<p className='text-[50px] font-bold text-center text-[#0f0e0e]'>
 						주문하기
 					</p>
 				</div>
-				<div className='flex flex-col justify-start items-center flex-grow-0 flex-shrink-0 w-[1200px] gap-[60px]'>
+				<div className='flex flex-col justify-start items-center w-[1200px] gap-[60px]'>
 					<div className='flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0'>
 						<div className='flex justify-start items-center flex-1 gap-3 px-6 py-4 border border-neutral-200 h-[62px]'>
-							<div className='flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2 pt-0.5'>
-								<p className='flex-grow-0 flex-shrink-0 text-base font-bold text-left text-[#0f0e0e]'>
+							<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<p className='text-base font-bold text-left text-[#0f0e0e]'>
 									배달주소
 								</p>
 							</div>
@@ -162,8 +195,8 @@ function OrderPage() {
 							/>
 						</div>
 						<div className='flex justify-start items-center flex-1 gap-3 px-6 py-4 border-t border-r border-b border-l-0 border-neutral-200 h-[62px]'>
-							<div className='flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2 pt-0.5'>
-								<p className='flex-grow-0 flex-shrink-0 text-base font-bold text-left text-[#0f0e0e]'>
+							<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<p className='text-base font-bold text-left text-[#0f0e0e]'>
 									날짜 및 시간
 								</p>
 							</div>
@@ -206,38 +239,43 @@ function OrderPage() {
 				</div>
 			</div>
 			<div
-				className='flex justify-end items-center flex-grow-0 flex-shrink-0 w-[1440px] gap-10 px-[120px] py-8 rounded-tl-3xl rounded-tr-3xl bg-white relative'
+				className='flex items-center w-full justify-center rounded-tl-3xl rounded-tr-3xl bg-white relative'
 				style={{ boxShadow: '0px 4px 20px 0 rgba(0,0,0,0.1)' }}>
-				<div className='flex flex-col justify-center items-start flex-grow relative'>
-					<p className='flex-grow-0 flex-shrink-0 text-[26px] font-medium text-right text-[#0f0e0e]'>
-						{getCartPrice().toLocaleString()}원
-					</p>
-					<p className='flex-grow-0 flex-shrink-0 text-lg font-medium text-right text-[#909090]'>
-						하루 30개부터 배달가능
-					</p>
-				</div>
-				<div className='flex justify-start items-center flex-grow-0 flex-shrink-0 gap-3'>
-					<div
-						onMouseEnter={() => setResetHover(true)}
-						onMouseLeave={() => setResetHover(false)}
-						className='hover:cursor-pointer flex justify-center items-center flex-grow-0 flex-shrink-0 rounded-lg bg-[#f8f8f8] border border-neutral-200 w-[56px] h-[56px]'
-						onClick={onResetItems}>
-						<Reset />
-					</div>
-					<ButtonNumText
-						count={cartItemsCount}
-						value={'장바구니에 넣기'}
-						disabled={cartItemsCount < minimumCount ? true : false}
-						onClick={addToCart}
-					/>
-				</div>
-				{resetHover && (
-					<div className='flex justify-center items-center flex-grow-0 flex-shrink-0 absolute left-[986px] top-[-3px] gap-2 p-2 rounded-md bg-[#0f0e0e]'>
-						<p className='flex-grow-0 flex-shrink-0 text-xs text-center text-white'>
-							비우고 다시 선택하기
+				<div className='flex justify-end items-center gap-10 px-[120px] py-8 w-[1440px]'>
+					<div className='flex flex-col justify-center items-start flex-grow relative'>
+						<p className='text-[26px] font-medium text-right text-[#0f0e0e]'>
+							{getCartPrice().toLocaleString()}원
+						</p>
+						<p className='text-lg font-medium text-right text-[#909090]'>
+							하루 30개부터 배달가능
 						</p>
 					</div>
-				)}
+					<div className='flex justify-start items-center gap-3'>
+						<div
+							onMouseEnter={() => setResetHover(true)}
+							onMouseLeave={() => setResetHover(false)}
+							className='hover:cursor-pointer flex justify-center items-center rounded-lg hover:bg-[#f8f8f8] bg-white border border-neutral-200 w-[56px] h-[56px]'
+							onClick={onResetItems}>
+							<Reset />
+						</div>
+						<ButtonNumText
+							count={cartItemsCount}
+							value={'장바구니에 넣기'}
+							disabled={
+								cartItemsCount < minimumCount ? true : false
+							}
+							onClick={onClickAddToCart}
+							style={{ width: 230 }}
+						/>
+					</div>
+					{resetHover && (
+						<div className='flex justify-center items-center absolute left-[986px] top-[-3px] gap-2 p-2 rounded-md bg-[#0f0e0e]'>
+							<p className='text-xs text-center text-white'>
+								비우고 다시 선택하기
+							</p>
+						</div>
+					)}
+				</div>
 			</div>
 			{addressDrawerOpen && (
 				<AddressDrawer onClose={() => setAddreessDrawerOpen(false)} />
@@ -264,11 +302,33 @@ function OrderPage() {
 					}
 					btn1st={{
 						value: '장바구니로 이동',
-						onClick: () => router.push('/cart'),
+						onClick: () => router.push('/order/cart'),
 					}}
 					btn2nd={{
 						value: '주문 추가하기',
 						onClick: () => setCartModalOpen(false),
+					}}
+				/>
+			)}
+			{sameAddressDateNoticeModal && (
+				<ModalCenter
+					title={'잠깐!'}
+					description={
+						<>
+							장바구니에 같은 주소와 날짜/시간으로
+							<br />
+							담겨진 상품이 이미 있습니다.
+							<br />
+							현재 상품으로 대체하시겠습니까?
+						</>
+					}
+					btn1st={{
+						value: '대체하기',
+						onClick: replaceCartBundle,
+					}}
+					btn2nd={{
+						value: '취소하기',
+						onClick: () => setSameAddressDateNoticeModal(false),
 					}}
 				/>
 			)}

@@ -6,15 +6,23 @@ import { ArrowRight } from '@/icons/ArrowRight';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 function LandingPage() {
 	const router = useRouter();
 
 	return (
 		<Common meta={<Meta />}>
-			<>
-				<div className='flex flex-grow-0 flex-shrink-0 flex-col justify-start items-center self-stretch  h-[668px] relative gap-[345px] py-[98px] bg-[#d9d9d9]'>
-					<p className=' text-5xl font-bold text-center text-[#0f0e0e] leading-[150%]'>
+			<div className='flex flex-col'>
+				<div className='flex flex-col justify-start items-center self-stretch relative gap-[345px] h-auto'>
+					<Image
+						src={'/images/banner.png'}
+						alt={'banner'}
+						width={1440}
+						height={668}
+						className='w-full h-auto'
+					/>
+					<p className='text-5xl font-bold text-center text-[#0f0e0e] leading-[150%] absolute left-1/2 transform -translate-x-1/2 top-[90px]'>
 						<span className=' text-5xl font-bold text-center text-[#0f0e0e]'>
 							선물 같은 도시락,{' '}
 						</span>
@@ -181,7 +189,7 @@ function LandingPage() {
 						</p>
 					</div>
 				</div>
-				<div className='flex justify-center items-start flex-grow-0 flex-shrink-0 self-stretch h-[790px] relative pt-40'>
+				<div className='flex justify-center items-start self-stretch h-[790px] relative pt-40'>
 					<div className='flex flex-col justify-start items-center gap-2'>
 						<p className='text-[50px] font-bold text-center text-[#0f0e0e]'>
 							서비스 이용 후기
@@ -208,20 +216,20 @@ function LandingPage() {
 						}}
 					/>
 				</div>
-				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-[60px] px-[120px] py-40'>
-					<div className='self-stretch flex-grow-0 flex-shrink-0 h-[480px] relative overflow-hidden rounded-3xl bg-[#d9d9d9]'>
+				<div className='flex flex-col justify-start items-center self-stretch relative gap-[60px] px-[120px] py-40'>
+					<div className='w-[1200px] h-[480px] relative overflow-hidden rounded-3xl bg-[#d9d9d9]'>
 						<img
 							src={`${router.basePath}/images/promise_3.png`}
 							className='w-[1200.3px] h-[800px] absolute left-[-1px] top-[-162px] object-cover'
 						/>
 						<div className='w-[1200px] h-[480px] absolute left-[-1px] top-[-1px] opacity-[0.45] rounded-3xl bg-[#0f0e0e]' />
 						<div className='flex flex-col justify-start items-center absolute left-[380px] top-[110px] gap-[52px]'>
-							<p className='flex-grow-0 flex-shrink-0 text-[50px] font-bold text-center text-[#f8f8f8]'>
-								<span className='flex-grow-0 flex-shrink-0 text-[50px] font-bold text-center text-[#f8f8f8]'>
+							<p className='text-[50px] font-bold text-center text-[#f8f8f8]'>
+								<span className='text-[50px] font-bold text-center text-[#f8f8f8]'>
 									더욱 다양한 맞춤형
 								</span>
 								<br />
-								<span className='flex-grow-0 flex-shrink-0 text-[50px] font-bold text-center text-[#f8f8f8]'>
+								<span className='text-[50px] font-bold text-center text-[#f8f8f8]'>
 									서비스를 알아보세요
 								</span>
 							</p>
@@ -229,7 +237,7 @@ function LandingPage() {
 						</div>
 					</div>
 				</div>
-			</>
+			</div>
 		</Common>
 	);
 }

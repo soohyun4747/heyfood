@@ -70,9 +70,15 @@ function MenuDetailPage() {
 								stroke='#D9D9D9'
 							/>
 						</svg>
-						<p className='flex-grow w-[493px] h-[338px] text-lg text-left text-[#0f0e0e]'>
+						<p className='flex-grow w-full h-[264px] text-lg text-left text-[#0f0e0e]'>
 							{menu?.description}
 						</p>
+						<div className='flex justify-center items-center self-stretch relative gap-2 px-3.5 py-1.5 bg-[#fffbea]'>
+							<p className='text-sm text-left text-[#5c5c5c]'>
+								🎁 맞춤 스티커 옵션 제공 | 결제 시 원하는 문구를
+								입력해 주세요.
+							</p>
+						</div>
 						<svg
 							width={540}
 							height={1}

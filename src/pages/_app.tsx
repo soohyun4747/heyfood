@@ -1,51 +1,38 @@
-import { auth } from '@/configs/firebaseConfig';
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
 import '@/styles/global.css';
 import { fetchDataWithDocId } from '@/utils/firebase';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import {
+	getAuth,
+	onAuthStateChanged,
+	signInWithEmailAndPassword,
+} from 'firebase/auth';
 import { AppProps } from 'next/app';
 import { useEffect } from 'react';
 
 function App({ Component, pageProps }: AppProps) {
-	const { user, setUser } = useUserStore();
+	const { setUser } = useUserStore();
 
 	useEffect(() => {
-		if (!user) {
-			const email = localStorage.getItem('email');
-			const password = localStorage.getItem('password');
-
-			if (email && password) {
-				checkAuthority(email, password);
-			}
-		}
-	}, [user]);
-
-	const checkAuthority = async (email: string, password: string) => {
 		const auth = getAuth();
-		try {
-			// Firebase 인증: 이메일과 비밀번호로 로그인 시도
-			const userCredential = await signInWithEmailAndPassword(
-				auth,
-				email,
-				password
-			);
-			const user = userCredential.user;
-
-			// Firestore DB에서 uid 기반의 사용자 데이터 가져오기
-			const userData = (await fetchDataWithDocId('users', user.uid)) as
-				| IUser
-				| undefined;
-
-			if (userData) {
-				setUser({ ...userData, userType: UserType.user });
+		// Auth 상태가 바뀔 때(토큰 복원 포함)마다 호출됩니다.
+		const unsubscribe = onAuthStateChanged(auth, async (fbUser) => {
+			if (fbUser) {
+				// Firestore에서 추가 사용자 정보 가져오기
+				const userData = (await fetchDataWithDocId(
+					'users',
+					fbUser.uid
+				)) as IUser | undefined;
+				if (userData) {
+					setUser({ ...userData, userType: UserType.user });
+				}
 			} else {
-				localStorage.clear();
+				// 로그아웃 상태가 됐다면 스토어도 초기화
+				setUser(undefined);
 			}
-		} catch (error: any) {
-			console.log(error.message);
-			localStorage.clear();
-		}
-	};
+		});
+
+		return () => unsubscribe();
+	}, [setUser]);
 
 	return <Component {...pageProps} />;
 }

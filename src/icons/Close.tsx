@@ -1,6 +1,6 @@
 import { IIconProps } from '@/components/ButtonIcon';
 
-export function Close({ size }: { size?: number }) {
+export function Close({ size, color }: { size?: number; color?: string }) {
 	return (
 		<svg
 			width={size ?? 32}
@@ -11,9 +11,9 @@ export function Close({ size }: { size?: number }) {
 			preserveAspectRatio='none'>
 			<path
 				d='M24 8L8 24M24 24L8 8'
-				stroke='black'
-				stroke-width={2}
-				stroke-linecap='round'
+				stroke={color ?? 'black'}
+				strokeWidth={2}
+				strokeLinecap='round'
 			/>
 		</svg>
 	);

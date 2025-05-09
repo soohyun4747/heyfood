@@ -3,31 +3,28 @@ import { IItem } from './itemsStore';
 
 interface IItemsBundle {
 	id: string;
-	addressFull: string;
+	address: string;
+	addressDetail: string;
 	dateTime: Date;
 	items: IItem[];
 }
 
 interface ICartStore {
 	cart: IItemsBundle[];
+	editBundleIdx?: number;
 	onAddCart: (bundle: IItemsBundle) => void;
 	onRemoveCart: (id: string) => void;
 	setCart: (bundles: IItemsBundle[]) => void;
+	setEditBundleIdx: (idx: number) => void;
 }
 
 export const useCartStore = create<ICartStore>((set) => {
 	return {
 		cart: [],
+		editBundleIdx: undefined,
 		onAddCart: (bundle) =>
 			set((state) => {
-				const oBundleIdx = state.cart.findIndex(
-					(b) => b.id === bundle.id
-				);
-				if (oBundleIdx > -1) {
-					state.cart[oBundleIdx].items.push(...bundle.items);
-				} else {
-					state.cart.push(bundle);
-				}
+				state.cart.push(bundle);
 				return { ...state, cart: [...state.cart] };
 			}),
 		onRemoveCart: (id) =>
@@ -41,6 +38,11 @@ export const useCartStore = create<ICartStore>((set) => {
 		setCart: (bundles) =>
 			set((state) => {
 				state.cart = bundles;
+				return { ...state };
+			}),
+		setEditBundleIdx: (idx) =>
+			set((state) => {
+				state.editBundleIdx = idx;
 				return { ...state };
 			}),
 	};
