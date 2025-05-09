@@ -63,6 +63,7 @@ function LandingPage() {
 					<ButtonMono
 						icon={ArrowRight}
 						value={'브랜드 스토리'}
+						onClick={() => router.push('/heydelibox')}
 					/>
 				</div>
 				<div className='flex flex-col justify-start items-center self-stretch  gap-[40px] px-[120px] py-40 bg-[#ffc966]'>
@@ -233,7 +234,7 @@ function LandingPage() {
 									서비스를 알아보세요
 								</span>
 							</p>
-							<ButtonMono value={'문의하기'} />
+							<ButtonMono value={'문의하기'} onClick={() => router.push('/inquiry')}/>
 						</div>
 					</div>
 				</div>
