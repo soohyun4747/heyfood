@@ -31,6 +31,7 @@ function ProfilePage() {
 					<div className='flex flex-col justify-start items-start w-[276px] gap-6'>
 						{['나의 기본정보', '주문내역'].map((value, idx) => (
 							<div
+								key={idx}
 								onClick={() => setSelectIdx(idx)}
 								style={{
 									color:

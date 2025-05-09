@@ -1,4 +1,3 @@
-import { IMenu } from './LandingMenusTab';
 
 interface IMenuCardProps {
 	onClick: () => void;

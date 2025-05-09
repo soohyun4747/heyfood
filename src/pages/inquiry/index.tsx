@@ -108,7 +108,7 @@ function InquiryPage() {
 			);
 			alert('문의 내용이 전송되었습니다.');
 			// 전송 성공 후 상태 초기화 또는 다른 처리를 할 수 있습니다.
-		} catch (error: any) {
+		} catch (error) {
 			console.error('문의 전송 실패:', error);
 			alert('문의 전송에 실패했습니다. 잠시 후 다시 시도해주세요.');
 		}
@@ -214,7 +214,7 @@ function InquiryPage() {
 									className='ui dropdown focus:outline-0 hover:cursor-pointer'
 									onChange={(e) => setPhone1(e.target.value)}>
 									{initPhoneNumbers.map((value) => (
-										<option value={value}>{value}</option>
+										<option key={value} value={value}>{value}</option>
 									))}
 								</select>
 								<p className='flex-grow-0 text-[22px] text-left text-[#0f0e0e]'>
@@ -311,7 +311,7 @@ function InquiryPage() {
 									className='ui dropdown focus:outline-0 hover:cursor-pointer'
 									onChange={onSelectEmailDomain}>
 									{emailDomains.map((value) => (
-										<option value={value}>{value}</option>
+										<option key={value} value={value}>{value}</option>
 									))}
 								</select>
 							</div>

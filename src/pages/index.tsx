@@ -53,7 +53,7 @@ function LandingPage() {
 							</span>
 							<br />
 							<span className=' text-lg font-bold text-center text-[#0f0e0e]'>
-								'나만을 위한 도시락'
+								&apos;나만을 위한 도시락&apos;
 							</span>
 							<span className=' text-lg text-center text-[#0f0e0e]'>
 								을 느끼도록 정성을 담았습니다.
@@ -142,7 +142,7 @@ function LandingPage() {
 							</span>
 							<br />
 							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								그 순간, '모두가 즐겁게 먹을 수 있는 도시락'에
+								그 순간, &apos;모두가 즐겁게 먹을 수 있는 도시락&apos;에
 								대한 꿈을 품게 되었습니다.
 							</span>
 							<br />
@@ -151,13 +151,13 @@ function LandingPage() {
 								이 꿈을 현실로 만들기 위해 PSI 푸드테크에서
 								3년간 현장 경험을 쌓았습니다. 그 시간 동안
 								도시락 제작의 모든 과정을 배우며,
-								'김밥도시락'이라는 아이디어를 떠올렸습니다.
+								&apos;김밥도시락&apos;이라는 아이디어를 떠올렸습니다.
 							</span>
 							<br />
 							<br />
 							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
 								우리의 목표는 단순한 한 끼가 아닙니다. 받는 순간
-								미소 짓게 되는 '선물 같은 도시락'을 만들고
+								미소 짓게 되는 &apos;선물 같은 도시락&apos;을 만들고
 								싶었습니다. 맞춤형 스티커로 특별한 메시지를
 								담고, 모두가 맛있게 즐길 수 있는 메뉴로
 								구성했습니다.

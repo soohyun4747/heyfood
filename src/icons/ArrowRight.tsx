@@ -1,4 +1,4 @@
-import { IIconProps } from '../ButtonIcon';
+import { IIconProps } from "@/components/ButtonIcon";
 
 export function ArrowRight(props: IIconProps) {
 	return (

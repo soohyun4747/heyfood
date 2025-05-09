@@ -13,7 +13,7 @@ import {
 	Timestamp,
 	where,
 } from 'firebase/firestore';
-import { use, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const eachFetchOrders = 5;
 
@@ -52,7 +52,7 @@ interface IDeliveryDateOrderItems {
 
 function OrderInfoPage() {
 	const [menus, setMenus] = useState<IMenu[]>([]);
-	const [startAfterDoc, setStartAfterDoc] =
+	const [startAfterDoc, ] =
 		useState<QueryDocumentSnapshot<DocumentData, DocumentData>>();
 	const [ordersWithItems, setOrdersWithItems] = useState<IOrdersWithItems[]>(
 		[]
@@ -133,8 +133,8 @@ function OrderInfoPage() {
 
 	return (
 		<div className='flex flex-col gap-[36px] w-[892px]'>
-			{ordersWithItems.length > 0 ? ordersWithItems.map((data) => (
-				<div className='flex flex-col justify-center items-start flex-grow'>
+			{ordersWithItems.length > 0 ? ordersWithItems.map((data, i) => (
+				<div key={i} className='flex flex-col justify-center items-start flex-grow'>
 					<div className='flex flex-col justify-start items-start self-stretch gap-6 p-6 bg-white border-t border-r border-b-0 border-l border-neutral-200'>
 						<div className='flex justify-start items-start self-stretch relative gap-3'>
 							<p className='flex-grow w-[441px] text-xl font-bold text-left text-[#0f0e0e]'>
@@ -153,8 +153,8 @@ function OrderInfoPage() {
 							</p>
 						</div>
 					</div>
-					{data.orderItemsWithDeliveryDate.map((itemsWithDate) => (
-						<div className='flex justify-start items-start self-stretch gap-6 p-6 bg-white border border-neutral-200'>
+					{data.orderItemsWithDeliveryDate.map((itemsWithDate, idx) => (
+						<div key={idx} className='flex justify-start items-start self-stretch gap-6 p-6 bg-white border border-neutral-200'>
 							<div className='flex flex-col justify-start items-start flex-grow relative gap-5'>
 								<p className='text-lg font-bold text-left text-[#0f0e0e]'>
 									<span className='font-normal'>
@@ -166,8 +166,8 @@ function OrderInfoPage() {
 									)}
 								</p>
 								<div className='flex flex-col justify-start items-start self-stretch gap-3'>
-									{itemsWithDate.items.map((item) => (
-										<div className='flex justify-start items-center self-stretch h-[30px] relative gap-1.5'>
+									{itemsWithDate.items.map((item, j) => (
+										<div key={j} className='flex justify-start items-center self-stretch h-[30px] relative gap-1.5'>
 											<p className='text-xl text-left text-[#0f0e0e]'>
 												{item.menuId}
 											</p>

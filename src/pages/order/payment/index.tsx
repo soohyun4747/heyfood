@@ -1,17 +1,13 @@
 import { Button } from '@/components/Button';
-import { ButtonCount } from '@/components/ButtonCount';
 import { ButtonNumText } from '@/components/ButtonNumText';
 import { GNBOrder } from '@/components/GNBOrder';
 import { TextField } from '@/components/TextField';
 import { Camera } from '@/icons/Camera';
-import { IOrder, IOrderItem } from '@/pages/profile/orderInfo';
 import { useCartStore } from '@/stores/cartStore';
 import { useUserStore } from '@/stores/userStore';
 import { fetchDistanceInKm } from '@/utils/distance';
-import { addData } from '@/utils/firebase';
-import { Timestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 
@@ -19,7 +15,7 @@ function PaymentPage() {
 	const [comment, setComment] = useState('');
 	const [companyName, setCompanyName] = useState('');
 	const [stickerPhrase, setStickerPhrase] = useState('');
-	const [file, setFile] = useState<File | null>(null);
+	const [, setFile] = useState<File | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [deliveryPrices, setDeliveryPrices] = useState<number[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
@@ -37,28 +33,28 @@ function PaymentPage() {
 		}
 	}, [user]);
 
-	const onClickPay = () => {
-		if (user) {
-			const orderData: IOrder = {
-				id: '',
-				ordererId: user.id,
-				ordererType: user.userType,
-				address: user.address ?? '',
-				addressDetail: user.addressDetail ?? '',
-				createdAt: Timestamp.now(),
-			};
-			addData('orders', orderData);
+	// const onClickPay = () => {
+	// 	if (user) {
+	// 		const orderData: IOrder = {
+	// 			id: '',
+	// 			ordererId: user.id,
+	// 			ordererType: user.userType,
+	// 			address: user.address ?? '',
+	// 			addressDetail: user.addressDetail ?? '',
+	// 			createdAt: Timestamp.now(),
+	// 		};
+	// 		addData('orders', orderData);
 
-			const orderItems: IOrderItem[] = [];
-			// cart.forEach((data) => {
-			// 	orderItems.push({
-			// 		id: '',
-			// 		orderId
-			// 	})
-			// });
-			// addMultipleDatas('orderItems', orderItems);
-		}
-	};
+	// 		const orderItems: IOrderItem[] = [];
+	// 		// cart.forEach((data) => {
+	// 		// 	orderItems.push({
+	// 		// 		id: '',
+	// 		// 		orderId
+	// 		// 	})
+	// 		// });
+	// 		// addMultipleDatas('orderItems', orderItems);
+	// 	}
+	// };
 
 	useEffect(() => {
 		setLoading(true);
@@ -227,7 +223,7 @@ function PaymentPage() {
 					<div className='flex flex-col justify-start items-start self-stretch gap-5'>
 						<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0'>
 							{cart.map((bundle, i) => (
-								<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0'>
+								<div key={i} className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0'>
 									<div className='flex justify-start items-center self-stretch relative gap-3 px-6 py-4 bg-white border-t-0 border-r-0 border-b border-l-0 border-neutral-200'>
 										<div className='flex justify-center items-center relative gap-2 pt-0.5'>
 											<p className='text-base font-bold text-left text-[#0f0e0e]'>
@@ -264,8 +260,8 @@ function PaymentPage() {
 														</p>
 													</div>
 												</div>
-												{bundle.items.map((item) => (
-													<div className='flex justify-between items-start self-stretch flex-grow-0 flex-shrink-0'>
+												{bundle.items.map((item, itemIdx) => (
+													<div key={itemIdx} className='flex justify-between items-start self-stretch flex-grow-0 flex-shrink-0'>
 														<div className='flex justify-start items-center relative gap-4'>
 															<div className='flex items-center gap-[12px]'>
 																<p className='text-[22px] text-left text-[#0f0e0e]'>

@@ -13,8 +13,8 @@ import { useEffect } from 'react';
 
 function CartPage() {
 	const router = useRouter();
-	const { user, setUser } = useUserStore();
-	const { cart, setCart, setEditBundleIdx } = useCartStore();
+	const { user } = useUserStore();
+	const { cart, setCart } = useCartStore();
 
 	useEffect(() => {
 		if (!user) {
@@ -88,7 +88,9 @@ function CartPage() {
 				<div className='flex flex-col justify-start items-start w-[1200px] gap-12'>
 					{cart.length > 0 ? (
 						cart.map((data, dataIdx) => (
-							<div className='flex flex-col justify-start items-center self-stretch gap-3'>
+							<div
+								key={data.id}
+								className='flex flex-col justify-start items-center self-stretch gap-3'>
 								<DeleteButton
 									onClick={() => onClickDeleteBundle(dataIdx)}
 								/>

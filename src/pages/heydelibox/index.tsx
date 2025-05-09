@@ -51,7 +51,7 @@ function HeyDeliBoxPage() {
 								</span>
 								<br />
 								<span className='text-xl font-bold text-center text-white'>
-									'나만을 위한 도시락'
+									&apos;나만을 위한 도시락&apos;
 								</span>
 								<span className='text-xl text-center text-white'>
 									을 느끼도록 정성을 담았습니다.

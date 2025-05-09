@@ -1,8 +1,8 @@
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
-import { UserLogin } from './UserLogin';
+import { UserLogin } from '../../components/pages/login/UserLogin';
 import { useEffect, useState } from 'react';
-import { GuestLogin } from './GuestLogin';
+import { GuestLogin } from '../../components/pages/login/GuestLogin';
 import { useUserStore } from '@/stores/userStore';
 import { useRouter } from 'next/router';
 

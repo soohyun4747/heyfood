@@ -1,5 +1,4 @@
 import { Minus } from '@/icons/Minus';
-import { Plus } from '@/icons/Plus';
 
 export function ButtonMinusRound({
 	disabled,

@@ -9,9 +9,9 @@ import { useItemsStore } from '@/stores/itemsStore';
 import { useUserStore } from '@/stores/userStore';
 import { fetchCollectionData, fetchImageUrls } from '@/utils/firebase';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import { AddressDrawer } from './AddressDrawer';
+import { AddressDrawer } from '../../components/pages/order/AddressDrawer';
 import { useRouter } from 'next/router';
-import { DateTimeDrawer } from './DateTimeDrawer';
+import { DateTimeDrawer } from '../../components/pages/order/DateTimeDrawer';
 import { useCartStore } from '@/stores/cartStore';
 import { ModalCenter } from '@/components/ModalCenter';
 
@@ -29,10 +29,10 @@ function OrderPage() {
 	const [sameAddressDateNoticeModal, setSameAddressDateNoticeModal] =
 		useState(false);
 
-	const { user, setUser } = useUserStore();
-	const { items, setItem, setItems, onPlusItem, onMinusItem, onResetItems } =
+	const { user,  } = useUserStore();
+	const { items, setItem, onPlusItem, onMinusItem, onResetItems } =
 		useItemsStore();
-	const { cart, editBundleIdx, onAddCart, onRemoveCart } = useCartStore();
+	const { cart, onAddCart, onRemoveCart } = useCartStore();
 
 	const router = useRouter();
 

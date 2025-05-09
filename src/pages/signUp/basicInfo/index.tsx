@@ -159,7 +159,7 @@ function SignUpBasicInfoPage() {
 										className='ui dropdown focus:outline-0 hover:cursor-pointer min-w-0'
 										onChange={onSelectEmailDomain}>
 										{emailDomains.map((value) => (
-											<option value={value}>
+											<option key={value} value={value}>
 												{value}
 											</option>
 										))}

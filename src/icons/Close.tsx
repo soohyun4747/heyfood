@@ -1,4 +1,3 @@
-import { IIconProps } from '@/components/ButtonIcon';
 
 export function Close({ size, color }: { size?: number; color?: string }) {
 	return (

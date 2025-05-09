@@ -1,4 +1,3 @@
-import { Plus } from '@/icons/Plus';
 import { IButtonBasicProps } from './Button';
 import { Minus } from '@/icons/Minus';
 

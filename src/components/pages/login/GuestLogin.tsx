@@ -6,6 +6,7 @@ import { addData, fetchDataWithDocId } from '@/utils/firebase';
 import { formatPhoneNumberE164 } from '@/utils/string';
 import { convertDateStrToTimestamp } from '@/utils/time';
 import {
+	ConfirmationResult,
 	getAuth,
 	RecaptchaVerifier,
 	signInWithPhoneNumber,
@@ -20,7 +21,7 @@ export function GuestLogin() {
 	const [name, setName] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [verifyCode, setVerifyCode] = useState('');
-	const [confirmationResult, setConfirmationResult] = useState<any>(null);
+	const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult>();
 	const [isVerified, setIsVerified] = useState(false);
 	const [credentialUser, setCredentialUser] = useState<User>();
 	const [agreementCheck, setAgreementCheck] = useState(false);

@@ -10,8 +10,6 @@ export function SignUpAgreementPage() {
 	const [agree2, setAgree2] = useState(false);
 	const [agree3, setAgree3] = useState(false);
 	const [agree1ModalOpen, setAgree1ModalOpen] = useState(false);
-	const [agree2ModalOpen, setAgree2ModalOpen] = useState(false);
-	const [agree3ModalOpen, setAgree3ModalOpen] = useState(false);
 
 	useEffect(() => {
 		if (agree1 && agree2 && agree3) {
@@ -156,7 +154,7 @@ export function SignUpAgreementPage() {
 				<ButtonRect
 					value={'다음'}
 					disabled={agreeAll ? false : true}
-                    style={{width: 211, alignSelf: 'center'}}
+					style={{ width: 211, alignSelf: 'center' }}
 				/>
 			</div>
 			{agree1ModalOpen && (
@@ -175,10 +173,10 @@ export function SignUpAgreementPage() {
 							<br />
 							<span className='flex-grow w-[604px] text-xs text-left text-black'>
 								본 이용약관은 주식회사 헤이델리박스(이하
-								“회사”)에서 제공하는 모든 서비스(이하
-								"서비스")를 이용함에 있어 회사와 이용자의
-								권리·의무 및 책임사항을 규정함을 목적으로
-								합니다.
+								&quot;회사&quot;)에서 제공하는 모든 서비스(이하
+								&quot;서비스&quot;)를 이용함에 있어 회사와
+								이용자의 권리·의무 및 책임사항을 규정함을
+								목적으로 합니다.
 							</span>
 							<br />
 							<span className='flex-grow w-[604px] text-xs text-left text-black'>
@@ -191,8 +189,8 @@ export function SignUpAgreementPage() {
 							</span>
 							<br />
 							<span className='flex-grow w-[604px] text-xs text-left text-black'>
-								"사이버몰"이란 회사가 재화 또는 용역(이하 "재화
-								등")을 이용자에게 제공하기 위하여 컴퓨터 등
+							&quot;사이버몰&quot;이란 회사가 재화 또는 용역(이하 &quot;재화
+								등&quot;)을 이용자에게 제공하기 위하여 컴퓨터 등
 								정보통신 설비를 이용하여 재화 등을 거래할 수
 								있도록 설정한 가상의 영업장을 말하며, 아울러
 								사이버 몰을 운영하는 사업자의 의미로도
@@ -200,20 +198,20 @@ export function SignUpAgreementPage() {
 							</span>
 							<br />
 							<span className='flex-grow w-[604px] text-xs text-left text-black'>
-								"이용자"란 사이버몰에 접속하여 이 약관에 따라
+							&quot;이용자&quot;란 사이버몰에 접속하여 이 약관에 따라
 								회사가 제공하는 서비스를 받는 회원 및 비회원을
 								말합니다.
 							</span>
 							<br />
 							<span className='flex-grow w-[604px] text-xs text-left text-black'>
-								"회원"이라 함은 회사에 개인정보를 제공하여 회원
+							&quot;회원&quot;이라 함은 회사에 개인정보를 제공하여 회원
 								등록을 한 자로서, 회사의 정보를 지속적으로 제공
 								받으며, 회사가 제공하는 서비스를 계속적으로
 								이용할 수 있는 자를 말합니다.
 							</span>
 							<br />
 							<span className='flex-grow w-[604px] text-xs text-left text-black'>
-								"비회원"이라 함은 회원에 가입하지 않고 회사가
+								&quot;비회원&quot;이라 함은 회원에 가입하지 않고 회사가
 								제공하는 서비스를 이용하는 자를 말합니다.
 							</span>
 							<br />
@@ -367,7 +365,7 @@ export function SignUpAgreementPage() {
 							<span className='flex-grow w-[604px] text-xs text-left text-black'>
 								회사는 회원가입 신청에 대한 승낙을 통해 회원가입
 								절차를 완료하고 회사의 서비스 이용 계정(이하
-								"계정")을 부여합니다.
+								&quot;계정&quot;)을 부여합니다.
 							</span>
 							<br />
 							<span className='flex-grow w-[604px] text-xs text-left text-black'>

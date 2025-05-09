@@ -9,13 +9,11 @@ import {
 	getDoc,
 	getDocs,
 	limit,
-	orderBy,
 	query,
 	QueryConstraint,
 	QueryDocumentSnapshot,
 	setDoc,
 	startAfter,
-	where,
 	writeBatch,
 } from 'firebase/firestore';
 import { getDownloadURL, ref } from 'firebase/storage';
@@ -154,6 +152,7 @@ export const addData = async (collectionName: string, data: any) => {
 		const { id, ...dataWithoutId } = data;
 
 		await setDoc(docRef, dataWithoutId);
+		console.log('Data added successfully', id);
 		return true;
 	} catch (error) {
 		console.error('Error adding document:', error);

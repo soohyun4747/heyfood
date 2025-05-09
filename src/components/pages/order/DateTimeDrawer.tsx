@@ -172,7 +172,9 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 						<div className='w-full flex flex-col gap-[12px]'>
 							<div className='flex justify-between'>
 								{dayLetters.map((day) => (
-									<div className='flex w-[48px] h-[48px] items-center justify-center text-[16px] font-semibold leading-[normal] tracking-[0.16px] text-ava-orange'>
+									<div
+										key={day}
+										className='flex w-[48px] h-[48px] items-center justify-center text-[16px] font-semibold leading-[normal] tracking-[0.16px] text-ava-orange'>
 										{day}
 									</div>
 								))}

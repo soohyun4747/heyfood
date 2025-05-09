@@ -1,5 +1,5 @@
 import { Accordion } from '@/components/Accordion';
-import { ICategory, IMenu } from '@/components/LandingMenusTab';
+import { ICategory } from '@/components/LandingMenusTab';
 import { TabMenu } from '@/components/TabMenu';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
@@ -93,6 +93,7 @@ export function FaqPage() {
 						</svg>
 						{filteredCategoryFaqs.map((faq) => (
 							<Accordion
+								key={faq.id}
 								title={faq.title}
 								content={faq.content}
 							/>

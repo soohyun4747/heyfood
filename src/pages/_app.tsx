@@ -4,7 +4,6 @@ import { fetchDataWithDocId } from '@/utils/firebase';
 import {
 	getAuth,
 	onAuthStateChanged,
-	signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { AppProps } from 'next/app';
 import { useEffect } from 'react';

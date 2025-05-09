@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { ICheckProps } from './CheckRound';
 
 export function CheckRect(props: ICheckProps) {
