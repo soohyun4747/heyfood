@@ -13,8 +13,8 @@ export function GNB({ type }: { type: IUserType }) {
 				<Image
 					src={'/images/logo.png'}
 					alt={'logo'}
-					width={206.32}
-					height={30}
+					width={165}
+					height={24}
 					onClick={() => router.push('/')}
 					className='cursor-pointer'
 				/>

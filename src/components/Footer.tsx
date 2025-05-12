@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 export function Footer() {
 	return (
 		<div className='flex flex-col justify-center items-center self-stretch  gap-60 pt-10 pb-[100px] bg-[#ffc966]'>
@@ -14,7 +16,15 @@ export function Footer() {
 					<div className='self-stretch  h-0.5 opacity-[0.24] bg-[#0f0e0e]' />
 					<div className='flex justify-start items-start self-stretch  gap-[50px]'>
 						<div className='flex justify-start items-start flex-grow relative gap-[50px]'>
-							<div className=' w-[155px] h-[98px] relative overflow-hidden bg-[#d6d6d6]' />
+							<div className='w-[70px] h-[80px] relative overflow-hidden'>
+								<Image
+									src={'/images/logo2.png'}
+									alt={'logo'}
+									// width={200}
+									// height={180}
+									fill
+								/>
+							</div>
 							<div className='flex flex-col justify-center items-start  gap-6'>
 								<div className='flex flex-col justify-start items-start  gap-2.5'>
 									<div className='flex justify-start items-start  gap-6'>

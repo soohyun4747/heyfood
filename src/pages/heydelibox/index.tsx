@@ -175,7 +175,7 @@ function HeyDeliBoxPage() {
 						</div>
 						<div className='flex justify-start items-start w-[1200px] relative gap-[60px]'>
 							<img
-								className='w-[570px] h-[420px] rounded-2xl'
+								className='w-[570px] h-[420px] rounded-2xl object-cover'
 								src={`${router.basePath}/images/promise_3.png`}
 							/>
 							<div className='flex flex-col justify-start items-start flex-grow relative gap-3 py-12'>
