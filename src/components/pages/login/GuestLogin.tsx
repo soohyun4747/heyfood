@@ -21,7 +21,8 @@ export function GuestLogin() {
 	const [name, setName] = useState('');
 	const [phoneNumber, setPhoneNumber] = useState('');
 	const [verifyCode, setVerifyCode] = useState('');
-	const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult>();
+	const [confirmationResult, setConfirmationResult] =
+		useState<ConfirmationResult>();
 	const [isVerified, setIsVerified] = useState(false);
 	const [credentialUser, setCredentialUser] = useState<User>();
 	const [agreementCheck, setAgreementCheck] = useState(false);
@@ -123,8 +124,10 @@ export function GuestLogin() {
 					헤이델리박스 회원이 되시면 다양한 혜택을 누리실 수 있습니다.
 				</p>
 				<div className='flex justify-end items-center self-stretch  gap-2'>
-					<div className='hover:cursor-pointer flex justify-center items-center  gap-2 border-t-0 border-r-0 border-b border-l-0 border-[#a0a0a0]'>
-						<p className=' text-[13px] text-center text-[#a0a0a0]'>
+					<div
+						onClick={() => router.push('/signUp')}
+						className='hover:cursor-pointer flex justify-center items-center  gap-2 border-t-0 border-r-0 border-b border-l-0 border-[#a0a0a0]'>
+						<p className='text-[13px] text-center text-[#a0a0a0]'>
 							회원가입 하기
 						</p>
 					</div>

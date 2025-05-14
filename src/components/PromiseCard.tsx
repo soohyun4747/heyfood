@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import React from 'react';
 
 export interface PromiseCardProps {
@@ -13,9 +14,12 @@ export const PromiseCard: React.FC<PromiseCardProps> = ({
 }) => {
 	return (
 		<div className='flex flex-col justify-start items-start relative gap-8'>
-			<img
-				className='w-[276px] h-[210px] rounded-2xl'
+			<Image
+				className='w-[276px] h-[210px] rounded-2xl object-cover'
 				src={src}
+				width={276}
+				height={210}
+				alt={title}
 			/>
 			{/* 텍스트 영역 */}
 			<div className='flex flex-col justify-start items-start w-[276px] relative gap-3'>

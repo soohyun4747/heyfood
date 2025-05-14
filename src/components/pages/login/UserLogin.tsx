@@ -32,7 +32,7 @@ export function UserLogin() {
 
 				if (userData) {
 					setUser({ ...userData, userType: UserType.user });
-                    
+
 					// 사용자 정보 저장 후 menu 페이지로 이동
 					router.push('/order');
 				} else {
@@ -90,7 +90,7 @@ export function UserLogin() {
 					onClick={handleLogin}
 				/>
 				<div className='flex justify-start items-center self-stretch  gap-3'>
-					<p className='flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
+					<p className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
 						아이디 찾기
 					</p>
 					<svg
@@ -109,7 +109,7 @@ export function UserLogin() {
 							stroke='#A0A0A0'
 						/>
 					</svg>
-					<p className='flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
+					<p className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
 						비밀번호 찾기
 					</p>
 					<svg
@@ -128,7 +128,9 @@ export function UserLogin() {
 							stroke='#A0A0A0'
 						/>
 					</svg>
-					<p className='flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
+					<p
+						onClick={() => router.push('/signUp')}
+						className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
 						회원가입
 					</p>
 				</div>

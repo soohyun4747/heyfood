@@ -2,6 +2,7 @@ import { ButtonAgreement } from '@/components/ButtonAgreement';
 import { ButtonRect } from '@/components/ButtonRect';
 import { CheckRound } from '@/components/CheckRound';
 import { Modal } from '@/components/Modal';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 export function SignUpAgreementPage() {
@@ -10,6 +11,8 @@ export function SignUpAgreementPage() {
 	const [agree2, setAgree2] = useState(false);
 	const [agree3, setAgree3] = useState(false);
 	const [agree1ModalOpen, setAgree1ModalOpen] = useState(false);
+
+	const router = useRouter();
 
 	useEffect(() => {
 		if (agree1 && agree2 && agree3) {
@@ -155,6 +158,7 @@ export function SignUpAgreementPage() {
 					value={'다음'}
 					disabled={agreeAll ? false : true}
 					style={{ width: 211, alignSelf: 'center' }}
+					onClick={() => router.push('/signUp/basicInfo')}
 				/>
 			</div>
 			{agree1ModalOpen && (

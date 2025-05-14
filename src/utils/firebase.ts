@@ -14,18 +14,11 @@ import {
 	QueryDocumentSnapshot,
 	setDoc,
 	startAfter,
+	updateDoc,
 	writeBatch,
 } from 'firebase/firestore';
-import { getDownloadURL, ref } from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Dispatch, SetStateAction } from 'react';
-
-export const addUser = async (userData: Omit<IUser, 'id'>) => {
-	try {
-		await addDoc(collection(db, 'users'), userData);
-	} catch (error) {
-		console.error('Error adding document: ', error);
-	}
-};
 
 export const fetchImageUrls = async (
 	paths: string[]
@@ -148,12 +141,21 @@ export const fetchDataWithDocId = async (
 
 export const addData = async (collectionName: string, data: any) => {
 	try {
-		const docRef = doc(db, collectionName, data.id); // "users" collection and custom document ID
 		const { id, ...dataWithoutId } = data;
+		if (id) {
+			const docRef = doc(db, collectionName, id); // "users" collection and custom document ID
 
-		await setDoc(docRef, dataWithoutId);
-		console.log('Data added successfully', id);
-		return true;
+			await setDoc(docRef, dataWithoutId);
+			console.log('Data added successfully', id);
+			return data;
+		} else {
+			const docRef = await addDoc(
+				collection(db, collectionName),
+				dataWithoutId
+			);
+			console.log('Data added successfully', docRef.id);
+			return { id: docRef.id, ...dataWithoutId };
+		}
 	} catch (error) {
 		console.error('Error adding document:', error);
 		return false;
@@ -161,25 +163,33 @@ export const addData = async (collectionName: string, data: any) => {
 };
 
 export async function addMultipleDatas(collectionName: string, datas: any[]) {
-	// 1. 배치 객체 생성
-	const batch = writeBatch(db);
+	try {
+		// 1. 배치 객체 생성
+		const batch = writeBatch(db);
 
-	// 2. 컬렉션 레퍼런스
-	const colRef = collection(db, collectionName);
+		// 2. 컬렉션 레퍼런스
+		const colRef = collection(db, collectionName);
 
-	// 3. items 배열 순회하며 batch에 추가
-	datas.forEach((item) => {
-		// 자동 ID 문서 레퍼런스
-		const docRef = doc(colRef);
+		// 3. items 배열 순회하며 batch에 추가
+		datas.forEach((item) => {
+			// 자동 ID 문서 레퍼런스
+			const docRef = doc(colRef);
 
-		// set 또는 create
-		batch.set(docRef, {
-			...item,
+			// set 또는 create
+			batch.set(docRef, {
+				...item,
+			});
 		});
-	});
 
-	// 4. 커밋
-	await batch.commit();
+		// 4. 커밋
+		await batch.commit();
+		console.log('Batch write successful.');
+		return true;
+	} catch (error) {
+		console.error('Error writing batch:', error);
+		throw error; // 필요하다면 호출자에게 에러를 다시 전달
+		return false;
+	}
 }
 
 export async function checkUser(email: string) {
@@ -205,3 +215,51 @@ export const logout = async () => {
 		console.error('로그아웃 실패:', error);
 	}
 };
+
+export const uploadFileData = async (file: File, path: string) => {
+	const fileRef = ref(storage, path); // Firebase Storage의 "uploads" 폴더에 파일 저장
+
+	try {
+		// Firebase Storage에 파일 업로드
+		await uploadBytes(fileRef, file);
+	} catch (error) {
+		console.error(error);
+	}
+};
+
+export async function updateData(
+	collectionName: string,
+	docId: string,
+	updatedFields: Partial<any>
+) {
+	try {
+		const docRef = doc(db, collectionName, docId);
+		await updateDoc(docRef, updatedFields);
+		console.log('Document updated successfully');
+		return true
+	} catch (error) {
+		console.error('Error updating document:', error);
+		throw error;
+		return false;
+	}
+}
+
+export async function updateMultipleDatas(
+	collectionName: string,
+	updates: { id: string; data: Partial<any> }[]
+) {
+	const batch = writeBatch(db);
+	try {
+		updates.forEach(({ id, data }) => {
+			const docRef = doc(db, collectionName, id);
+			batch.update(docRef, data);
+		});
+
+		await batch.commit();
+		console.log('Batch update successful.');
+		return true
+	} catch (error) {
+		console.error('Batch update failed:', error);
+		throw error;
+	}
+}

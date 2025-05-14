@@ -1,7 +1,7 @@
 import { Drawer } from '@/components/Drawer';
 import { ChevronLeftSmall } from '@/icons/ChevronLeftSmall';
 import { ChevronRightSmall } from '@/icons/ChevronRightSmall';
-import { dayLetters, getDatesInMonth, timeSlots } from '@/utils/time';
+import { dayLetters, getClosestTimeSlot, getDatesInMonth, timeSlots } from '@/utils/time';
 import { useEffect, useState } from 'react';
 
 interface IDateTimeDrawerProps {
@@ -35,21 +35,25 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 	const [selectedTime, setSelectedTime] = useState<string>(timeSlots[0]);
 	const [infoHover, setInfoHover] = useState(false);
 
+	console.log(props.date);
+	
+
 	useEffect(() => {
 		if (props.date) {
-			getSetDate(props.date);
+			getSetDateTime(props.date);
 		} else {
-			getSetDate(minDateTime);
+			getSetDateTime(minDateTime);
 		}
 	}, [props.date]);
 
-	const getSetDate = (date: Date) => {
+	const getSetDateTime = (date: Date) => {
 		const month = date.getMonth();
 		const year = date.getFullYear();
 		setDateTime(date);
 		setMonth(month);
 		setYear(year);
 		setDatesArray(getDatesInMonth(year, month));
+		setSelectedTime(getClosestTimeSlot(date));
 	};
 
 	const onClickDate = (clickedDate: Date) => {
@@ -185,9 +189,11 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 									key={i}>
 									{dates.map((d, j) => {
 										if (
-											minDateTime.getMonth() ===
+											(minDateTime.getMonth() ===
 												d.getMonth() &&
-											d.getDate() < minDateTime.getDate()
+												d.getDate() <
+													minDateTime.getDate()) ||
+											j % 7 === 0
 										) {
 											return (
 												<span
@@ -268,9 +274,9 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 									<path
 										d='M8 8.5L8 11.5M8 6.27637V6.25M2 8.5C2 5.18629 4.68629 2.5 8 2.5C11.3137 2.5 14 5.18629 14 8.5C14 11.8137 11.3137 14.5 8 14.5C4.68629 14.5 2 11.8137 2 8.5Z'
 										stroke='#909090'
-										stroke-width='1.33333'
-										stroke-linecap='round'
-										stroke-linejoin='round'
+										strokeWidth='1.33333'
+										strokeLinecap='round'
+										strokeLinejoin='round'
 									/>
 								</svg>
 							</div>

@@ -11,7 +11,7 @@ export function GNB({ type }: { type: IUserType }) {
 		<div className='flex justify-between items-center px-[120px] py-[30px]'>
 			<div className='flex items-center gap-[200px]'>
 				<Image
-					src={'/images/logo.png'}
+					src={'/images/logo1.svg'}
 					alt={'logo'}
 					width={165}
 					height={24}

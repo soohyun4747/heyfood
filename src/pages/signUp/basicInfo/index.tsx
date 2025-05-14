@@ -1,11 +1,15 @@
 import { ButtonRect } from '@/components/ButtonRect';
+import { auth } from '@/configs/firebaseConfig';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
 import { emailDomains } from '@/pages/inquiry';
-import { checkUser } from '@/utils/firebase';
+import { IUser, UserType, useUserStore } from '@/stores/userStore';
+import { addData, checkUser } from '@/utils/firebase';
 import { regex } from '@/utils/string';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { Timestamp } from 'firebase/firestore';
+import { useRouter } from 'next/router';
 import { ChangeEvent, useState } from 'react';
-
 
 function SignUpBasicInfoPage() {
 	const [emailId, setEmailId] = useState<string>();
@@ -16,6 +20,10 @@ function SignUpBasicInfoPage() {
 	const [passwordError, setPasswordError] = useState(false);
 	const [passwordConfirm, setPasswordConfirm] = useState('');
 	const [passwordConfirmError, setPasswordConfirmError] = useState(false);
+
+	const { setUser } = useUserStore();
+
+	const router = useRouter();
 
 	const onSelectEmailDomain = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		if (e.target.value !== '직접 입력') {
@@ -77,6 +85,36 @@ function SignUpBasicInfoPage() {
 		return true;
 	};
 
+	const onSignUp = async () => {
+		const userCredential = await createUserWithEmailAndPassword(
+			auth,
+			`${emailId}@${emailDomain}`,
+			password
+		);
+		const newUser = userCredential.user;
+
+		const addedData = (await addData('users', {
+			id: newUser.uid,
+			//name: user?.name,
+			name: '정수현',
+			email: newUser.email,
+			//phone: user?.phone,
+			phone: '01012345678',
+			createdAt: Timestamp.now(),
+		})) as IUser | false;
+
+		if (addedData) {
+			setUser({
+				...addedData,
+				userType: UserType.user,
+			});
+
+			router.push('/signUp/complete');
+		} else {
+			alert('회원가입에 실패하였습니다.')
+		}
+	};
+
 	return (
 		<Common meta={<Meta />}>
 			<div className='flex flex-col justify-start items-center self-stretch  gap-[60px] px-[120px] pt-[100px] pb-40 min-h-full'>
@@ -85,7 +123,7 @@ function SignUpBasicInfoPage() {
 						기본정보 입력
 					</p>
 				</div>
-				<div className='flex flex-col justify-start items-center self-stretch  gap-[60px] p-20 rounded-3xl bg-white'>
+				<div className='flex flex-col justify-start items-center gap-[60px] p-20 rounded-3xl bg-white'>
 					<div className='flex flex-col justify-start items-start self-stretch  relative gap-6'>
 						<div className='flex justify-start items-center  w-[1040px] h-8 relative gap-6'>
 							<div className='flex justify-start items-center  relative gap-12'>
@@ -159,7 +197,9 @@ function SignUpBasicInfoPage() {
 										className='ui dropdown focus:outline-0 hover:cursor-pointer min-w-0'
 										onChange={onSelectEmailDomain}>
 										{emailDomains.map((value) => (
-											<option key={value} value={value}>
+											<option
+												key={value}
+												value={value}>
 												{value}
 											</option>
 										))}
@@ -306,6 +346,7 @@ function SignUpBasicInfoPage() {
 						style={{ width: 211, alignSelf: 'center' }}
 						value='회원가입 완료'
 						disabled={isButtonDisabled()}
+						onClick={onSignUp}
 					/>
 				</div>
 			</div>

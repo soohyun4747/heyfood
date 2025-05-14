@@ -75,9 +75,7 @@ export const convertDateStrToTimestamp = (dateStr: string) => {
 };
 
 export function formatTimestampWithMinutes(timestamp: Timestamp) {
-	// Firestore Timestamp → Date 객체로 변환 후 KST(+9h) 보정
 	const date = timestamp.toDate();
-	date.setHours(date.getHours() + 9);
 
 	// 월·일 두 자리 포맷팅
 	const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -124,3 +122,40 @@ export function formatDateKR(date: Date): string {
 
 	return `${month}월 ${day}일 (${weekdayKR}), ${period} ${hours}시 ${minuteStr}분`;
 }
+
+export function getClosestTimeSlot(date: Date): string {
+	// 1. date를 기준으로 분 단위로 변환
+	const targetMinutes = date.getHours() * 60 + date.getMinutes();
+
+	// 2. timeSlots도 분 단위로 변환하여 거리 비교
+	let closestSlot = timeSlots[0];
+	let minDiff = Infinity;
+
+	timeSlots.forEach((slot) => {
+		const [hour, minute] = slot.split(':').map(Number);
+		const slotMinutes = hour * 60 + minute;
+		const diff = Math.abs(slotMinutes - targetMinutes);
+
+		if (diff < minDiff) {
+			minDiff = diff;
+			closestSlot = slot;
+		}
+	});
+
+	return closestSlot;
+}
+
+/**
+ * 주어진 날짜가 현재로부터 2일 이상 남았는지 여부를 반환
+ * @param targetDate - 비교할 날짜 (Date 객체)
+ * @returns boolean
+ */
+export function isMoreThanTwoDaysLeft(targetDate: Date): boolean {
+	const now = new Date();
+
+	const diffInMs = targetDate.getTime() - now.getTime();
+	const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
+  
+	return diffInMs > twoDaysInMs;
+  }
+  

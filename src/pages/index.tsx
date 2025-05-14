@@ -122,9 +122,12 @@ function LandingPage() {
 					</div>
 				</div>
 				<div className='flex justify-center items-start self-stretch  gap-[60px] px-[120px] py-40 bg-[#fffbea]'>
-					<img
+					<Image
 						className='self-stretch  w-[564px] h-[562px] rounded-3xl bg-[#d9d9d9]'
 						src={`${router.basePath}/images/ceo_intro.png`}
+						alt={'ceo_intro'}
+						width={564}
+						height={562}
 					/>
 					<div className='flex flex-col justify-start items-start relative gap-3'>
 						<p className=' text-[32px] font-bold text-left text-[#0f0e0e]'>
@@ -143,8 +146,8 @@ function LandingPage() {
 							</span>
 							<br />
 							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								그 순간, &apos;모두가 즐겁게 먹을 수 있는 도시락&apos;에
-								대한 꿈을 품게 되었습니다.
+								그 순간, &apos;모두가 즐겁게 먹을 수 있는
+								도시락&apos;에 대한 꿈을 품게 되었습니다.
 							</span>
 							<br />
 							<br />
@@ -152,15 +155,16 @@ function LandingPage() {
 								이 꿈을 현실로 만들기 위해 PSI 푸드테크에서
 								3년간 현장 경험을 쌓았습니다. 그 시간 동안
 								도시락 제작의 모든 과정을 배우며,
-								&apos;김밥도시락&apos;이라는 아이디어를 떠올렸습니다.
+								&apos;김밥도시락&apos;이라는 아이디어를
+								떠올렸습니다.
 							</span>
 							<br />
 							<br />
 							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
 								우리의 목표는 단순한 한 끼가 아닙니다. 받는 순간
-								미소 짓게 되는 &apos;선물 같은 도시락&apos;을 만들고
-								싶었습니다. 맞춤형 스티커로 특별한 메시지를
-								담고, 모두가 맛있게 즐길 수 있는 메뉴로
+								미소 짓게 되는 &apos;선물 같은 도시락&apos;을
+								만들고 싶었습니다. 맞춤형 스티커로 특별한
+								메시지를 담고, 모두가 맛있게 즐길 수 있는 메뉴로
 								구성했습니다.
 							</span>
 							<br />
@@ -234,7 +238,10 @@ function LandingPage() {
 									서비스를 알아보세요
 								</span>
 							</p>
-							<ButtonMono value={'문의하기'} onClick={() => router.push('/inquiry')}/>
+							<ButtonMono
+								value={'문의하기'}
+								onClick={() => router.push('/inquiry')}
+							/>
 						</div>
 					</div>
 				</div>
