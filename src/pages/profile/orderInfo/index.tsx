@@ -52,7 +52,7 @@ export interface IOrder {
 	stickerPhrase?: string;
 	companyName: string;
 	createdAt: Timestamp;
-	updatedAt?: Timestamp;
+	updatedAt: Timestamp | null;
 }
 
 export interface IOrderItem {
@@ -179,11 +179,13 @@ function OrderInfoPage() {
 
 	const onChangeDate = async (date: Date) => {
 		if (selectedItemsWithDate && user) {
+			const updatedAt = Timestamp.now();
+
 			const updatingItems = selectedItemsWithDate?.items.map((item) => ({
 				id: item.id,
 				data: {
 					deliveryDate: convertDateStrToTimestamp(date.toString()),
-					updatedAt: Timestamp.now(),
+					updatedAt: updatedAt,
 				},
 			}));
 
@@ -202,17 +204,38 @@ function OrderInfoPage() {
 	};
 
 	const onCancelOrder = async () => {
-		if (selectedOrderData) {
-			const succeed = await updateData(
+		if (selectedOrderData && user) {
+			const updatedAt = Timestamp.now();
+
+			let succeed = await updateData(
 				'orders',
 				selectedOrderData.orderData.id,
 				{
 					orderStatus: OrderStatus.orderCanceled,
-					updatedAt: Timestamp.now(),
+					updatedAt: updatedAt,
 				}
 			);
+
+			//order items update
+			const updatingItems: { id: string; data: any }[] = [];
+			selectedOrderData.orderItemsWithDeliveryDate.forEach(
+				(orderItems) => {
+					orderItems.items.forEach((item) => {
+						updatingItems.push({
+							id: item.id,
+							data: {
+								updatedAt: updatedAt,
+							},
+						});
+					});
+				}
+			);
+
+			succeed = await updateMultipleDatas('orderItems', updatingItems);
+
 			if (succeed) {
 				alert('주문이 취소되었습니다.');
+				getSetOrderData(user);
 			} else {
 				alert('주문 취소를 실패하였습니다.');
 			}

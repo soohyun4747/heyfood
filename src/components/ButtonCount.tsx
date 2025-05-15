@@ -4,7 +4,7 @@ interface IButtonCountProps {
 	value: string;
 	count?: number;
 	disabled?: boolean;
-	onBlurValue?: (e: ChangeEvent<HTMLInputElement>) => void;
+	onBlurValue?: (numVal: number) => void;
 	onClickPlus?: () => void;
 	onClickMinus?: () => void;
 }
@@ -26,6 +26,19 @@ export function ButtonCount(props: IButtonCountProps) {
 		}
 	};
 
+	const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
+		if (props.onBlurValue) {
+			const numVal = Number(e.target.value);
+			if (isNaN(numVal)) {
+				props.onBlurValue(props.count ?? 0);
+				setInputVal(props.count?.toString() ?? '0');
+			} else {
+				props.onBlurValue(Math.trunc(numVal));
+				setInputVal(Math.trunc(numVal).toString());
+			}
+		}
+	};
+
 	return (
 		<>
 			{props.count ? (
@@ -39,7 +52,7 @@ export function ButtonCount(props: IButtonCountProps) {
 						className='w-[90px] text-2xl font-bold text-center text-white focus:outline-0 focus:text-black bg-transparent'
 						value={inputVal}
 						onChange={(e) => setInputVal(e.target.value)}
-						onBlur={props.onBlurValue}
+						onBlur={onBlur}
 						onKeyDown={handleKeyDown}
 					/>
 					<p

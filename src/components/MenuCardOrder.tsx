@@ -8,7 +8,7 @@ interface IMenuCardOrderProps {
 	count?: number;
 	onClickPlus?: () => void;
 	onClickMinus?: () => void;
-	onBlurValue?: (e: ChangeEvent<HTMLInputElement>) => void;
+	onBlurValue?: (numVal: number) => void;
 }
 
 export function MenuCardOrder(props: IMenuCardOrderProps) {

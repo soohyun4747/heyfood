@@ -7,7 +7,7 @@ import { IOrder, IOrderItem, OrderStatus } from '@/pages/profile/orderInfo';
 import { useCartStore } from '@/stores/cartStore';
 import { useItemsStore } from '@/stores/itemsStore';
 import { useUserStore } from '@/stores/userStore';
-import { fetchDistanceInKm } from '@/utils/distance';
+import { fetchDistanceInKmCost } from '@/utils/distance';
 import {
 	addData,
 	addMultipleDatas,
@@ -56,6 +56,7 @@ function PaymentPage() {
 				companyName: companyName,
 				comment: comment,
 				orderStatus: OrderStatus.confirmingPayment,
+				updatedAt: null,
 			};
 			const newOrderData = (await addData('orders', orderData)) as IOrder;
 
@@ -165,7 +166,7 @@ function PaymentPage() {
 			const origin = heyfoodAddress;
 			//부가 주소를 빼기 위해서
 			const destination = address.split(' (').at(0)!;
-			const price = await fetchDistanceInKm(origin, destination);
+			const price = await fetchDistanceInKmCost(origin, destination);
 			console.log({ price });
 
 			return price;

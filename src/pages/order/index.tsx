@@ -109,16 +109,18 @@ function OrderPage() {
 	};
 
 	const onBlurMenuCount = (
-		e: ChangeEvent<HTMLInputElement>,
+		// e: ChangeEvent<HTMLInputElement>,
 		menu: IMenu,
-		count: number | undefined
+		numVal: number
 	) => {
-		const numVal = Number(e.target.value);
-		if (isNaN(numVal)) {
-			setItem(menu, count ?? 0);
-		} else {
-			setItem(menu, numVal);
-		}
+		// const numVal = Number(e.target.value);
+		// if (isNaN(numVal)) {
+		// 	setItem(menu, count ?? 0);
+		// } else {
+		// 	setItem(menu, numVal);
+		// }
+
+		setItem(menu, numVal);
 	};
 
 	const onClickPlus = (menu: IMenu) => {
@@ -229,8 +231,8 @@ function OrderPage() {
 									count={count}
 									onClickPlus={() => onClickPlus(menu)}
 									onClickMinus={() => onMinusItem(menu)}
-									onBlurValue={(e) =>
-										onBlurMenuCount(e, menu, count)
+									onBlurValue={(val) =>
+										onBlurMenuCount(menu, val)
 									}
 								/>
 							);
