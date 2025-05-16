@@ -119,21 +119,27 @@ export function LandingMenusTab() {
 				{/* 외부 컨테이너는 고정 폭과 overflow-hidden 처리 */}
 				<div className='w-[1204px] overflow-x-hidden'>
 					{/* 내부 컨테이너: 모든 카드가 한 줄에 있고, translateX와 transition이 적용됨 */}
-					<div
-						className='flex gap-[32px] transition-transform ease-out duration-300'
-						style={{
-							transform: `translateX(-${slideIdx * 1236}px)`,
-						}}>
-						{filteredCategoryMenus.map((menu) => (
-							<MenuCard
-								key={menu.name}
-								onClick={() => onClickMenu(menu)}
-								src={menu.imagePaths[0]}
-								title={menu.name}
-								description={menu.description}
-							/>
-						))}
-					</div>
+					{filteredCategoryMenus.length > 0 ? (
+						<div
+							className='flex gap-[32px] transition-transform ease-out duration-300'
+							style={{
+								transform: `translateX(-${slideIdx * 1236}px)`,
+							}}>
+							{filteredCategoryMenus.map((menu) => (
+								<MenuCard
+									key={menu.name}
+									onClick={() => onClickMenu(menu)}
+									src={menu.imagePaths[0]}
+									title={menu.name}
+									description={menu.description}
+								/>
+							))}
+						</div>
+					) : (
+						<div className='h-full text-white font-bold self-center min-h-[528px] flex items-center justify-center'>
+							상품 준비중입니다.
+						</div>
+					)}
 				</div>
 
 				<div className='ml-[12px] w-[60px]'>

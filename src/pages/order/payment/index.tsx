@@ -3,10 +3,10 @@ import { ButtonNumText } from '@/components/ButtonNumText';
 import { GNBOrder } from '@/components/GNBOrder';
 import { TextField } from '@/components/TextField';
 import { Camera } from '@/icons/Camera';
-import { IOrder, IOrderItem, OrderStatus } from '@/pages/profile/orderInfo';
+import { IOrder, IOrderItem, OrderStatus } from '@/components/pages/profile/OrderInfo';
 import { useCartStore } from '@/stores/cartStore';
 import { useItemsStore } from '@/stores/itemsStore';
-import { useUserStore } from '@/stores/userStore';
+import { UserType, useUserStore } from '@/stores/userStore';
 import { fetchDistanceInKmCost } from '@/utils/distance';
 import {
 	addData,
@@ -99,10 +99,17 @@ function PaymentPage() {
 
 	const updateUserAddress = async () => {
 		if (user) {
-			await updateData('users', user.id, {
-				address: user.address,
-				addressDetail: user.addressDetail,
-			});
+			if (user.userType === UserType.user) {
+				await updateData('users', user.id, {
+					address: user.address,
+					addressDetail: user.addressDetail,
+				});
+			} else {
+				await updateData('guests', user.id, {
+					address: user.address,
+					addressDetail: user.addressDetail,
+				});
+			}
 		}
 	};
 

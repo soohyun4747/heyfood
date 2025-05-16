@@ -79,7 +79,7 @@ interface IDeliveryDateOrderItems {
 	items: IOrderItem[];
 }
 
-function OrderInfoPage() {
+export function OrderInfo() {
 	const [menus, setMenus] = useState<IMenu[]>([]);
 	const [startAfterDoc] =
 		useState<QueryDocumentSnapshot<DocumentData, DocumentData>>();
@@ -405,5 +405,3 @@ function OrderInfoPage() {
 		</div>
 	);
 }
-
-export default OrderInfoPage;

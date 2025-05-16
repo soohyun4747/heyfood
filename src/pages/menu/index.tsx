@@ -67,18 +67,24 @@ function MenuPage() {
 					selectedIdx={selectedCategoryIdx}
 					onClickMenu={onClickCategory}
 				/>
-				<div className='grid grid-cols-3 gap-x-8 gap-y-16'>
-					{filteredCategoryMenus.map((menu) => (
-						<MenuCard
-							shadowed
-							key={menu.name}
-							onClick={() => onClickMenu(menu)}
-							src={menu.imagePaths[0]}
-							title={menu.name}
-							description={menu.description}
-						/>
-					))}
-				</div>
+				{filteredCategoryMenus.length > 0 ? (
+					<div className='grid grid-cols-3 gap-x-8 gap-y-16'>
+						{filteredCategoryMenus.map((menu) => (
+							<MenuCard
+								shadowed
+								key={menu.name}
+								onClick={() => onClickMenu(menu)}
+								src={menu.imagePaths[0]}
+								title={menu.name}
+								description={menu.description}
+							/>
+						))}
+					</div>
+				) : (
+					<div className='h-full text-gray-300 font-bold self-center min-h-[528px] flex items-center'>
+						상품 준비중입니다.
+					</div>
+				)}
 				<div className='flex flex-col w-[1200px] relative gap-1.5 px-6 py-5 bg-[#fffbea]'>
 					<p className='text-base font-bold text-left text-[#5c5c5c]'>
 						패키지 디자인 추가 옵션

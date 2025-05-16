@@ -1,4 +1,4 @@
-import { IUserType, UserType } from '@/stores/userStore';
+import { IUserType, UserType, useUserStore } from '@/stores/userStore';
 import { Button } from './Button';
 import { User } from '@/icons/User';
 import { useRouter } from 'next/router';
@@ -6,6 +6,17 @@ import Image from 'next/image';
 
 export function GNB({ type }: { type: IUserType }) {
 	const router = useRouter();
+	const user = useUserStore((state) => state.user);
+
+	const onClickOrder = () => {
+		console.log({ user });
+
+		if (user?.userType === UserType.user) {
+			router.push('/order');
+		} else {
+			router.push('/login');
+		}
+	};
 
 	return (
 		<div className='flex justify-between items-center px-[120px] py-[30px]'>
@@ -59,7 +70,7 @@ export function GNB({ type }: { type: IUserType }) {
 				</div>
 				<Button
 					value={'주문하기'}
-					onClick={() => router.push('/order')}
+					onClick={onClickOrder}
 				/>
 			</div>
 		</div>

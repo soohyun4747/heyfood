@@ -6,11 +6,11 @@ export interface IUser {
 	name: string;
 	email?: string;
 	phone: string;
-	address?: string;
-	addressDetail?: string;
+	address: string | null;
+	addressDetail: string | null;
 	createdAt: Timestamp;
     userType: IUserType;
-	updatedAt?: Timestamp;
+	updatedAt: Timestamp | null;
 }
 
 export const UserType = {

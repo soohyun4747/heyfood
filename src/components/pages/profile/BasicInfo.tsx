@@ -11,7 +11,7 @@ import {
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 
-function ProfileBasicInfoPage() {
+export function BasicInfo() {
 	const [isPasswordChange, setIsPasswordChange] = useState(false);
 	const [password, setPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
@@ -317,5 +317,3 @@ function ProfileBasicInfoPage() {
 		</>
 	);
 }
-
-export default ProfileBasicInfoPage;

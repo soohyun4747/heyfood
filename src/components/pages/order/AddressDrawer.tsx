@@ -14,15 +14,17 @@ const DaumPostcode = dynamic(() => import('react-daum-postcode'), {
 });
 
 export function AddressDrawer(props: IAddressDrawerProps) {
-	const [address, setAddress] = useState<string>();
+	const [address, setAddress] = useState<string>('');
 	const [addressDetail, setAddressDetail] = useState('');
 	const [addressSearchOpen, setAddressSearchOpen] = useState<boolean>(false); // 검색창 노출 여부
 
 	const { user, setUser } = useUserStore();
 
 	useEffect(() => {
-		setAddress(user?.address);
-		setAddressDetail(user?.addressDetail ?? '');
+		if(user){
+			setAddress(user?.address ?? '');
+			setAddressDetail(user?.addressDetail ?? '');
+		}
 	}, [user]);
 
 	// 주소 검색 완료 후 호출되는 콜백 함수

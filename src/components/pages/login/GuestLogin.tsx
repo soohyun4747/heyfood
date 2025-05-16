@@ -1,7 +1,7 @@
 import { ButtonRect } from '@/components/ButtonRect';
 import { ButtonRectYellow } from '@/components/ButtonRectYellow';
 import { CheckRound } from '@/components/CheckRound';
-import { UserType, useUserStore } from '@/stores/userStore';
+import { IUser, UserType, useUserStore } from '@/stores/userStore';
 import { addData, fetchDataWithDocId } from '@/utils/firebase';
 import { formatPhoneNumberE164 } from '@/utils/string';
 import { convertDateStrToTimestamp } from '@/utils/time';
@@ -33,18 +33,16 @@ export function GuestLogin() {
 
 	// 컴포넌트가 마운트될 때 reCAPTCHA verifier를 초기화합니다.
 	useEffect(() => {
-		if (typeof window !== 'undefined' && !window.recaptchaVerifier) {
-			window.recaptchaVerifier = new RecaptchaVerifier(
-				auth,
-				'recaptcha-container',
-				{
-					size: 'invisible',
-					callback: (response: any) => {
-						console.log('reCAPTCHA 해결 완료:', response);
-					},
-				}
-			);
-		}
+		window.recaptchaVerifier = new RecaptchaVerifier(
+			auth,
+			'recaptcha-container',
+			{
+				size: 'invisible',
+				callback: (response: any) => {
+					console.log('reCAPTCHA 해결 완료:', response);
+				},
+			}
+		);
 	}, [auth]);
 
 	// 인증번호(OTP) 전송 함수
@@ -68,7 +66,8 @@ export function GuestLogin() {
 			setConfirmationResult(result);
 			alert('인증번호가 전송되었습니다.');
 		} catch (error: any) {
-			alert('인증번호 전송 실패: ' + error.message);
+			alert('인증번호 전송을 실패하였습니다.');
+			console.error({ error });
 		}
 	};
 
@@ -93,27 +92,50 @@ export function GuestLogin() {
 	};
 
 	const createOrGetSetUserData = async (user: User) => {
-		const userData = await fetchDataWithDocId('guests', user.uid);
+		const userData = (await fetchDataWithDocId('guests', user.uid)) as
+			| IUser
+			| undefined;
 		if (userData) {
-			setUser({ ...userData, userType: UserType.guest });
+			if (userData.name === name) {
+				setUser({ ...userData, userType: UserType.guest });
+			} else {
+				alert('이름이 맞지 않습니다.');
+				return false;
+			}
 		} else {
-			const newUserData = {
+			const newUserData: Omit<IUser, 'userType'> = {
 				id: user.uid,
 				name: name,
 				phone: phoneNumber,
 				createdAt: user.metadata.creationTime
 					? convertDateStrToTimestamp(user.metadata.creationTime)
 					: Timestamp.now(),
+				address: null,
+				addressDetail: null,
+				updatedAt: null,
 			};
 			addData('guests', newUserData);
 			setUser({ ...newUserData, userType: UserType.guest });
 		}
+
+		return true;
 	};
 
-	const goToOrder = () => {
+	const goToOrder = async () => {
 		if (credentialUser) {
-			createOrGetSetUserData(credentialUser);
-			router.push('/order');
+			const succeed = await createOrGetSetUserData(credentialUser);
+			if (succeed) {
+				router.push('/order');
+			}
+		}
+	};
+
+	const goToOrderHistory = async () => {
+		if (credentialUser) {
+			const succeed = await createOrGetSetUserData(credentialUser);
+			if (succeed) {
+				router.push('/guestProfile');
+			}
 		}
 	};
 
@@ -144,30 +166,27 @@ export function GuestLogin() {
 					</p>
 				</div>
 				<div className='flex justify-start items-start self-stretch  h-[238px] relative overflow-hidden gap-2 p-4 border border-[#d9d9d9] overflow-y-auto'>
-					<p className='flex-grow w-[416px] text-xs text-left text-[#909090]'>
-						<span className='flex-grow w-[416px] text-xs text-left text-[#909090]'>
+					<p className='flex-grow w-[416px] text-[13px] text-left text-[#909090]'>
+						<span>
 							헤이델리박스는 비회원 주문 서비스를 위하여 다음과
 							같이 귀하의 개인정보를 수집·이용합니다.
 						</span>
 						<br />
-						<span className='flex-grow w-[416px] text-xs text-left text-[#909090]'>
-							· 수집 항목:
-						</span>
+						<span>· 수집 항목:</span>
 						<br />
-						<span className='flex-grow w-[416px] text-xs text-left text-[#909090]'>
+						<span>
 							- 연락처. 당사는 주문자명, 전화번호, 배달지 주소를
 							수집할 수 있습니다.
 						</span>
 						<br />
-						<span className='flex-grow w-[416px] text-xs text-left text-[#909090]'>
+						<span>
 							- 결제 정보. 온라인 구매를 하는 경우, 귀하는 귀하가
 							선택하는 결제 형태에 따라 신용/직불카드 번호 및 관련
 							금융정보(유효기간, 보안코드, 청구지 주소 등) 또는
-							기타 결제 방식(Subway® 카드를 통한 결제 등)에 대한
-							정보를 제공해야 합니다.
+							기타 결제 방식에 대한 정보를 제공해야 합니다.
 						</span>
 						<br />
-						<span className='flex-grow w-[416px] text-xs text-left text-[#909090]'>
+						<span>
 							- 기기 및 기술 데이터. 당사는 귀하가 당사의
 							웹사이트를 방문하거나 당사의 모바일 애플리케이션
 							또는 서비스를 이용할 때 기술정보를 수집합니다.
@@ -179,7 +198,7 @@ export function GuestLogin() {
 							포함될 수 있습니다.
 						</span>
 						<br />
-						<span className='flex-grow w-[416px] text-xs text-left text-[#909090]'>
+						<span>
 							- 쿠키 및 기타 기술. 당사 및 당사의 제3자 서비스
 							제공자들은 당사 웹사이트 및 모바일 서비스 이용에
 							관한 정보를 수집하기 위하여 쿠키, 웹 비콘, 고유 광고
@@ -236,19 +255,24 @@ export function GuestLogin() {
 				<div className='flex flex-col justify-start items-start self-stretch  gap-8'>
 					<div className='flex flex-col justify-start items-start self-stretch  gap-3'>
 						<ButtonRect
-							disabled={isVerified && name ? false : true}
-							value='완료'
+							disabled={
+								isVerified && name && agreementCheck
+									? false
+									: true
+							}
+							value='주문하기'
 							onClick={goToOrder}
 						/>
-						<div className='hover:cursor-pointer flex justify-center items-center self-stretch  h-[68px] relative gap-[60px] px-8 py-5'>
+						<div className='flex justify-center items-center self-stretch  h-[68px] relative gap-[60px] px-8 py-5'>
 							<p
+								onClick={goToOrderHistory}
 								style={{
 									color:
-										isVerified && name
+										isVerified && name && agreementCheck
 											? '#F2AB27'
 											: '#909090',
 								}}
-								className=' text-lg font-bold text-center'>
+								className='cursor-pointer text-lg font-bold text-center'>
 								비회원 주문조회
 							</p>
 						</div>
