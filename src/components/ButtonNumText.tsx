@@ -9,7 +9,7 @@ export function ButtonNumText(props: IButtonNumText) {
 	return (
 		<div
 			style={{ ...props.style }}
-			onClick={props.onClick}
+			onClick={!props.disabled ? props.onClick : undefined}
 			className={`hover:cursor-pointer select-none flex justify-center items-center flex-grow-0 flex-shrink-0 relative gap-2 px-6 py-3.5 rounded-lg ${
 				props.disabled
 					? 'bg-neutral-200'

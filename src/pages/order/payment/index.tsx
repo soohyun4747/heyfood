@@ -3,7 +3,11 @@ import { ButtonNumText } from '@/components/ButtonNumText';
 import { GNBOrder } from '@/components/GNBOrder';
 import { TextField } from '@/components/TextField';
 import { Camera } from '@/icons/Camera';
-import { IOrder, IOrderItem, OrderStatus } from '@/components/pages/profile/OrderInfo';
+import {
+	IOrder,
+	IOrderItem,
+	OrderStatus,
+} from '@/components/pages/profile/OrderInfo';
 import { useCartStore } from '@/stores/cartStore';
 import { useItemsStore } from '@/stores/itemsStore';
 import { UserType, useUserStore } from '@/stores/userStore';
@@ -11,6 +15,7 @@ import { fetchDistanceInKmCost } from '@/utils/distance';
 import {
 	addData,
 	addMultipleDatas,
+	createDocId,
 	updateData,
 	uploadFileData,
 } from '@/utils/firebase';
@@ -18,6 +23,7 @@ import { convertDateStrToTimestamp } from '@/utils/time';
 import { Timestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { serverAuthVBank } from '@/utils/payment';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 
@@ -29,6 +35,8 @@ function PaymentPage() {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [deliveryPrices, setDeliveryPrices] = useState<number[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
+	const [email, setEmail] = useState('');
+	const [otherPhone, setOtherPhone] = useState('');
 
 	const user = useUserStore((state) => state.user);
 
@@ -41,21 +49,57 @@ function PaymentPage() {
 	useEffect(() => {
 		if (!user) {
 			router.push('/login');
+		} else {
+			setEmail(user.email ?? '');
 		}
 	}, [user]);
 
 	const onClickPay = async () => {
 		if (user) {
+			let price = 0;
+			let itemCount = 0;
+			cart.forEach((bundle) => {
+				bundle.items.forEach((item) => {
+					price += item.menu.price * item.count;
+					itemCount += item.count;
+				});
+			});
+
+			const orderId = createDocId('orders');
+
+			await serverAuthVBank(
+				orderId,
+				price,
+				`${cart.at(0)?.items.at(0)?.menu.name} 외 ${itemCount - 1}건`,
+				'정수현',
+				'http://localhost:3000/api/nicepay/approve'
+			);
+
+			const succeed = await addOrderDataToDB(orderId);
+			if (succeed) {
+				router.push('/order/complete');
+				await updateUserAddress();
+				resetCartItems();
+			} else {
+				alert('주문을 실패하였습니다.');
+			}
+		}
+	};
+
+	const addOrderDataToDB = async (orderId: string) => {
+		if (user) {
 			const orderData: IOrder = {
-				id: '',
+				id: orderId,
+				email: email,
+				otherPhone: otherPhone,
 				ordererId: user.id,
 				ordererType: user.userType,
-				createdAt: Timestamp.now(),
 				sticker: file ? true : false,
 				stickerPhrase: stickerPhrase,
 				companyName: companyName,
 				comment: comment,
-				orderStatus: OrderStatus.confirmingPayment,
+				orderStatus: OrderStatus.waitingPayment,
+				createdAt: Timestamp.now(),
 				updatedAt: null,
 			};
 			const newOrderData = (await addData('orders', orderData)) as IOrder;
@@ -82,17 +126,7 @@ function PaymentPage() {
 						});
 					});
 				});
-				const succeed = await addMultipleDatas(
-					'orderItems',
-					orderItems
-				);
-				if (succeed) {
-					router.push('/order/complete');
-					await updateUserAddress();
-					resetCartItems();
-				} else {
-					alert('주문을 실패하였습니다.');
-				}
+				return await addMultipleDatas('orderItems', orderItems);
 			}
 		}
 	};
@@ -190,6 +224,51 @@ function PaymentPage() {
 					<p className='text-[50px] font-bold text-center text-[#0f0e0e]'>
 						주문/결제
 					</p>
+				</div>
+				<div className='flex flex-col justify-start items-start w-[960px] relative gap-3.5'>
+					<p className='text-2xl font-bold text-left text-[#0f0e0e]'>
+						주문자 정보
+					</p>
+					<div className='flex flex-col justify-start items-start self-stretch gap-9 p-6 bg-white'>
+						<div className='flex items-center gap-[32px]'>
+							<div className='flex justify-start items-start self-stretch relative gap-2'>
+								<p className='text-base font-bold text-left text-[#0f0e0e]'>
+									이름
+								</p>
+								<p className='text-base text-left text-[#0f0e0e]'>
+									{user?.name}
+								</p>
+							</div>
+							<div className='flex justify-start items-start self-stretch relative gap-2'>
+								<p className='text-base font-bold text-left text-[#0f0e0e]'>
+									전화번호
+								</p>
+								<p className='text-base text-left text-[#0f0e0e]'>
+									{user?.phone}
+								</p>
+							</div>
+						</div>
+						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
+							<p className='text-base font-bold text-left text-[#0f0e0e]'>
+								이메일
+							</p>
+							<TextField
+								value={email}
+								onChange={(e) => setEmail(e.target.value)}
+								placeholder='이메일을 입력하여주세요 (세금계산서)'
+							/>
+						</div>
+						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
+							<p className='text-base font-bold text-left text-[#0f0e0e]'>
+								비상 연락처 (선택)
+							</p>
+							<TextField
+								value={otherPhone}
+								onChange={(e) => setOtherPhone(e.target.value)}
+								placeholder='비상 연락처를 입력하여주세요.'
+							/>
+						</div>
+					</div>
 				</div>
 				<div className='flex flex-col justify-start items-start w-[960px] relative gap-3.5'>
 					<p className='text-2xl font-bold text-left text-[#0f0e0e]'>
@@ -399,7 +478,7 @@ function PaymentPage() {
 					value={'결제하기'}
 					count={0}
 					onClick={onClickPay}
-					disabled={companyName ? false : true}
+					disabled={companyName && email ? false : true}
 				/>
 			</div>
 			{loading && (

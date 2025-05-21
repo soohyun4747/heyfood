@@ -155,7 +155,15 @@ export function isMoreThanTwoDaysLeft(targetDate: Date): boolean {
 
 	const diffInMs = targetDate.getTime() - now.getTime();
 	const twoDaysInMs = 2 * 24 * 60 * 60 * 1000;
-  
+
 	return diffInMs > twoDaysInMs;
-  }
-  
+}
+
+export function isMoreThanOneDayLeft(targetDate: Date): boolean {
+	const now = new Date();
+
+	const diffInMs = targetDate.getTime() - now.getTime();
+	const oneDayInMs =  24 * 60 * 60 * 1000;
+
+	return diffInMs > oneDayInMs;
+}

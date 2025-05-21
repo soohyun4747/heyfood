@@ -90,8 +90,10 @@ export function UserLogin() {
 					onClick={handleLogin}
 				/>
 				<div className='flex justify-start items-center self-stretch  gap-3'>
-					<p className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
-						아이디 찾기
+					<p
+						onClick={() => router.push('/login/findId')}
+						className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
+						이메일 찾기
 					</p>
 					<svg
 						width={2}
@@ -109,7 +111,9 @@ export function UserLogin() {
 							stroke='#A0A0A0'
 						/>
 					</svg>
-					<p className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
+					<p
+						onClick={() => router.push('/login/findPassword')}
+						className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
 						비밀번호 찾기
 					</p>
 					<svg

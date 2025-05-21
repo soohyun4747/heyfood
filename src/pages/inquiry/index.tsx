@@ -101,10 +101,10 @@ function InquiryPage() {
 			// EmailJS 서비스 호출
 			// 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', 'YOUR_PUBLIC_KEY'를 EmailJS 콘솔에서 발급받은 값으로 대체해야 합니다.
 			await emailjs.send(
-				'service_6yr6exn',
-				'template_gxezdpu',
+				process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? '',
+				process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID ?? '',
 				templateParams,
-				'ij-BVq_WZjD6bDiRt'
+				process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 			);
 			alert('문의 내용이 전송되었습니다.');
 			// 전송 성공 후 상태 초기화 또는 다른 처리를 할 수 있습니다.
@@ -214,7 +214,11 @@ function InquiryPage() {
 									className='ui dropdown focus:outline-0 hover:cursor-pointer'
 									onChange={(e) => setPhone1(e.target.value)}>
 									{initPhoneNumbers.map((value) => (
-										<option key={value} value={value}>{value}</option>
+										<option
+											key={value}
+											value={value}>
+											{value}
+										</option>
 									))}
 								</select>
 								<p className='flex-grow-0 text-[22px] text-left text-[#0f0e0e]'>
@@ -311,7 +315,11 @@ function InquiryPage() {
 									className='ui dropdown focus:outline-0 hover:cursor-pointer'
 									onChange={onSelectEmailDomain}>
 									{emailDomains.map((value) => (
-										<option key={value} value={value}>{value}</option>
+										<option
+											key={value}
+											value={value}>
+											{value}
+										</option>
 									))}
 								</select>
 							</div>

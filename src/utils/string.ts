@@ -14,3 +14,7 @@ export const formatPhoneNumberE164 = (num: string) => {
 };
 
 export const regex = /^(?=.*[A-Za-z])(?=.*\d).{8,16}$/;
+
+export function extractNumbers(input: string): string {
+	return input.replace(/\D/g, '');
+  }

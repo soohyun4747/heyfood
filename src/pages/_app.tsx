@@ -1,11 +1,9 @@
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
 import '@/styles/global.css';
 import { fetchDataWithDocId } from '@/utils/firebase';
-import {
-	getAuth,
-	onAuthStateChanged,
-} from 'firebase/auth';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { AppProps } from 'next/app';
+import Script from 'next/script';
 import { useEffect } from 'react';
 
 function App({ Component, pageProps }: AppProps) {
@@ -33,7 +31,12 @@ function App({ Component, pageProps }: AppProps) {
 		return () => unsubscribe();
 	}, [setUser]);
 
-	return <Component {...pageProps} />;
+	return (
+		<>
+			<Component {...pageProps} />
+			<Script src="https://pay.nicepay.co.kr/v1/js/"></Script>
+		</>
+	);
 }
 
 export default App;

@@ -1,13 +1,14 @@
 import { Footer } from '@/components/Footer';
 import { GNB } from '@/components/GNB';
 import { UserType, useUserStore } from '@/stores/userStore';
-import { JSX } from 'react';
+import { JSX, RefObject } from 'react';
 
 interface ICommonProps {
 	children: JSX.Element;
 	hideGnb?: boolean;
 	hideFooter?: boolean;
 	meta: JSX.Element;
+	ref?: RefObject<HTMLDivElement | null>
 }
 
 export function Common(props: ICommonProps) {

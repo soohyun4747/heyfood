@@ -1,6 +1,6 @@
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { logout } from '@/utils/firebase';
 import { useUserStore } from '@/stores/userStore';
 import { useRouter } from 'next/router';
@@ -20,7 +20,7 @@ function ProfilePage() {
 	const [selectedIdx, setSelectIdx] = useState(0);
 
 	return (
-		<Common meta={<Meta />}>
+		<Common meta={<Meta />} >
 			<div className='flex flex-col justify-start items-center self-stretch gap-[60px] px-[120px] pt-[100px] pb-40 min-h-fit h-screen'>
 				<div className='flex flex-col justify-start items-center self-stretch relative gap-2'>
 					<p className='text-[50px] font-bold text-center text-[#0f0e0e]'>
@@ -49,7 +49,7 @@ function ProfilePage() {
 					{selectedIdx === 0 ? (
 						<BasicInfo />
 					) : (
-						<OrderInfo />
+						<OrderInfo/>
 					)}
 				</div>
 				{selectedIdx === 0 ? (

@@ -2,7 +2,12 @@ import { ButtonRect } from '@/components/ButtonRect';
 import { ButtonRectYellow } from '@/components/ButtonRectYellow';
 import { CheckRound } from '@/components/CheckRound';
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
-import { addData, fetchDataWithDocId } from '@/utils/firebase';
+import {
+	addData,
+	confirmVerificationCode,
+	fetchDataWithDocId,
+	sendVerificationCode,
+} from '@/utils/firebase';
 import { formatPhoneNumberE164 } from '@/utils/string';
 import { convertDateStrToTimestamp } from '@/utils/time';
 import {
@@ -46,48 +51,21 @@ export function GuestLogin() {
 	}, [auth]);
 
 	// 인증번호(OTP) 전송 함수
-	const sendVerificationCode = async () => {
+	const onClickSendCode = async () => {
 		// 입력된 번호를 E.164 형식으로 변환
-		const formattedPhone = formatPhoneNumberE164(phoneNumber);
-
-		// 간단한 E.164 정규식 검사
-		const e164Regex = /^\+[1-9]\d{1,14}$/;
-		if (!e164Regex.test(formattedPhone)) {
-			alert('올바른 휴대폰 번호 형식이 아닙니다. 예: +821012345678');
-			return;
-		}
-
-		try {
-			const result = await signInWithPhoneNumber(
-				auth,
-				formattedPhone,
-				window.recaptchaVerifier
-			);
-			setConfirmationResult(result);
-			alert('인증번호가 전송되었습니다.');
-		} catch (error: any) {
-			alert('인증번호 전송을 실패하였습니다.');
-			console.error({ error });
-		}
+		const confirmResult = await sendVerificationCode(phoneNumber);
+		setConfirmationResult(confirmResult);
 	};
 
 	// 사용자가 입력한 인증번호(OTP) 확인 함수
-	const confirmVerificationCode = async () => {
-		if (!confirmationResult) {
-			alert('먼저 인증번호를 발송해주세요.');
-			return;
-		}
-		try {
-			const userCredential = (await confirmationResult.confirm(
-				verifyCode
-			)) as UserCredential;
-			setCredentialUser(userCredential.user);
-			alert('인증이 성공되었습니다.');
+	const onClickConfirmCode = async () => {
+		const user = await confirmVerificationCode(
+			confirmationResult,
+			verifyCode
+		);
+		if (user) {
+			setCredentialUser(user);
 			setIsVerified(true);
-			// 추가로 비회원 주문 진행 등 필요한 로직을 여기에 구현할 수 있습니다.
-		} catch (error: any) {
-			alert('인증을 실패하였습니다.');
-			console.log('인증번호 확인 실패: ' + error.message);
 		}
 	};
 
@@ -233,7 +211,7 @@ export function GuestLogin() {
 						<ButtonRectYellow
 							value='인증번호 발송'
 							disabled={phoneNumber ? false : true}
-							onClick={sendVerificationCode}
+							onClick={onClickSendCode}
 						/>
 					</div>
 					<div className='flex justify-start items-start self-stretch  gap-2'>
@@ -248,7 +226,7 @@ export function GuestLogin() {
 						<ButtonRectYellow
 							value='확인'
 							disabled={verifyCode ? false : true}
-							onClick={confirmVerificationCode}
+							onClick={onClickConfirmCode}
 						/>
 					</div>
 				</div>

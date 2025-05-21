@@ -1,6 +1,11 @@
 import { auth, db, storage } from '@/configs/firebaseConfig';
 import { IUser } from '@/stores/userStore';
-import { signOut } from 'firebase/auth';
+import {
+	ConfirmationResult,
+	signInWithPhoneNumber,
+	signOut,
+	UserCredential,
+} from 'firebase/auth';
 import {
 	addDoc,
 	collection,
@@ -19,6 +24,7 @@ import {
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Dispatch, SetStateAction } from 'react';
+import { formatPhoneNumberE164 } from './string';
 
 export const fetchImageUrls = async (
 	paths: string[]
@@ -68,7 +74,12 @@ export const fetchCollectionTableDataWithConstraints = async (
 		| QueryDocumentSnapshot<DocumentData, DocumentData>
 		| undefined,
 	pageSize: number,
-	constraints: QueryConstraint[]
+	constraints: QueryConstraint[],
+	setStartAfterDoc: Dispatch<
+		SetStateAction<
+			QueryDocumentSnapshot<DocumentData, DocumentData> | undefined
+		>
+	>
 ) => {
 	try {
 		const ref = collection(db, collectionName);
@@ -86,10 +97,15 @@ export const fetchCollectionTableDataWithConstraints = async (
 		}
 
 		const snapshot = await getDocs(q);
+		const startDocIdx = snapshot.docs.length - 1;
 		const data = snapshot.docs.map((doc) => ({
 			id: doc.id,
 			...doc.data(),
 		}));
+
+		if (snapshot) {
+			setStartAfterDoc(snapshot.docs[startDocIdx]);
+		}
 
 		return data;
 	} catch (err) {
@@ -236,7 +252,7 @@ export async function updateData(
 		const docRef = doc(db, collectionName, docId);
 		await updateDoc(docRef, updatedFields);
 		console.log('Document updated successfully');
-		return true
+		return true;
 	} catch (error) {
 		console.error('Error updating document:', error);
 		throw error;
@@ -257,9 +273,64 @@ export async function updateMultipleDatas(
 
 		await batch.commit();
 		console.log('Batch update successful.');
-		return true
+		return true;
 	} catch (error) {
 		console.error('Batch update failed:', error);
 		throw error;
 	}
 }
+
+export const createDocId = (collectionName: string) => {
+	const colRef = collection(db, collectionName);
+	const newDocRef = doc(colRef); // 자동 생성 ID를 가진 doc 참조
+
+	return newDocRef.id;
+};
+
+// 인증번호(OTP) 전송 함수
+export const sendVerificationCode = async (phone: string) => {
+	// 입력된 번호를 E.164 형식으로 변환
+	const formattedPhone = formatPhoneNumberE164(phone);
+
+	// 간단한 E.164 정규식 검사
+	const e164Regex = /^\+[1-9]\d{1,14}$/;
+	if (!e164Regex.test(formattedPhone)) {
+		alert('올바른 휴대폰 번호 형식이 아닙니다. 예: +821012345678');
+		return;
+	}
+
+	try {
+		const result = await signInWithPhoneNumber(
+			auth,
+			formattedPhone,
+			window.recaptchaVerifier
+		);
+		alert('인증번호가 전송되었습니다.');
+		return result;
+	} catch (error: any) {
+		alert('인증번호 전송을 실패하였습니다.');
+		console.error({ error });
+	}
+};
+
+// 사용자가 입력한 인증번호(OTP) 확인 함수
+export const confirmVerificationCode = async (
+	confirmResult: ConfirmationResult | undefined,
+	code: string
+) => {
+	if (!confirmResult) {
+		alert('먼저 인증번호를 발송해주세요.');
+		return;
+	}
+	try {
+		const userCredential = (await confirmResult.confirm(
+			code
+		)) as UserCredential;
+		alert('인증이 성공되었습니다.');
+		return userCredential.user;
+		// 추가로 비회원 주문 진행 등 필요한 로직을 여기에 구현할 수 있습니다.
+	} catch (error: any) {
+		alert('인증을 실패하였습니다.');
+		console.log('인증번호 확인 실패: ' + error.message);
+	}
+};
