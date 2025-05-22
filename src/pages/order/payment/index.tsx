@@ -24,25 +24,32 @@ import { Timestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { serverAuthVBank } from '@/utils/payment';
+import {
+	useOrderCommentStore,
+	useOrderCompanyNameStore,
+	useOrderEmailStore,
+	useOrderOtherPhoneStore,
+	useOrderStickerFileStore,
+	useOrderStickerPhraseStore,
+} from '@/stores/orderInfoStore';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 
 function PaymentPage() {
-	const [comment, setComment] = useState('');
-	const [companyName, setCompanyName] = useState('');
-	const [stickerPhrase, setStickerPhrase] = useState('');
-	const [file, setFile] = useState<File | null>(null);
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [deliveryPrices, setDeliveryPrices] = useState<number[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
-	const [email, setEmail] = useState('');
-	const [otherPhone, setOtherPhone] = useState('');
 
 	const user = useUserStore((state) => state.user);
+	const { comment, setComment } = useOrderCommentStore();
+	const { companyName, setCompanyName } = useOrderCompanyNameStore();
+	const { stickerPhrase, setStickerPhrase } = useOrderStickerPhraseStore();
+	const setFile = useOrderStickerFileStore((state) => state.setFile);
+	const { email, setEmail } = useOrderEmailStore();
+	const { otherPhone, setOtherPhone } = useOrderOtherPhoneStore();
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
-	const { cart, setCart } = useCartStore();
-	const { onResetItems } = useItemsStore();
+	const cart = useCartStore((state) => state.cart);
 
 	const router = useRouter();
 
@@ -65,91 +72,16 @@ function PaymentPage() {
 				});
 			});
 
-			const orderId = createDocId('orders');
+			const orderDocId = createDocId('orders');
 
 			await serverAuthVBank(
-				orderId,
+				orderDocId,
 				price,
 				`${cart.at(0)?.items.at(0)?.menu.name} 외 ${itemCount - 1}건`,
 				'정수현',
 				'http://localhost:3000/api/nicepay/approve'
 			);
-
-			const succeed = await addOrderDataToDB(orderId);
-			if (succeed) {
-				router.push('/order/complete');
-				await updateUserAddress();
-				resetCartItems();
-			} else {
-				alert('주문을 실패하였습니다.');
-			}
 		}
-	};
-
-	const addOrderDataToDB = async (orderId: string) => {
-		if (user) {
-			const orderData: IOrder = {
-				id: orderId,
-				email: email,
-				otherPhone: otherPhone,
-				ordererId: user.id,
-				ordererType: user.userType,
-				sticker: file ? true : false,
-				stickerPhrase: stickerPhrase,
-				companyName: companyName,
-				comment: comment,
-				orderStatus: OrderStatus.waitingPayment,
-				createdAt: Timestamp.now(),
-				updatedAt: null,
-			};
-			const newOrderData = (await addData('orders', orderData)) as IOrder;
-
-			if (newOrderData) {
-				if (file) {
-					await uploadFileData(file, `stickers/${newOrderData.id}`);
-				}
-				const orderItems: Omit<IOrderItem, 'id'>[] = [];
-				cart.forEach((data) => {
-					data.items.forEach((item) => {
-						orderItems.push({
-							orderId: newOrderData.id,
-							ordererName: user.name,
-							categoryId: item.menu.categoryId,
-							menuId: item.menu.id,
-							quantity: item.count,
-							deliveryDate: convertDateStrToTimestamp(
-								data.dateTime.toString()
-							),
-							address: data.address,
-							addressDetail: data.addressDetail,
-							createdAt: Timestamp.now(),
-						});
-					});
-				});
-				return await addMultipleDatas('orderItems', orderItems);
-			}
-		}
-	};
-
-	const updateUserAddress = async () => {
-		if (user) {
-			if (user.userType === UserType.user) {
-				await updateData('users', user.id, {
-					address: user.address,
-					addressDetail: user.addressDetail,
-				});
-			} else {
-				await updateData('guests', user.id, {
-					address: user.address,
-					addressDetail: user.addressDetail,
-				});
-			}
-		}
-	};
-
-	const resetCartItems = () => {
-		setCart([]);
-		onResetItems();
 	};
 
 	useEffect(() => {
@@ -208,7 +140,6 @@ function PaymentPage() {
 			//부가 주소를 빼기 위해서
 			const destination = address.split(' (').at(0)!;
 			const price = await fetchDistanceInKmCost(origin, destination);
-			console.log({ price });
 
 			return price;
 		} catch (error) {

@@ -44,7 +44,8 @@ export default async function handler(
 	res.redirect(
 		302,
 		`/order/complete?` +
-			`orderId=${encodeURIComponent(orderId)}` +
+			`resultCode=${encodeURIComponent(authResultCode)}` +
+			`&orderId=${encodeURIComponent(orderId)}` +
 			`&vbankName=${encodeURIComponent(vbank?.vbankName || '')}` +
 			`&vbankNumber=${encodeURIComponent(vbank?.vbankNumber || '')}` +
 			`&vbankExpDate=${encodeURIComponent(vbank?.vbankExpDate || '')}` +

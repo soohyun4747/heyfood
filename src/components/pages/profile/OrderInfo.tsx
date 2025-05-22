@@ -427,6 +427,16 @@ export function OrderInfo() {
 								<div className='flex justify-start items-center self-stretch relative gap-3'>
 									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
 										<p className='text-base font-bold text-left text-[#5c5c5c]'>
+											스티커 사진
+										</p>
+									</div>
+									<p className='text-lg text-left text-[#5c5c5c]'>
+										{data.orderData.sticker ? 'o' : 'x'}
+									</p>
+								</div>
+								<div className='flex justify-start items-center self-stretch relative gap-3'>
+									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+										<p className='text-base font-bold text-left text-[#5c5c5c]'>
 											스티커 문구
 										</p>
 									</div>
