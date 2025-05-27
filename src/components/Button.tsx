@@ -14,9 +14,14 @@ interface IButtonProps extends IButtonBasicProps {
 export function Button(props: IButtonProps) {
 	return (
 		<div
-			onClick={props.onClick}
-			style={{ background: props.color, ...props.style }}
-			className='select-none bg-brand-01 hover:bg-[#FFB224] hover:cursor-pointer font-bold leading-[160%] px-[16px] py-[14px] text-gray-900 rounded-lg flex justify-center items-center'>
+			onClick={!props.disabled ? props.onClick : undefined}
+			style={{
+				background: props.disabled ? '#E5E5E5' : props.color,
+				cursor: props.disabled ? 'default' : 'pointer',
+				color: props.disabled ? '#909090' : '#0F0E0E',
+				...props.style,
+			}}
+			className='text-sm md:text-base select-none bg-brand-01 hover:bg-[#FFB224] font-bold leading-[160%] px-[12px] md:px-[16px] py-[8px] md:py-[14px] rounded-lg flex justify-center items-center'>
 			{props.value}
 		</div>
 	);

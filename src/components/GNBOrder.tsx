@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 export function GNBOrder({ hideCart }: { hideCart?: boolean }) {
 	const router = useRouter();
 	const cart = useCartStore((state) => state.cart);
+	
 
 	return (
 		<div className='flex justify-between items-center self-stretch flex-grow-0 flex-shrink-0 h-24 px-[120px] py-[17px] bg-white'>

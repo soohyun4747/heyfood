@@ -1,7 +1,12 @@
 import { Drawer } from '@/components/Drawer';
 import { ChevronLeftSmall } from '@/icons/ChevronLeftSmall';
 import { ChevronRightSmall } from '@/icons/ChevronRightSmall';
-import { dayLetters, getClosestTimeSlot, getDatesInMonth, timeSlots } from '@/utils/time';
+import {
+	dayLetters,
+	getClosestTimeSlot,
+	getDatesInMonth,
+	timeSlots,
+} from '@/utils/time';
 import { useEffect, useState } from 'react';
 
 interface IDateTimeDrawerProps {
@@ -12,17 +17,22 @@ interface IDateTimeDrawerProps {
 
 function getTwoDaysLaterAtNine(): Date {
 	const today = new Date();
-	// 연, 월, 일에 이틀을 더한 날짜에 오전 9시로 설정
-	const twoDaysLaterAtNine = new Date(
+	let targetDate = new Date(
 		today.getFullYear(),
 		today.getMonth(),
-		today.getDate() + 2, // 이틀 후 날짜
-		9, // 오전 9시
+		today.getDate() + 2, // 이틀 후
+		9,
 		0,
 		0,
 		0
 	);
-	return twoDaysLaterAtNine;
+
+	// 만약 이틀 후가 일요일(0)이면 하루를 더함
+	if (targetDate.getDay() === 0) {
+		targetDate.setDate(targetDate.getDate() + 1);
+	}
+
+	return targetDate;
 }
 
 const minDateTime = getTwoDaysLaterAtNine();
@@ -34,9 +44,6 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 	const [dateTime, setDateTime] = useState<Date>();
 	const [selectedTime, setSelectedTime] = useState<string>(timeSlots[0]);
 	const [infoHover, setInfoHover] = useState(false);
-
-	console.log(props.date);
-	
 
 	useEffect(() => {
 		if (props.date) {

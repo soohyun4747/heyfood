@@ -57,6 +57,10 @@ function CartPage() {
 
 	const onClickDeleteItem = (dataIdx: number, itemIdx: number) => {
 		cart[dataIdx]?.items.splice(itemIdx, 1);
+		if (cart[dataIdx]?.items.length < 1) {
+			onClickDeleteBundle(dataIdx);
+			return;
+		}
 
 		setCart(cart);
 	};
@@ -65,16 +69,6 @@ function CartPage() {
 		cart.splice(dataIdx, 1);
 		setCart(cart);
 	};
-
-	// const onClickEdit = (dataIdx: number) => {
-	// 	setEditBundleIdx(dataIdx);
-	// 	if (user) {
-	// 		user.address = cart[dataIdx].address;
-	// 		user.addressDetail = cart[dataIdx].addressDetail;
-	// 		setUser(user);
-	// 	}
-	// 	router.push('/order');
-	// };
 
 	return (
 		<div className='h-screen flex flex-col overflow-hidden'>
@@ -225,6 +219,7 @@ function CartPage() {
 								style={{ height: 58 }}
 								value='주문하기'
 								onClick={() => router.push('/order/payment')}
+								disabled={cart.length === 0 ? true : false}
 							/>
 						</div>
 					</div>

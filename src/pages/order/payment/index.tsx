@@ -3,26 +3,12 @@ import { ButtonNumText } from '@/components/ButtonNumText';
 import { GNBOrder } from '@/components/GNBOrder';
 import { TextField } from '@/components/TextField';
 import { Camera } from '@/icons/Camera';
-import {
-	IOrder,
-	IOrderItem,
-	OrderStatus,
-} from '@/components/pages/profile/OrderInfo';
 import { useCartStore } from '@/stores/cartStore';
-import { useItemsStore } from '@/stores/itemsStore';
-import { UserType, useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/userStore';
 import { fetchDistanceInKmCost } from '@/utils/distance';
-import {
-	addData,
-	addMultipleDatas,
-	createDocId,
-	updateData,
-	uploadFileData,
-} from '@/utils/firebase';
-import { convertDateStrToTimestamp } from '@/utils/time';
-import { Timestamp } from 'firebase/firestore';
+import { createDocId, uploadFileData } from '@/utils/firebase';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import { serverAuthVBank } from '@/utils/payment';
 import {
 	useOrderCommentStore,
@@ -32,19 +18,23 @@ import {
 	useOrderStickerFileStore,
 	useOrderStickerPhraseStore,
 } from '@/stores/orderInfoStore';
+import { CheckRect } from '@/components/CheckRect';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
+const stickerPrice = 300;
 
 function PaymentPage() {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [deliveryPrices, setDeliveryPrices] = useState<number[]>([]);
 	const [loading, setLoading] = useState<boolean>(true);
+	const [stickerCheck, setStickerCheck] = useState(false);
+	const [file, setFile] = useState<File>();
 
 	const user = useUserStore((state) => state.user);
 	const { comment, setComment } = useOrderCommentStore();
 	const { companyName, setCompanyName } = useOrderCompanyNameStore();
 	const { stickerPhrase, setStickerPhrase } = useOrderStickerPhraseStore();
-	const setFile = useOrderStickerFileStore((state) => state.setFile);
+	const { setIsFile } = useOrderStickerFileStore();
 	const { email, setEmail } = useOrderEmailStore();
 	const { otherPhone, setOtherPhone } = useOrderOtherPhoneStore();
 
@@ -61,23 +51,42 @@ function PaymentPage() {
 		}
 	}, [user]);
 
-	const onClickPay = async () => {
-		if (user) {
-			let price = 0;
-			let itemCount = 0;
-			cart.forEach((bundle) => {
-				bundle.items.forEach((item) => {
-					price += item.menu.price * item.count;
-					itemCount += item.count;
-				});
-			});
+	const totalCount = useMemo(() => {
+		let totalCount = 0;
 
+		cart.forEach((bundle) => {
+			bundle.items.forEach((item) => {
+				totalCount += item.count;
+			});
+		});
+
+		return totalCount;
+	}, [cart]);
+
+	const onClickPay = async () => {
+		if (!companyName) {
+			alert('업체명/현장명을 입력해주세요.');
+			return;
+		}
+
+		if (stickerCheck && !stickerPhrase && stickerCheck && !file) {
+			alert(
+				'스티커를 체크하신 경우 스티커 문구나 사진을 업로드해주세요.'
+			);
+			return;
+		}
+
+		if (user) {
 			const orderDocId = createDocId('orders');
+
+			if (file) {
+				await uploadFileData(file, `stickers/${orderDocId}`);
+			}
 
 			await serverAuthVBank(
 				orderDocId,
-				price,
-				`${cart.at(0)?.items.at(0)?.menu.name} 외 ${itemCount - 1}건`,
+				wholePrice,
+				`${cart.at(0)?.items.at(0)?.menu.name} 외 ${totalCount - 1}건`,
 				'정수현',
 				'http://localhost:3000/api/nicepay/approve'
 			);
@@ -100,7 +109,7 @@ function PaymentPage() {
 			});
 	}, [cart]);
 
-	const getWholePrice = (): number => {
+	const wholePrice = useMemo(() => {
 		const itemsTotal = cart.reduce((sum, bundle) => {
 			return (
 				sum +
@@ -117,15 +126,18 @@ function PaymentPage() {
 			0
 		);
 
-		return itemsTotal + deliveryTotal;
-	};
+		if (stickerCheck) {
+			return stickerPrice * totalCount + itemsTotal + deliveryTotal;
+		}
 
-	const wholePrice = getWholePrice();
+		return itemsTotal + deliveryTotal;
+	}, [cart, deliveryPrices, stickerCheck]);
 
 	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.files?.[0] ?? null;
 		if (selected) {
 			setFile(selected);
+			setIsFile(true);
 			setPreviewUrl(URL.createObjectURL(selected));
 		}
 	};
@@ -229,10 +241,23 @@ function PaymentPage() {
 					</div>
 				</div>
 				<div className='flex flex-col justify-start items-start w-[960px] relative gap-3.5'>
-					<p className='self-stretch w-[960px] text-2xl font-bold text-left text-[#0f0e0e]'>
-						스티커 (선택)
-					</p>
-					<div className='flex justify-start items-start self-stretch gap-6 p-6 bg-white'>
+					<div className='flex justify-between items-center self-stretch'>
+						<div className='flex items-center gap-[12px]'>
+							<CheckRect
+								checked={stickerCheck}
+								onClick={() => setStickerCheck((prev) => !prev)}
+							/>
+							<p className='text-2xl font-bold text-left text-[#0f0e0e]'>
+								스티커 (선택)
+							</p>
+						</div>
+						<p className='text-sm text-right text-[#0f0e0e]'>
+							개당 +300원
+						</p>
+					</div>
+					<div
+						style={{ opacity: stickerCheck ? 1 : 0.4 }}
+						className='relative flex justify-start items-start self-stretch gap-6 p-6 bg-white'>
 						<div className='flex flex-col items-center p-4 bg-white border border-neutral-200 rounded-lg gap-[10px]'>
 							<div className='w-full h-[120px] min-w-[120px] border-2 border-dashed border-neutral-300 rounded-lg flex items-center justify-center overflow-hidden'>
 								{previewUrl ? (
@@ -281,6 +306,9 @@ function PaymentPage() {
 								rows={6}
 							/>
 						</div>
+						{!stickerCheck && (
+							<div className='bg-transparent w-full h-full absolute top-0 left-0' />
+						)}
 					</div>
 				</div>
 				<div className='flex flex-col justify-start items-start w-[960px] gap-3.5'>
@@ -380,6 +408,34 @@ function PaymentPage() {
 									</div>
 								</div>
 							))}
+							{stickerCheck && (
+								<div className='p-[24px] bg-white flex justify-between items-start self-stretch flex-grow-0 flex-shrink-0'>
+									<div className='flex justify-start items-center relative gap-4'>
+										<div className='flex items-center gap-[12px]'>
+											<p className='text-[22px] text-left text-[#0f0e0e]'>
+												스티커
+											</p>
+											<p className='text-xl text-left text-gray-500'>
+												{stickerPrice}원
+											</p>
+										</div>
+										<p className='text-xl text-left text-gray-300'>
+											x{' '}
+										</p>
+										<p className='text-xl text-left text-gray-300'>
+											{totalCount.toLocaleString()}개
+										</p>
+									</div>
+									<div className='flex justify-end items-center relative gap-2'>
+										<p className='text-[22px] text-right text-[#0f0e0e]'>
+											{(
+												stickerPrice * totalCount
+											).toLocaleString()}
+											원
+										</p>
+									</div>
+								</div>
+							)}
 						</div>
 						<div className='flex flex-col justify-center items-start self-stretch gap-6 p-6 bg-white'>
 							<div className='flex justify-between items-center self-stretch relative'>
@@ -409,7 +465,6 @@ function PaymentPage() {
 					value={'결제하기'}
 					count={0}
 					onClick={onClickPay}
-					disabled={companyName && email ? false : true}
 				/>
 			</div>
 			{loading && (

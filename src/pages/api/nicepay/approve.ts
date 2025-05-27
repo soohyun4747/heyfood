@@ -1,13 +1,17 @@
 // pages/api/nicepay/approve.ts
+import { OrderStatus } from '@/components/pages/profile/OrderInfo';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 export interface Vbank {
-	vbankCode: string;
-	vbankName: string;
-	vbankNumber: string;
+	vbankCode?: string;
+	vbankName?: string;
+	vbankNumber?: string;
 	vbankExpDate: string;
-	vbankHolder: string;
+	vbankHolder?: string;
 }
+
+export const NICEPAY_API_URL = 'https://api.nicepay.co.kr/v1/payments';
+
 
 export default async function handler(
 	req: NextApiRequest,
@@ -16,6 +20,7 @@ export default async function handler(
 	const { authResultCode, tid, amount, orderId } = req.body;
 
 	let vbank: Vbank | undefined;
+	let status = OrderStatus.ready;
 
 	if (authResultCode === '0000') {
 		const authStr = `${process.env.NEXT_PUBLIC_NICEPAY_CLIENT_KEY}:${process.env.NEXT_PUBLIC_NICEPAY_SECRET_KEY}`;
@@ -23,7 +28,7 @@ export default async function handler(
 
 		try {
 			const response = await fetch(
-				`https://sandbox-api.nicepay.co.kr/v1/payments/${tid}`,
+				`${NICEPAY_API_URL}/${tid}`,
 				{
 					method: 'POST',
 					headers: {
@@ -36,6 +41,7 @@ export default async function handler(
 
 			const data = await response.json();
 			vbank = data.vbank;
+			status = data.status;
 		} catch (error: any) {
 			console.error('승인 요청 오류:', error);
 		}
@@ -50,6 +56,8 @@ export default async function handler(
 			`&vbankNumber=${encodeURIComponent(vbank?.vbankNumber || '')}` +
 			`&vbankExpDate=${encodeURIComponent(vbank?.vbankExpDate || '')}` +
 			`&vbankHolder=${encodeURIComponent(vbank?.vbankHolder || '')}` +
-			`&amount=${encodeURIComponent(amount)}`
+			`&amount=${encodeURIComponent(amount)}`+
+			`&tid=${encodeURIComponent(tid)}`+
+			`&status=${encodeURIComponent(status)}`
 	);
 }

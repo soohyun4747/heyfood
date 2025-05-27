@@ -6,16 +6,16 @@ import { MenuCardOrder } from '@/components/MenuCardOrder';
 import { TabMenu } from '@/components/TabMenu';
 import { Reset } from '@/icons/Reset';
 import { useItemsStore } from '@/stores/itemsStore';
-import { useUserStore } from '@/stores/userStore';
-import { fetchCollectionData, fetchImageUrls } from '@/utils/firebase';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { UserType, useUserStore } from '@/stores/userStore';
+import { fetchCollectionData, fetchImageUrls, updateData } from '@/utils/firebase';
+import { useEffect, useMemo, useState } from 'react';
 import { AddressDrawer } from '../../components/pages/order/AddressDrawer';
 import { useRouter } from 'next/router';
 import { DateTimeDrawer } from '../../components/pages/order/DateTimeDrawer';
 import { useCartStore } from '@/stores/cartStore';
 import { ModalCenter } from '@/components/ModalCenter';
 
-const minimumCount = 30;
+const minimumCount = 1;
 
 function OrderPage() {
 	const [categories, setCategories] = useState<ICategory[]>([]);
@@ -29,7 +29,7 @@ function OrderPage() {
 	const [sameAddressDateNoticeModal, setSameAddressDateNoticeModal] =
 		useState(false);
 
-	const { user,  } = useUserStore();
+	const { user } = useUserStore();
 	const { items, setItem, onPlusItem, onMinusItem, onResetItems } =
 		useItemsStore();
 	const { cart, onAddCart, onRemoveCart } = useCartStore();
@@ -49,13 +49,6 @@ function OrderPage() {
 			router.push('/login');
 		}
 	}, [user]);
-
-	// useEffect(() => {
-	// 	if (editBundleIdx !== undefined) {
-	// 		setItems(JSON.parse(JSON.stringify(cart[editBundleIdx].items)));
-	// 		setDateTime(cart[editBundleIdx].dateTime);
-	// 	}
-	// }, [editBundleIdx]);
 
 	// 초기 데이터 로드
 	useEffect(() => {
@@ -109,17 +102,9 @@ function OrderPage() {
 	};
 
 	const onBlurMenuCount = (
-		// e: ChangeEvent<HTMLInputElement>,
 		menu: IMenu,
 		numVal: number
 	) => {
-		// const numVal = Number(e.target.value);
-		// if (isNaN(numVal)) {
-		// 	setItem(menu, count ?? 0);
-		// } else {
-		// 	setItem(menu, numVal);
-		// }
-
 		setItem(menu, numVal);
 	};
 

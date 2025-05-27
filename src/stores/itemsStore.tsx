@@ -66,7 +66,7 @@ export const useItemsStore = create<IItemsStore>((set) => {
 					//count가 0이 되면 cart에서 아예 빼버리기
 					if (item.count === 0) {
 						state.items = state.items.filter(
-							(item) => item.count === 0
+							(item) => item.count !== 0
 						);
 					}
 				}

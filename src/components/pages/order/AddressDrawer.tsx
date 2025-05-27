@@ -1,6 +1,7 @@
 import { Drawer } from '@/components/Drawer';
 import { Close } from '@/icons/Close';
-import { IUser, useUserStore } from '@/stores/userStore';
+import { IUser, UserType, useUserStore } from '@/stores/userStore';
+import { updateData } from '@/utils/firebase';
 import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
 
@@ -21,7 +22,7 @@ export function AddressDrawer(props: IAddressDrawerProps) {
 	const { user, setUser } = useUserStore();
 
 	useEffect(() => {
-		if(user){
+		if (user) {
 			setAddress(user?.address ?? '');
 			setAddressDetail(user?.addressDetail ?? '');
 		}
@@ -55,13 +56,28 @@ export function AddressDrawer(props: IAddressDrawerProps) {
 		return false;
 	};
 
-	const onClickConfirm = () => {
+	const onClickConfirm = async () => {
 		if (user) {
 			const userCopy = JSON.parse(JSON.stringify(user)) as IUser;
 			userCopy.address = address;
 			userCopy.addressDetail = addressDetail;
 			setUser(userCopy);
+			await updateUserAddress(userCopy);
 			props.onClose();
+		}
+	};
+
+	const updateUserAddress = async (user: IUser) => {
+		if (user.userType === UserType.user) {
+			await updateData('users', user.id, {
+				address: user.address,
+				addressDetail: user.addressDetail,
+			});
+		} else {
+			await updateData('guests', user.id, {
+				address: user.address,
+				addressDetail: user.addressDetail,
+			});
 		}
 	};
 

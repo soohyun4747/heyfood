@@ -1,8 +1,10 @@
 import { ButtonSmall } from '@/components/ButtonSmall';
+import { Dropdown } from '@/components/Dropdown';
 import { IMenu } from '@/components/LandingMenusTab';
 import { ModalCenter } from '@/components/ModalCenter';
 import { DateTimeDrawer } from '@/components/pages/order/DateTimeDrawer';
 import { PaymentStatus } from '@/components/PaymentStatus';
+import { TextField } from '@/components/TextField';
 import { ChevronDown } from '@/icons/ChevronDown';
 import { Vbank } from '@/pages/api/nicepay/approve';
 import { IUser, IUserType, useUserStore } from '@/stores/userStore';
@@ -10,9 +12,11 @@ import {
 	fetchCollectionData,
 	fetchCollectionDataWithConstraints,
 	fetchCollectionTableDataWithConstraints,
+	getDataCount,
 	updateData,
 	updateMultipleDatas,
 } from '@/utils/firebase';
+import { bankOptions } from '@/utils/payment';
 import {
 	convertDateStrToTimestamp,
 	formatTimestampWithMinutes,
@@ -26,38 +30,42 @@ import {
 	Timestamp,
 	where,
 } from 'firebase/firestore';
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 const eachFetchOrders = 5;
 
 export const orderStatusLabels = {
-	paymentComplete: '결제완료',
-	waitingPayment: '결제대기중',
-	orderCanceled: '주문취소',
+	paid: '결제완료',
+	ready: '결제확인중',
+	failed: '결제실패',
+	cancelled: '주문취소',
+	expired: '결제기한만료',
 };
 
 export const OrderStatus = {
-	paymentComplete: 'paymentComplete',
-	waitingPayment: 'waitingPayment',
-	orderCanceled: 'orderCanceled',
+	paid: 'paid',
+	ready: 'ready',
+	failed: 'failed',
+	cancelled: 'cancelled',
+	expired: 'expired',
 } as const;
 
 export type IOrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 
-export interface IOrder {
+export interface IOrder extends Omit<Vbank, 'vbankCode'> {
 	id: string;
 	ordererId: string;
 	ordererType: IUserType;
 	orderStatus: IOrderStatus;
 	comment?: string;
-	sticker: boolean;
+	stickerFile: boolean;
 	stickerPhrase?: string;
 	companyName: string;
 	email: string;
 	otherPhone?: string;
-
-	vbank?: Omit<Vbank, 'vbankCode'>;
-
+	price: number;
+	paymentId: string;
 	createdAt: Timestamp;
 	updatedAt: Timestamp | null;
 }
@@ -86,6 +94,8 @@ interface IDeliveryDateOrderItems {
 	items: IOrderItem[];
 }
 
+const dropdownDomId = uuidv4();
+
 export function OrderInfo() {
 	const [menus, setMenus] = useState<IMenu[]>([]);
 	const [startAfterDoc, setStartAfterDoc] =
@@ -100,11 +110,17 @@ export function OrderInfo() {
 	const [selectedOrderData, setSelectedOrderData] =
 		useState<IOrdersWithItems>();
 	const [orderCancelModal, setOrderCancelModal] = useState(false);
+	const [isMoreDisabled, setIsMoreDisabled] = useState(false);
+	const [wholeDataCnt, setWholeDataCnt] = useState(0);
+	const [refundAccount, setRefundAccount] = useState('');
+	const [refundBankCode, setRefundBankCode] = useState(bankOptions[3].id);
+	const [refundHolder, setRefundHolder] = useState('');
 
 	const user = useUserStore((state) => state.user);
 
 	useEffect(() => {
 		fetchCollectionData('menus', setMenus);
+		getSetWholeDataCnt();
 	}, []);
 
 	useEffect(() => {
@@ -112,6 +128,19 @@ export function OrderInfo() {
 			getSetOrderData(user, true);
 		}
 	}, [menus, user]);
+
+	useEffect(() => {
+		if (wholeDataCnt <= ordersWithItems.length) {
+			setIsMoreDisabled(true);
+		} else {
+			setIsMoreDisabled(false);
+		}
+	}, [ordersWithItems.length, wholeDataCnt]);
+
+	const getSetWholeDataCnt = async () => {
+		const dataCnt = await getDataCount('orders');
+		setWholeDataCnt(dataCnt);
+	};
 
 	const onClickMore = () => {
 		if (user) {
@@ -171,22 +200,6 @@ export function OrderInfo() {
 		}
 	};
 
-	const getOrderWholePrice = (
-		orderItemsWithDate: IDeliveryDateOrderItems[]
-	) => {
-		let price = 0;
-
-		orderItemsWithDate.forEach((data) => {
-			data.items.forEach((item) => {
-				const menuData = menus.find((menu) => menu.id === item.menuId);
-				if (menuData) {
-					price += menuData.price * item.quantity;
-				}
-			});
-		});
-		return price;
-	};
-
 	const onOpenDateDrawer = (itemsWithDate: IDeliveryDateOrderItems) => {
 		setSelectedItemsWithDate(itemsWithDate);
 		setDateTime(itemsWithDate.date.toDate());
@@ -219,44 +232,99 @@ export function OrderInfo() {
 		}
 	};
 
+	const fetchCancelPayment = async (paymentId: string, orderId: string) => {
+		const response = await fetch('/api/nicepay/cancel', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				paymentId: paymentId,
+				orderId: orderId,
+				reason: '사용자 요청 취소',
+				refundAccount: refundAccount,
+				refundBankCode: refundBankCode,
+				refundHolder: refundHolder,
+			}),
+		});
+
+		const result = await response.json();
+		return result;
+	};
+
 	const onCancelOrder = async () => {
-		if (selectedOrderData && user) {
-			const updatedAt = Timestamp.now();
+		if (!selectedOrderData || !user) return;
 
-			let succeed = await updateData(
-				'orders',
-				selectedOrderData.orderData.id,
-				{
-					orderStatus: OrderStatus.orderCanceled,
-					updatedAt: updatedAt,
-				}
+		if (!refundHolder) {
+			alert('예금주명을 입력하여주세요');
+			return;
+		}
+
+		if (!refundAccount) {
+			alert('계좌번호를 입력하여주세요');
+			return;
+		}
+
+		try {
+			const result = await fetchCancelPayment(
+				selectedOrderData.orderData.paymentId,
+				selectedOrderData.orderData.id
 			);
 
-			//order items update
-			const updatingItems: { id: string; data: any }[] = [];
-			selectedOrderData.orderItemsWithDeliveryDate.forEach(
-				(orderItems) => {
-					orderItems.items.forEach((item) => {
-						updatingItems.push({
-							id: item.id,
-							data: {
-								updatedAt: updatedAt,
-							},
+			if (result.resultCode === '0000') {
+				const updatedAt = Timestamp.now();
+
+				const succeedOrder = await updateData(
+					'orders',
+					selectedOrderData.orderData.id,
+					{
+						orderStatus: OrderStatus.cancelled,
+						updatedAt,
+					}
+				);
+
+				const updatingItems: { id: string; data: any }[] = [];
+				selectedOrderData.orderItemsWithDeliveryDate.forEach(
+					(orderItems) => {
+						orderItems.items.forEach((item) => {
+							updatingItems.push({
+								id: item.id,
+								data: { updatedAt },
+							});
 						});
-					});
+					}
+				);
+
+				const succeedItems = await updateMultipleDatas(
+					'orderItems',
+					updatingItems
+				);
+
+				if (succeedOrder && succeedItems) {
+					updateLocalStatusToCancel();
+					alert('주문이 취소되었습니다.');
+				} else {
+					alert('주문 취소를 실패하였습니다.');
 				}
-			);
-
-			succeed = await updateMultipleDatas('orderItems', updatingItems);
-
-			if (succeed) {
-				alert('주문이 취소되었습니다.');
-				getSetOrderData(user);
 			} else {
-				alert('주문 취소를 실패하였습니다.');
+				alert(result.resultMsg);
 			}
+		} catch (error) {
+			console.error('주문 취소 에러:', error);
+			alert('처리 중 오류가 발생했습니다.');
+		} finally {
 			setOrderCancelModal(false);
 		}
+	};
+
+	const updateLocalStatusToCancel = () => {
+		setOrdersWithItems((prev) => {
+			const idx = prev.findIndex(
+				(data) => data.orderData.id === selectedOrderData?.orderData.id
+			);
+			prev[idx].orderData.orderStatus = OrderStatus.cancelled;
+			return [...prev];
+		});
 	};
 
 	const onClickOrderCancel = (data: IOrdersWithItems) => {
@@ -265,16 +333,18 @@ export function OrderInfo() {
 	};
 
 	const isOrderCancelAvailable = (data: IOrdersWithItems) => {
-		const earliestDeliveryData = data.orderItemsWithDeliveryDate.reduce(
-			(earliest, current) => {
-				return current.date.toDate() < earliest.date.toDate()
-					? current
-					: earliest;
-			}
-		);
+		if (data.orderItemsWithDeliveryDate.length > 0) {
+			const earliestDeliveryData = data.orderItemsWithDeliveryDate.reduce(
+				(earliest, current) => {
+					return current.date.toDate() < earliest.date.toDate()
+						? current
+						: earliest;
+				}
+			);
 
-		if (isMoreThanOneDayLeft(earliestDeliveryData.date.toDate())) {
-			return true;
+			if (isMoreThanOneDayLeft(earliestDeliveryData.date.toDate())) {
+				return true;
+			}
 		}
 		return false;
 	};
@@ -294,10 +364,7 @@ export function OrderInfo() {
 									/>
 								</div>
 								<p className='text-2xl font-bold text-right text-[#0f0e0e]'>
-									총{' '}
-									{getOrderWholePrice(
-										data.orderItemsWithDeliveryDate
-									).toLocaleString()}
+									총 {data.orderData.price?.toLocaleString()}
 									원
 								</p>
 							</div>
@@ -308,7 +375,7 @@ export function OrderInfo() {
 									<div
 										key={idx}
 										className='flex justify-start items-start self-stretch gap-6'>
-										<div className='flex flex-col justify-start items-start flex-grow relative gap-5'>
+										<div className='flex flex-col justify-start items-start flex-grow gap-5'>
 											<p className='text-lg font-bold text-left text-[#0f0e0e]'>
 												<span>배달날짜</span>
 												{'   '}
@@ -323,7 +390,7 @@ export function OrderInfo() {
 													(item, j) => (
 														<div
 															key={j}
-															className='flex justify-start items-center self-stretch h-[30px] relative gap-1.5'>
+															className='flex justify-start items-center self-stretch h-[30px] gap-1.5'>
 															<p className='text-xl text-left text-[#0f0e0e]'>
 																{item.menuId}
 															</p>
@@ -350,8 +417,8 @@ export function OrderInfo() {
 										)}
 									</div>
 									<div className='self-stretch h-[1px] bg-gray-200' />
-									<div className='flex justify-start items-center self-stretch relative gap-3'>
-										<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+									<div className='flex justify-start items-center self-stretch gap-3'>
+										<div className='flex justify-center items-center gap-2 pt-0.5'>
 											<p className='text-base font-bold text-left text-[#0f0e0e]'>
 												배달주소
 											</p>
@@ -367,13 +434,13 @@ export function OrderInfo() {
 								</div>
 							)
 						)}
-						<div className='flex flex-col justify-start items-start self-stretch relative gap-3 p-6 border border-neutral-200 '>
+						<div className='flex flex-col justify-start items-start self-stretch gap-3 p-6 border border-neutral-200 '>
 							<p className='text-lg font-bold text-left text-[#0f0e0e]'>
 								주문정보
 							</p>
 							<div className='flex flex-col justify-start items-start self-stretch gap-3 p-5 rounded-xl bg-[#f8f8f8]'>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
 											주문날짜
 										</p>
@@ -384,8 +451,8 @@ export function OrderInfo() {
 										)}
 									</p>
 								</div>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
 											이메일
 										</p>
@@ -394,8 +461,8 @@ export function OrderInfo() {
 										{data.orderData.email}
 									</p>
 								</div>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
 											비상 연락처
 										</p>
@@ -404,8 +471,8 @@ export function OrderInfo() {
 										{data.orderData.otherPhone}
 									</p>
 								</div>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='flex-grow min-w-24 text-base font-bold text-left text-[#5c5c5c]'>
 											업체명/현장명
 										</p>
@@ -414,8 +481,8 @@ export function OrderInfo() {
 										{data.orderData.companyName}
 									</p>
 								</div>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='text-base font-bold text-left text-[#5c5c5c]'>
 											요청사항
 										</p>
@@ -424,35 +491,28 @@ export function OrderInfo() {
 										{data.orderData.comment}
 									</p>
 								</div>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='text-base font-bold text-left text-[#5c5c5c]'>
-											스티커 사진
+											스티커
 										</p>
 									</div>
 									<p className='text-lg text-left text-[#5c5c5c]'>
-										{data.orderData.sticker ? 'o' : 'x'}
-									</p>
-								</div>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
-										<p className='text-base font-bold text-left text-[#5c5c5c]'>
-											스티커 문구
-										</p>
-									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
-										{data.orderData.stickerPhrase}
+										{data.orderData.stickerFile ||
+										data.orderData.stickerPhrase
+											? 'o'
+											: 'x'}
 									</p>
 								</div>
 							</div>
 						</div>
-						<div className='flex flex-col justify-start items-start self-stretch relative gap-3 p-6 border border-t-0 border-neutral-200'>
+						<div className='flex flex-col justify-start items-start self-stretch gap-3 p-6 border border-t-0 border-neutral-200'>
 							<p className='text-lg font-bold text-left text-[#0f0e0e]'>
 								결제정보
 							</p>
 							<div className='flex flex-col justify-start items-start self-stretch gap-3 p-5 rounded-xl bg-[#f8f8f8]'>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
 											결제방식
 										</p>
@@ -461,37 +521,37 @@ export function OrderInfo() {
 										가상계좌
 									</p>
 								</div>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
 											계좌정보
 										</p>
 									</div>
 									<p className='text-lg text-left text-[#5c5c5c]'>
-										{data.orderData.vbank?.vbankName}{' '}
-										{data.orderData.vbank?.vbankNumber}
+										{data.orderData.vbankName}{' '}
+										{data.orderData.vbankNumber}
 									</p>
 								</div>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
 											예금주
 										</p>
 									</div>
 									<p className='text-lg text-left text-[#5c5c5c]'>
-										{data.orderData.vbank?.vbankHolder}
+										{data.orderData.vbankHolder}
 									</p>
 								</div>
-								<div className='flex justify-start items-center self-stretch relative gap-3'>
-									<div className='flex justify-center items-center relative gap-2 pt-0.5'>
+								<div className='flex justify-start items-center self-stretch gap-3'>
+									<div className='flex justify-center items-center gap-2 pt-0.5'>
 										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
 											입금기한
 										</p>
 									</div>
 									<p className='text-lg text-left text-[#5c5c5c]'>
-										{data.orderData.vbank?.vbankExpDate &&
+										{data.orderData.vbankExpDate &&
 											new Date(
-												data.orderData.vbank?.vbankExpDate
+												data.orderData.vbankExpDate
 											).toLocaleString()}
 									</p>
 								</div>
@@ -520,15 +580,59 @@ export function OrderInfo() {
 					주문 내역이 없습니다
 				</div>
 			)}
-			<div
-				onClick={onClickMore}
-				className='cursor-pointer self-center bg-black/30 rounded-full size-[32px] flex items-center justify-center'>
-				<ChevronDown />
-			</div>
+			{!isMoreDisabled && (
+				<div
+					onClick={onClickMore}
+					className='cursor-pointer hover:bg-gray-700 self-center bg-black/30 rounded-full size-[32px] flex items-center justify-center'>
+					<ChevronDown />
+				</div>
+			)}
 			{orderCancelModal && (
 				<ModalCenter
 					title={'주문 취소'}
-					description={'주문을 취소하시겠습니까?'}
+					description={
+						<div className='flex flex-col gap-[24px]'>
+							<p className='text-sm'>
+								환불받을 계좌정보를 입력해주세요
+							</p>
+							<div className='flex flex-col gap-[12px]'>
+								<div className='flex items-center gap-[6px]'>
+									<p className='w-[90px] text-left'>
+										예금주명
+									</p>
+									<TextField
+										value={refundHolder}
+										onChange={(e) =>
+											setRefundHolder(e.target.value)
+										}
+										style={{ flex: 1 }}
+									/>
+								</div>
+								<div className='flex items-center gap-[6px]'>
+									<p className='w-[90px] text-left'>은행</p>
+									<Dropdown
+										domId={dropdownDomId}
+										list={bankOptions}
+										selectedId={refundBankCode}
+										onClick={(id) => setRefundBankCode(id)}
+										style={{ flex: 1 }}
+									/>
+								</div>
+								<div className='flex items-center gap-[6px]'>
+									<p className='w-[90px] text-left'>
+										계좌번호
+									</p>
+									<TextField
+										value={refundAccount}
+										onChange={(e) =>
+											setRefundAccount(e.target.value)
+										}
+										style={{ flex: 1 }}
+									/>
+								</div>
+							</div>
+						</div>
+					}
 					btn1st={{
 						value: '주문 취소',
 						onClick: onCancelOrder,

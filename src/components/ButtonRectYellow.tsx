@@ -22,9 +22,11 @@ export function ButtonRectYellow(props: IButtonRectYellowProps) {
 					: hover
 					? '#F7BC4F'
 					: '#FFCD70',
+				cursor: props.disabled ? 'default' : 'pointer',
+				color: props.disabled ? '#909090' : '#0F0E0E',
 				...props.style,
 			}}
-			className='hover:cursor-pointer flex justify-center items-center w-full min-h-[68px] select-none text-lg font-bold text-center text-gray-900'>
+			className='flex justify-center items-center w-full min-h-[68px] select-none text-lg font-bold text-center'>
 			{props.value}
 		</div>
 	);

@@ -5,6 +5,7 @@ export interface IIconProps {
 	hoverColor?: string;
 	hover?: boolean;
 	size?: number;
+	id?: string;
 }
 
 export interface IButtonIconProps extends IIconProps {
@@ -17,6 +18,7 @@ export function ButtonIcon(props: IButtonIconProps) {
 
 	return (
 		<div
+			id={props.id}
 			onMouseEnter={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
 			onClick={props.onClick}
@@ -25,6 +27,7 @@ export function ButtonIcon(props: IButtonIconProps) {
 				color: props.color,
 				hoverColor: props.hoverColor,
 				hover: hover,
+				id: props.id,
 			})}
 		</div>
 	);

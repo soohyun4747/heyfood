@@ -11,6 +11,7 @@ import {
 	collection,
 	doc,
 	DocumentData,
+	getCountFromServer,
 	getDoc,
 	getDocs,
 	limit,
@@ -333,4 +334,10 @@ export const confirmVerificationCode = async (
 		alert('인증을 실패하였습니다.');
 		console.log('인증번호 확인 실패: ' + error.message);
 	}
+};
+
+export const getDataCount = async (collectionName: string) => {
+	const coll = collection(db, collectionName);
+	const snapshot = await getCountFromServer(coll);
+	return snapshot.data().count;
 };
