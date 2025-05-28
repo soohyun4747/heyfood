@@ -2,8 +2,8 @@ import Image from 'next/image';
 
 export function Footer() {
 	return (
-		<div className='flex flex-col justify-center items-center self-stretch  gap-60 pt-10 pb-[100px] bg-[#ffc966]'>
-			<div className='flex flex-col justify-start items-start  w-[1200px] gap-6'>
+		<div className='flex flex-col justify-center items-center self-stretch gap-60 pt-10 pb-10 md:pb-[100px] bg-[#ffc966] px-[20px] md:px-0'>
+			<div className='flex flex-col justify-start items-start md:w-[1200px] gap-6'>
 				<div className='flex justify-start items-start  gap-[21px]'>
 					<p className=' text-base font-bold text-center text-[#0f0e0e]'>
 						개인정보처리방침
@@ -14,20 +14,18 @@ export function Footer() {
 				</div>
 				<div className='flex flex-col justify-start items-start self-stretch  gap-10'>
 					<div className='self-stretch  h-0.5 opacity-[0.24] bg-[#0f0e0e]' />
-					<div className='flex justify-start items-start self-stretch  gap-[50px]'>
-						<div className='flex justify-start items-start flex-grow relative gap-[50px]'>
+					<div className='flex flex-col md:flex-row justify-start items-start self-stretch gap-4 md:gap-[50px]'>
+						<div className='flex md:flex-row flex-col justify-start items-start flex-grow relative gap-[50px]'>
 							<div className='w-[190px] h-[26px] relative overflow-hidden'>
 								<Image
 									src={'/images/logo2.svg'}
 									alt={'logo'}
-									// width={200}
-									// height={180}
 									fill
 								/>
 							</div>
-							<div className='flex flex-col justify-center items-start  gap-6'>
-								<div className='flex flex-col justify-start items-start  gap-2.5'>
-									<div className='flex justify-start items-start  gap-6'>
+							<div className='flex md:flex-col flex-col-reverse justify-center items-start gap-10'>
+								<div className='flex flex-col justify-start items-start gap-4 md:gap-2.5'>
+									<div className='flex md:flex-row flex-col justify-start items-start gap-4 md:gap-6'>
 										<p className=' text-[15px] font-bold text-center text-[#0f0e0e]'>
 											(주)헤이푸드서비스
 										</p>
@@ -56,7 +54,7 @@ export function Footer() {
 										</p>
 									</div>
 								</div>
-								<p className=' text-sm font-light text-center text-[#0f0e0e]'>
+								<p className='text-sm font-light md:text-center text-[#0f0e0e]'>
 									COPYRIGHT © 2025 HEYFOOD. ALL RIGHTS
 									RESERVED.
 								</p>

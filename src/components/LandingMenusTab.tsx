@@ -19,6 +19,7 @@ export interface IMenu {
 export interface ICategory {
 	id: string;
 	name: string;
+	order: number;
 }
 
 export function LandingMenusTab() {

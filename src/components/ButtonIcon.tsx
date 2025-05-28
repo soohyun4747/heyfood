@@ -6,6 +6,7 @@ export interface IIconProps {
 	hover?: boolean;
 	size?: number;
 	id?: string;
+	className?: string;
 }
 
 export interface IButtonIconProps extends IIconProps {

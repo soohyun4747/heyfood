@@ -39,7 +39,8 @@ export function UserLogin() {
 					alert('로그인을 실패하였습니다');
 				}
 			} catch (error: any) {
-				alert('로그인 실패: ' + error.message);
+				console.error(error.message);
+				alert('이메일 또는 비밀번호가 틀렸습니다.');
 			}
 		}
 	};
@@ -47,35 +48,31 @@ export function UserLogin() {
 	return (
 		<div className='flex flex-col justify-start items-start self-stretch  gap-12'>
 			<div className='flex flex-col justify-start items-center self-stretch  gap-10'>
-				<p className=' text-[15px] text-center text-[#909090]'>
-					<span className=' text-[15px] text-center text-[#909090]'>
-						헤이델리박스 회원으로 로그인하시면 제공하는
-					</span>
+				<p className='text-xs md:text-[15px] text-center text-[#909090] leading-[150%]'>
+					<span>헤이델리박스 회원으로 로그인하시면 제공하는</span>
 					<br />
-					<span className=' text-[15px] text-center text-[#909090]'>
-						다양한 서비스를 이용할 수 있습니다.
-					</span>
+					<span>다양한 서비스를 이용할 수 있습니다.</span>
 				</p>
-				<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0'>
-					<div className='flex justify-start items-center self-stretch  gap-6 px-6 py-[22px] border border-[#d9d9d9]'>
-						<p className=' w-[110px] text-base text-left text-[#0f0e0e]'>
+				<div className='flex flex-col justify-start items-start self-stretch md:gap-0 gap-[12px] '>
+					<div className='bg-white md:bg-transparent flex justify-start items-center self-stretch  gap-6 px-6 py-[22px] border border-[#d9d9d9]'>
+						<p className='md:w-[110px] w-[70px] text-base text-left text-[#0f0e0e]'>
 							이메일
 						</p>
 						<input
-							className='flex-grow text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 							placeholder='이메일 입력'
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</div>
-					<div className='flex justify-start items-center self-stretch  gap-6 px-6 py-[22px] border-t-0 border-r border-b border-l border-[#d9d9d9]'>
-						<p className=' w-[110px] text-base text-left text-[#0f0e0e]'>
+					<div className='bg-white md:bg-transparent flex justify-start items-center self-stretch  gap-6 px-6 py-[22px] border-t md:border-t-0 border-r border-b border-l border-[#d9d9d9]'>
+						<p className='md:w-[110px] w-[70px] text-base text-left text-[#0f0e0e]'>
 							비밀번호
 						</p>
 						<input
 							autoComplete='new-password'
 							type='password'
-							className='flex-grow text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 							placeholder='비밀번호 입력'
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
@@ -92,7 +89,7 @@ export function UserLogin() {
 				<div className='flex justify-start items-center self-stretch  gap-3'>
 					<p
 						onClick={() => router.push('/login/findId')}
-						className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
+						className='flex-1 cursor-pointer md:w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
 						이메일 찾기
 					</p>
 					<svg
@@ -101,7 +98,7 @@ export function UserLogin() {
 						viewBox='0 0 2 24'
 						fill='none'
 						xmlns='http://www.w3.org/2000/svg'
-						className='flex-grow-0 flex-shrink-0'
+						className='md:gap-0 gap-[12px]'
 						preserveAspectRatio='none'>
 						<line
 							x1='0.833008'
@@ -113,7 +110,7 @@ export function UserLogin() {
 					</svg>
 					<p
 						onClick={() => router.push('/login/findPassword')}
-						className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
+						className='flex-1 cursor-pointer md:w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
 						비밀번호 찾기
 					</p>
 					<svg
@@ -122,7 +119,7 @@ export function UserLogin() {
 						viewBox='0 0 2 24'
 						fill='none'
 						xmlns='http://www.w3.org/2000/svg'
-						className='flex-grow-0 flex-shrink-0'
+						className='md:gap-0 gap-[12px]'
 						preserveAspectRatio='none'>
 						<line
 							x1='1.16699'
@@ -134,7 +131,7 @@ export function UserLogin() {
 					</svg>
 					<p
 						onClick={() => router.push('/signUp')}
-						className='cursor-pointer flex-grow w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
+						className='flex-1 cursor-pointer md:w-[133.33px] text-[13px] text-center text-[#a0a0a0]'>
 						회원가입
 					</p>
 				</div>

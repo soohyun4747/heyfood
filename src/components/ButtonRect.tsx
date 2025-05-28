@@ -24,8 +24,8 @@ export function ButtonRect(props: IButtonRectProps) {
 				color: props.disabled ? '#909090' : 'black',
 				...props.style,
 			}}
-			className='hover:cursor-pointer flex justify-center items-center self-stretch h-[68px]'>
-			<p className='select-none text-lg font-bold text-center'>
+			className='hover:cursor-pointer flex justify-center items-center self-stretch h-[58px] md:h-[68px]'>
+			<p className='select-none md:text-lg font-bold text-center'>
 				{props.value}
 			</p>
 		</div>

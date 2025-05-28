@@ -23,10 +23,10 @@ export function ButtonRectYellow(props: IButtonRectYellowProps) {
 					? '#F7BC4F'
 					: '#FFCD70',
 				cursor: props.disabled ? 'default' : 'pointer',
-				color: props.disabled ? '#909090' : '#0F0E0E',
+				fontWeight: props.disabled ? 'light': 'bold',
 				...props.style,
 			}}
-			className='flex justify-center items-center w-full min-h-[68px] select-none text-lg font-bold text-center'>
+			className='flex justify-center items-center w-full md:min-h-[68px] min-h-[60px] select-none text-sm md:text-lg text-center text-white'>
 			{props.value}
 		</div>
 	);

@@ -18,25 +18,38 @@ function MenuPage() {
 
 	// 초기 데이터 로드
 	useEffect(() => {
-		fetchCollectionData('menuCategories', setCategories);
-		const getSetMenus = async () => {
-			const fetchedMenus =
-				((await fetchCollectionData('menus')) as IMenu[] | undefined) ??
-				[];
-			// 이미지 URL들은 병렬 처리합니다.
-			const updatedMenus = await Promise.all(
-				fetchedMenus.map(async (menu) => {
-					const urls = await fetchImageUrls(menu.imagePaths);
-					if (urls) {
-						menu.imagePaths = urls;
-					}
-					return menu;
-				})
-			);
-			setMenus(updatedMenus);
-		};
+		getSetCateogories();
 		getSetMenus();
 	}, []);
+
+	const getSetMenus = async () => {
+		const fetchedMenus =
+			((await fetchCollectionData('menus')) as IMenu[] | undefined) ?? [];
+		// 이미지 URL들은 병렬 처리합니다.
+		const updatedMenus = await Promise.all(
+			fetchedMenus.map(async (menu) => {
+				const urls = await fetchImageUrls(menu.imagePaths);
+				if (urls) {
+					menu.imagePaths = urls;
+				}
+				return menu;
+			})
+		);
+		setMenus(updatedMenus);
+	};
+
+	const getSetCateogories = async () => {
+		const menuCategories = await fetchCollectionData('menuCategories') as ICategory[];
+		if (menuCategories) {
+			const orderedCategories: ICategory[] = [];
+
+			menuCategories.forEach((category) => {
+				orderedCategories[category.order] = category;
+			});
+
+			setCategories(orderedCategories);
+		}
+	};
 
 	// 선택된 카테고리에 해당하는 메뉴 필터링 (useMemo로 메모이제이션)
 	const filteredCategoryMenus = useMemo(() => {
@@ -56,9 +69,9 @@ function MenuPage() {
 
 	return (
 		<Common meta={<Meta />}>
-			<div className='flex flex-col justify-start items-center self-stretch  gap-[60px] px-[120px] pt-[100px] pb-40 bg-white'>
+			<div className='flex flex-col justify-start items-center self-stretch  gap-[60px] md:px-[120px] px-[20px] pt-[40px] md:pt-[100px] pb-40 bg-white'>
 				<div className='flex flex-col justify-start items-center self-stretch  gap-2'>
-					<p className=' text-5xl font-bold text-center text-[#0f0e0e]'>
+					<p className='text-[28px] md:text-5xl font-bold text-center text-[#0f0e0e]'>
 						메뉴
 					</p>
 				</div>
@@ -66,9 +79,10 @@ function MenuPage() {
 					menus={categories}
 					selectedIdx={selectedCategoryIdx}
 					onClickMenu={onClickCategory}
+					style={{justifyContent: 'start'}}
 				/>
 				{filteredCategoryMenus.length > 0 ? (
-					<div className='grid grid-cols-3 gap-x-8 gap-y-16'>
+					<div className='grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16'>
 						{filteredCategoryMenus.map((menu) => (
 							<MenuCard
 								shadowed
@@ -77,6 +91,7 @@ function MenuPage() {
 								src={menu.imagePaths[0]}
 								title={menu.name}
 								description={menu.description}
+								price={menu.price}
 							/>
 						))}
 					</div>
@@ -85,7 +100,7 @@ function MenuPage() {
 						상품 준비중입니다.
 					</div>
 				)}
-				<div className='flex flex-col w-[1200px] relative gap-1.5 px-6 py-5 bg-[#fffbea]'>
+				<div className='flex flex-col md:w-[1200px] relative gap-1.5 px-6 py-5 bg-[#fffbea]'>
 					<p className='text-base font-bold text-left text-[#5c5c5c]'>
 						패키지 디자인 추가 옵션
 					</p>

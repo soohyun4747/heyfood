@@ -120,7 +120,7 @@ export function GuestLogin() {
 	return (
 		<div className='flex flex-col justify-start items-start self-stretch  gap-10'>
 			<div className='flex flex-col justify-start items-center self-stretch  gap-6'>
-				<p className=' text-[15px] text-center text-[#909090]'>
+				<p className='text-xs md:text-[15px] text-center text-[#909090]'>
 					헤이델리박스 회원이 되시면 다양한 혜택을 누리실 수 있습니다.
 				</p>
 				<div className='flex justify-end items-center self-stretch  gap-2'>
@@ -139,12 +139,12 @@ export function GuestLogin() {
 						checked={agreementCheck}
 						onClick={() => setAgreementCheck((prev) => !prev)}
 					/>
-					<p className=' text-base text-left text-[#0f0e0e]'>
+					<p className='text-sm md:text-base text-left text-[#0f0e0e]'>
 						비회원 이용약관 및 개인정보 수집 이용동의
 					</p>
 				</div>
-				<div className='flex justify-start items-start self-stretch  h-[238px] relative overflow-hidden gap-2 p-4 border border-[#d9d9d9] overflow-y-auto'>
-					<p className='flex-grow w-[416px] text-[13px] text-left text-[#909090]'>
+				<div className='md:bg-transparent bg-white flex justify-start items-start self-stretch  h-[238px] relative overflow-hidden gap-2 p-4 border border-[#d9d9d9] overflow-y-auto'>
+					<p className='flex-grow md:w-[416px] text-sm md:text-[13px] text-left text-[#909090]'>
 						<span>
 							헤이델리박스는 비회원 주문 서비스를 위하여 다음과
 							같이 귀하의 개인정보를 수집·이용합니다.
@@ -191,18 +191,18 @@ export function GuestLogin() {
 			</div>
 			<div className='flex flex-col justify-start items-start self-stretch  gap-12'>
 				<div className='flex flex-col justify-start items-start self-stretch  gap-3'>
-					<div className='flex justify-start items-center self-stretch  gap-6 px-6 py-[19px] border border-[#d9d9d9]'>
+					<div className='flex justify-start items-center self-stretch gap-6 px-6 py-[19px] border border-[#d9d9d9] bg-white md:bg-transparent'>
 						<input
-							className='flex-grow text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+							className='flex-grow text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 							placeholder='이름'
 							value={name}
 							onChange={(e) => setName(e.target.value)}
 						/>
 					</div>
 					<div className='flex justify-start items-start self-stretch  gap-2'>
-						<div className='flex justify-start items-center  w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9]'>
+						<div className='flex justify-start items-center  w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9] bg-white md:bg-transparent'>
 							<input
-								className='flex-grow text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+								className='flex-grow text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 								placeholder='휴대폰 번호'
 								value={phoneNumber}
 								onChange={(e) => setPhoneNumber(e.target.value)}
@@ -215,9 +215,9 @@ export function GuestLogin() {
 						/>
 					</div>
 					<div className='flex justify-start items-start self-stretch  gap-2'>
-						<div className='flex justify-start items-center  w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9]'>
+						<div className='flex justify-start items-center  w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9]  bg-white md:bg-transparent'>
 							<input
-								className='flex-grow text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+								className='flex-grow text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 								placeholder='인증번호'
 								value={verifyCode}
 								onChange={(e) => setVerifyCode(e.target.value)}
@@ -250,7 +250,7 @@ export function GuestLogin() {
 											? '#F2AB27'
 											: '#909090',
 								}}
-								className='cursor-pointer text-lg font-bold text-center'>
+								className='cursor-pointer md:text-lg font-bold text-center'>
 								비회원 주문조회
 							</p>
 						</div>

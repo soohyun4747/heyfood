@@ -63,7 +63,7 @@ export function GNB({ type }: { type: IUserType }) {
 					onClick={() => router.push('/')}
 					className='cursor-pointer md:hidden'
 				/>
-				<div className='hidden md:block flex items-center gap-[44px]'>
+				<div className='hidden md:flex items-center gap-[44px]'>
 					<div
 						onClick={() => router.push('/heydelibox')}
 						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
@@ -82,7 +82,7 @@ export function GNB({ type }: { type: IUserType }) {
 				</div>
 			</div>
 			<div className='flex items-center gap-[12px] md:gap-[52px]'>
-				<div className='hidden md:block flex items-center gap-[44px]'>
+				<div className='hidden md:flex items-center gap-[44px]'>
 					<div
 						onClick={() => router.push('/inquiry')}
 						className='select-none p-[6px] text-sm leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
@@ -106,13 +106,15 @@ export function GNB({ type }: { type: IUserType }) {
 					value={'주문하기'}
 					onClick={onClickOrder}
 				/>
-				<ButtonIcon
-					icon={Menu}
-					onClick={() => {
-						setMenuOpen(true);
-					}}
-					id={domId}
-				/>
+				<div className='md:hidden'>
+					<ButtonIcon
+						icon={Menu}
+						onClick={() => {
+							setMenuOpen(true);
+						}}
+						id={domId}
+					/>
+				</div>
 			</div>
 			{menuOpen && <MenuDrawer />}
 		</div>

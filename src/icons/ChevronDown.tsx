@@ -5,9 +5,8 @@ export function ChevronDown(props: IIconProps) {
 		<svg
 			id={props.id}
 			xmlns='http://www.w3.org/2000/svg'
-			width={props.size ?? '48'}
-			height={props.size ?? '48'}
 			viewBox='0 0 48 48'
+			className={`size-6 md:size-[48px] relative ${props.className}`}
 			fill='none'>
 			<path
 				id={props.id}

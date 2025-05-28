@@ -126,29 +126,31 @@ function InquiryPage() {
 
 	return (
 		<Common meta={<Meta />}>
-			<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-[60px] px-[120px] pt-[100px] pb-40'>
-				<div className='flex flex-col justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2'>
-					<p className='flex-grow-0 flex-shrink-0 text-5xl font-bold text-center text-[#0f0e0e] leading-[150%]'>
+			<div className='flex flex-col justify-start items-center self-stretch gap-[60px] px-[20px] md:px-[120px] pt-[40px] md:pt-[100px] pb-40'>
+				<div className='flex flex-col justify-start items-center self-stretch relative gap-2 md:gap-5'>
+					<p className='text-[28px] md:text-5xl font-bold text-center text-[#0f0e0e] leading-[150%]'>
 						문의하기
 					</p>
-					<p className='flex-grow-0 flex-shrink-0 text-base text-center text-[#0f0e0e] leading-[160%]'>
-						<span className='flex-grow-0 flex-shrink-0 text-base text-center text-[#0f0e0e]'>
-							고객님이 보내주신 문의에 대한 답변은 문의 등록 시
+					<p className='text-sm md:text-base text-center text-[#0f0e0e] leading-[160%]'>
+						<span>
+							고객님이 보내주신 문의에 대한 답변은 문의 등록 시{' '}
+							<br className='md:hidden' />
 							기재해주신 이메일로 회신 드립니다.
 						</span>
 						<br />
-						<span className='flex-grow-0 flex-shrink-0 text-base text-center text-[#0f0e0e]'>
-							보내주신 문의사항에 대해서는 순차적으로 답변 전달
-							드리고 있습니다.
+						<span>
+							보내주신 문의사항에 대해서는 순차적으로{' '}
+							<br className='md:hidden' />
+							답변 전달 드리고 있습니다.
 						</span>
 					</p>
 				</div>
 				<div
-					className='flex flex-col justify-start items-center flex-grow-0 flex-shrink-0 w-[994px] gap-[60px] px-[120px] py-20 rounded-3xl bg-white'
+					className='flex flex-col justify-start items-center md:w-[994px] gap-[60px] px-[24px] md:px-[120px] py-[40px] md:py-20 rounded-3xl bg-white max-w-[calc(100vw-40px)]'
 					style={{ boxShadow: '0px 4px 20px 0 rgba(0,0,0,0.1)' }}>
-					<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-6'>
-						<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-12'>
-							<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
+					<div className='flex flex-col justify-start items-start self-stretch relative gap-6'>
+						<div className='flex md:flex-row flex-col justify-start md:items-center self-stretch relative gap-4 md:gap-12'>
+							<p className='w-[110px] text-lg text-left text-[#0f0e0e]'>
 								이름
 							</p>
 							<svg
@@ -157,7 +159,7 @@ function InquiryPage() {
 								viewBox='0 0 1 28'
 								fill='none'
 								xmlns='http://www.w3.org/2000/svg'
-								className='flex-grow-0 flex-shrink-0'
+								className='hidden md:block'
 								preserveAspectRatio='none'>
 								<line
 									x1='0.5'
@@ -168,29 +170,15 @@ function InquiryPage() {
 								/>
 							</svg>
 							<input
-								className='flex-grow text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+								className='flex-grow text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 								placeholder='이름 입력'
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 							/>
 						</div>
-						<svg
-							width={754}
-							height={1}
-							viewBox='0 0 754 1'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='self-stretch flex-grow-0 flex-shrink-0'
-							preserveAspectRatio='none'>
-							<line
-								y1='0.5'
-								x2={754}
-								y2='0.5'
-								stroke='#D9D9D9'
-							/>
-						</svg>
-						<div className='flex justify-start items-center w-full h-[34px] relative gap-12'>
-							<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
+						<div className='md:w-[754px] h-[1px] self-stretch bg-[#D9D9D9]' />
+						<div className='flex md:flex-row flex-col justify-start md:items-center w-full md:h-[34px] relative gap-4 md:gap-12'>
+							<p className='min-w-[110px] text-lg text-left text-[#0f0e0e]'>
 								연락처
 							</p>
 							<svg
@@ -199,7 +187,7 @@ function InquiryPage() {
 								viewBox='0 0 1 28'
 								fill='none'
 								xmlns='http://www.w3.org/2000/svg'
-								className='flex-grow-0 flex-shrink-0'
+								className='md:block hidden'
 								preserveAspectRatio='none'>
 								<line
 									x1='0.5'
@@ -211,7 +199,7 @@ function InquiryPage() {
 							</svg>
 							<div className='flex justify-start items-center gap-6 w-full overflow-hidden'>
 								<select
-									className='ui dropdown focus:outline-0 hover:cursor-pointer'
+									className='ui dropdown focus:outline-0 hover:cursor-pointer text-sm md:text-base'
 									onChange={(e) => setPhone1(e.target.value)}>
 									{initPhoneNumbers.map((value) => (
 										<option
@@ -221,21 +209,21 @@ function InquiryPage() {
 										</option>
 									))}
 								</select>
-								<p className='flex-grow-0 text-[22px] text-left text-[#0f0e0e]'>
+								<p className='text-[22px] text-left text-[#0f0e0e]'>
 									-
 								</p>
 								<input
-									className='min-w-0 flex-1 text-xl text-left focus:outline-0'
+									className='w-auto max-w-[76px] md:flex-1 text-sm md:text-xl text-left focus:outline-0'
 									value={phone2}
 									onChange={(e) =>
 										onChangePhoneNumber(e, setPhone2)
 									}
 								/>
-								<p className='flex-grow-0 text-[22px] text-left text-[#0f0e0e]'>
+								<p className='text-[22px] text-left text-[#0f0e0e]'>
 									-
 								</p>
 								<input
-									className='min-w-0 flex-1 text-xl text-left focus:outline-0'
+									className='w-auto w-[76px] md:flex-1 text-sm md:text-xl text-left focus:outline-0'
 									value={phone3}
 									onChange={(e) =>
 										onChangePhoneNumber(e, setPhone3)
@@ -243,23 +231,9 @@ function InquiryPage() {
 								/>
 							</div>
 						</div>
-						<svg
-							width={754}
-							height={1}
-							viewBox='0 0 754 1'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='self-stretch flex-grow-0 flex-shrink-0'
-							preserveAspectRatio='none'>
-							<line
-								y1='0.5'
-								x2={754}
-								y2='0.5'
-								stroke='#D9D9D9'
-							/>
-						</svg>
-						<div className='flex justify-start items-center w-full relative gap-12'>
-							<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
+						<div className='md:w-[754px] h-[1px] self-stretch bg-[#D9D9D9]' />
+						<div className='flex flex-col md:flex-row justify-start md:items-center w-full relative gap-4 md:gap-12'>
+							<p className='w-[110px] text-lg text-left text-[#0f0e0e]'>
 								이메일 (선택)
 							</p>
 							<svg
@@ -268,7 +242,7 @@ function InquiryPage() {
 								viewBox='0 0 1 28'
 								fill='none'
 								xmlns='http://www.w3.org/2000/svg'
-								className='flex-grow-0 flex-shrink-0'
+								className='md:block hidden'
 								preserveAspectRatio='none'>
 								<line
 									x1='0.5'
@@ -278,18 +252,18 @@ function InquiryPage() {
 									stroke='#D9D9D9'
 								/>
 							</svg>
-							<div className='flex justify-start items-center w-full overflow-hidden gap-6'>
+							<div className='flex justify-start items-center self-stretch gap-2 md:gap-6'>
 								<input
-									className='min-w-0 flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
-									placeholder='이메일 아이디 입력'
+									className='md:w-[120px] w-[76px] md:flex-1 text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+									placeholder='아이디 입력'
 									value={emailId}
 									onChange={(e) => setEmailId(e.target.value)}
 								/>
-								<p className='flex-grow-0 flex-shrink-0 text-xl text-left text-[#0f0e0e]'>
+								<p className='md:text-xl text-left text-[#0f0e0e]'>
 									@
 								</p>
 								<input
-									className='min-w-0 flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+									className='md:w-[160px] w-[76px] md:flex-1 text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 									placeholder='도메인 입력'
 									value={emailDomain}
 									onChange={onChangeEmailDomainInput}
@@ -300,7 +274,7 @@ function InquiryPage() {
 									viewBox='0 0 2 28'
 									fill='none'
 									xmlns='http://www.w3.org/2000/svg'
-									className='flex-grow-0 flex-shrink-0'
+									className='md:block hidden'
 									preserveAspectRatio='none'>
 									<line
 										x1='0.833008'
@@ -310,12 +284,14 @@ function InquiryPage() {
 										stroke='#D9D9D9'
 									/>
 								</svg>
+
 								<select
 									value={emailDomainSelectVal}
-									className='ui dropdown focus:outline-0 hover:cursor-pointer'
+									className='focus:outline-0 hover:cursor-pointer text-xs md:text-base'
 									onChange={onSelectEmailDomain}>
 									{emailDomains.map((value) => (
 										<option
+											className='text-xs md:text-base'
 											key={value}
 											value={value}>
 											{value}
@@ -324,23 +300,9 @@ function InquiryPage() {
 								</select>
 							</div>
 						</div>
-						<svg
-							width={754}
-							height={1}
-							viewBox='0 0 754 1'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='self-stretch flex-grow-0 flex-shrink-0'
-							preserveAspectRatio='none'>
-							<line
-								y1='0.5'
-								x2={754}
-								y2='0.5'
-								stroke='#D9D9D9'
-							/>
-						</svg>
-						<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-12'>
-							<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
+						<div className='md:w-[754px] h-[1px] self-stretch bg-[#D9D9D9]' />
+						<div className='flex flex-col md:flex-row justify-start md:items-center self-stretch relative gap-4 md:gap-12'>
+							<p className='w-[110px] text-lg text-left text-[#0f0e0e]'>
 								행사 일정
 							</p>
 							<svg
@@ -349,7 +311,7 @@ function InquiryPage() {
 								viewBox='0 0 1 28'
 								fill='none'
 								xmlns='http://www.w3.org/2000/svg'
-								className='flex-grow-0 flex-shrink-0'
+								className='md:block hidden'
 								preserveAspectRatio='none'>
 								<line
 									x1='0.5'
@@ -360,29 +322,15 @@ function InquiryPage() {
 								/>
 							</svg>
 							<input
-								className='min-w-0 flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+								className='flex-1 text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 								placeholder='행사 일정 입력'
 								value={event}
 								onChange={(e) => setEvent(e.target.value)}
 							/>
 						</div>
-						<svg
-							width={754}
-							height={1}
-							viewBox='0 0 754 1'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='self-stretch flex-grow-0 flex-shrink-0'
-							preserveAspectRatio='none'>
-							<line
-								y1='0.5'
-								x2={754}
-								y2='0.5'
-								stroke='#D9D9D9'
-							/>
-						</svg>
-						<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-12'>
-							<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
+						<div className='md:w-[754px] h-[1px] self-stretch bg-[#D9D9D9]' />
+						<div className='flex flex-col md:flex-row justify-start md:items-center self-stretch relative gap-4 md:gap-12'>
+							<p className='w-[110px] text-lg text-left text-[#0f0e0e]'>
 								배달 장소
 							</p>
 							<svg
@@ -391,7 +339,7 @@ function InquiryPage() {
 								viewBox='0 0 1 28'
 								fill='none'
 								xmlns='http://www.w3.org/2000/svg'
-								className='flex-grow-0 flex-shrink-0'
+								className='md:block hidden'
 								preserveAspectRatio='none'>
 								<line
 									x1='0.5'
@@ -402,29 +350,15 @@ function InquiryPage() {
 								/>
 							</svg>
 							<input
-								className='min-w-0 flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+								className='flex-1 text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 								placeholder='배달 장소 입력'
 								value={delivery}
 								onChange={(e) => setDelivery(e.target.value)}
 							/>
 						</div>
-						<svg
-							width={754}
-							height={1}
-							viewBox='0 0 754 1'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='self-stretch flex-grow-0 flex-shrink-0'
-							preserveAspectRatio='none'>
-							<line
-								y1='0.5'
-								x2={754}
-								y2='0.5'
-								stroke='#D9D9D9'
-							/>
-						</svg>
-						<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-12'>
-							<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
+						<div className='md:w-[754px] h-[1px] self-stretch bg-[#D9D9D9]' />
+						<div className='flex flex-col md:flex-row justify-start md:items-center self-stretch relative gap-4 md:gap-12'>
+							<p className='w-[110px] text-lg text-left text-[#0f0e0e]'>
 								도시락 종류
 							</p>
 							<svg
@@ -433,7 +367,7 @@ function InquiryPage() {
 								viewBox='0 0 1 28'
 								fill='none'
 								xmlns='http://www.w3.org/2000/svg'
-								className='flex-grow-0 flex-shrink-0'
+								className='md:block hidden'
 								preserveAspectRatio='none'>
 								<line
 									x1='0.5'
@@ -444,29 +378,15 @@ function InquiryPage() {
 								/>
 							</svg>
 							<input
-								className='min-w-0 flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+								className='flex-1 text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 								placeholder='도시락 종류 입력'
 								value={dosirakType}
 								onChange={(e) => setDosirakType(e.target.value)}
 							/>
 						</div>
-						<svg
-							width={754}
-							height={1}
-							viewBox='0 0 754 1'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='self-stretch flex-grow-0 flex-shrink-0'
-							preserveAspectRatio='none'>
-							<line
-								y1='0.5'
-								x2={754}
-								y2='0.5'
-								stroke='#D9D9D9'
-							/>
-						</svg>
-						<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 h-32 relative gap-12'>
-							<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
+						<div className='md:w-[754px] h-[1px] self-stretch bg-[#D9D9D9]' />
+						<div className='flex flex-col md:flex-row justify-start md:items-center self-stretch h-32 relative gap-4 md:gap-12'>
+							<p className='w-[110px] text-lg text-left text-[#0f0e0e]'>
 								문의사항
 							</p>
 							<svg
@@ -475,7 +395,7 @@ function InquiryPage() {
 								viewBox='0 0 1 128'
 								fill='none'
 								xmlns='http://www.w3.org/2000/svg'
-								className='self-stretch flex-grow-0 flex-shrink-0'
+								className='self-stretch md:block hidden'
 								preserveAspectRatio='none'>
 								<line
 									x1='0.5'
@@ -485,28 +405,21 @@ function InquiryPage() {
 									stroke='#D9D9D9'
 								/>
 							</svg>
-							<input
-								className='min-w-0 flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+							{/* <input
+								className='flex-1 text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 								placeholder='문의사항 입력'
 								value={inquiry}
 								onChange={(e) => setInquiry(e.target.value)}
+							/> */}
+							<textarea
+								className={`flex-1 text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 resize-none`}
+								placeholder={'문의사항 입력'}
+								value={inquiry}
+								rows={6}
+								onChange={(e) => setInquiry(e.target.value)}
 							/>
 						</div>
-						<svg
-							width={754}
-							height={1}
-							viewBox='0 0 754 1'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='self-stretch flex-grow-0 flex-shrink-0'
-							preserveAspectRatio='none'>
-							<line
-								y1='0.5'
-								x2={754}
-								y2='0.5'
-								stroke='#D9D9D9'
-							/>
-						</svg>
+						<div className='md:w-[754px] h-[1px] self-stretch bg-[#D9D9D9]' />
 					</div>
 					<ButtonMono
 						value={'문의하기'}

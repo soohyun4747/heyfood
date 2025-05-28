@@ -22,16 +22,24 @@ export function FaqPage() {
 
 	// 초기 데이터 로드
 	useEffect(() => {
-		const getSetFaqCategories = async () => {
-			await fetchCollectionData('FAQCategories', setCategories);
-			setCategories((prev) => {
-				prev.unshift({ id: 'all', name: '전체' });
-				return [...prev];
-			});
-		};
-		getSetFaqCategories();
+		getSetCategories();
 		fetchCollectionData('FAQs', setFaqs);
 	}, []);
+
+	const getSetCategories = async () => {
+		const faqCategories = await fetchCollectionData('FAQCategories') as ICategory[];
+		if (faqCategories) {
+			const orderedCategories: ICategory[] = [];
+
+			faqCategories.forEach((category) => {
+				orderedCategories[category.order] = category;
+			});
+
+			orderedCategories.unshift({ id: 'all', name: '전체', order: -1 })
+
+			setCategories(orderedCategories);
+		}
+	};
 
 	// 선택된 카테고리에 해당하는 메뉴 필터링 (useMemo로 메모이제이션)
 	const filteredCategoryFaqs = useMemo(() => {
@@ -48,12 +56,12 @@ export function FaqPage() {
 
 	return (
 		<Common meta={<Meta />}>
-			<div className='flex flex-col justify-start items-center self-stretch  gap-[60px] px-[120px] pt-[100px] pb-40 h-screen min-h-fit'>
-				<div className='flex flex-col justify-start items-center self-stretch  gap-2'>
-					<p className=' text-5xl font-bold text-center text-[#0f0e0e] leading-[150%]'>
+			<div className='flex flex-col items-center self-stretch  gap-[60px] px-[20px] md:px-[120px] pt-[40px] md:pt-[100px] pb-40 h-screen min-h-fit'>
+				<div className='flex flex-col justify-center items-center self-stretch gap-2 md:gap-4'>
+					<p className='text-[28px] md:text-5xl font-bold text-center text-[#0f0e0e] leading-[150%]'>
 						자주묻는 질문
 					</p>
-					<p className=' text-base text-center text-[#0f0e0e] leading-[160%]'>
+					<p className='text-sm md:text-base text-center text-[#0f0e0e] leading-[160%]'>
 						고객분들이 자주 묻는 질문을 정리했습니다.
 					</p>
 				</div>
@@ -62,7 +70,7 @@ export function FaqPage() {
 					selectedIdx={selectedCategoryIdx}
 					onClickMenu={onClickCategory}
 				/>
-				<div className='flex flex-col justify-start items-start  w-[1200px] relative gap-5'>
+				<div className='flex flex-col justify-center items-start md:w-[1200px] self-stretch relative gap-5 md:self-center justify-self-center'>
 					<p className=' text-lg text-left'>
 						<span className=' text-lg font-medium text-left text-[#909090]'>
 							총{' '}
@@ -75,22 +83,7 @@ export function FaqPage() {
 						</span>
 					</p>
 					<div className='flex flex-col justify-start items-start self-stretch  relative'>
-						<svg
-							width={1200}
-							height={3}
-							viewBox='0 0 1200 3'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='self-stretch flex-grow-0 flex-shrink-0'
-							preserveAspectRatio='none'>
-							<line
-								y1='1.5'
-								x2={1200}
-								y2='1.5'
-								stroke='#0F0E0E'
-								strokeWidth={3}
-							/>
-						</svg>
+						<div className='md:w-[1200px] self-stretch h-[3px] bg-[#0F0E0E]'/>
 						{filteredCategoryFaqs.map((faq) => (
 							<Accordion
 								key={faq.id}
