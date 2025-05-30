@@ -371,7 +371,7 @@ export function OrderInfo() {
 						</div>
 						{data.orderItemsWithDeliveryDate.map(
 							(itemsWithDate, idx) => (
-								<div className='flex flex-col gap-[24px] p-6 bg-white border border-b-0 border-neutral-200 self-stretch'>
+								<div key={idx} className='flex flex-col gap-[24px] p-6 bg-white border border-b-0 border-neutral-200 self-stretch'>
 									<div
 										key={idx}
 										className='flex justify-start items-start self-stretch gap-6'>

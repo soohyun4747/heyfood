@@ -1,4 +1,3 @@
-import { db } from '@/configs/firebaseConfig';
 import { updateData } from '@/utils/firebase';
 import { Timestamp } from 'firebase/firestore';
 import type { NextApiRequest, NextApiResponse } from 'next';

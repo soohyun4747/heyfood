@@ -1,6 +1,6 @@
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { logout } from '@/utils/firebase';
 import { useUserStore } from '@/stores/userStore';
 import { useRouter } from 'next/router';

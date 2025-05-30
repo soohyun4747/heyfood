@@ -1,5 +1,4 @@
 import { auth, db, storage } from '@/configs/firebaseConfig';
-import { IUser } from '@/stores/userStore';
 import {
 	ConfirmationResult,
 	signInWithPhoneNumber,

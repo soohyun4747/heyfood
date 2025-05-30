@@ -17,7 +17,7 @@ interface IDateTimeDrawerProps {
 
 function getTwoDaysLaterAtNine(): Date {
 	const today = new Date();
-	let targetDate = new Date(
+	const targetDate = new Date(
 		today.getFullYear(),
 		today.getMonth(),
 		today.getDate() + 2, // 이틀 후

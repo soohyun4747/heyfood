@@ -6,12 +6,7 @@ import { MenuCardOrder } from '@/components/MenuCardOrder';
 import { TabMenu } from '@/components/TabMenu';
 import { Reset } from '@/icons/Reset';
 import { useItemsStore } from '@/stores/itemsStore';
-import { UserType, useUserStore } from '@/stores/userStore';
-import {
-	fetchCollectionData,
-	fetchImageUrls,
-	updateData,
-} from '@/utils/firebase';
+import { useUserStore } from '@/stores/userStore';
 import { useEffect, useMemo, useState } from 'react';
 import { AddressDrawer } from '../../components/pages/order/AddressDrawer';
 import { useRouter } from 'next/router';

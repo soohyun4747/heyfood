@@ -4,7 +4,6 @@ import { db } from '@/configs/firebaseConfig';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
 import { IUser } from '@/stores/userStore';
-import { extractNumbers } from '@/utils/string';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useState } from 'react';

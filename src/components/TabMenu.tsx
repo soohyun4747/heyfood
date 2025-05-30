@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from 'react';
+import { CSSProperties } from 'react';
 import { ICategory } from './LandingMenusTab';
 
 interface ITabMenuProps {

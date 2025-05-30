@@ -37,7 +37,7 @@ export function Dropdown(props: IDropdownProps) {
 			id={props.domId}
 			style={props.style}
 			className='relative hover:cursor-pointer'
-			onClick={(e) => {
+			onClick={() => {
 				setOpen(true);
 			}}>
 			<div
@@ -63,13 +63,15 @@ export function Dropdown(props: IDropdownProps) {
 						boxShadow: '0px 2px 15px rgba(0, 0, 0, 0.2)',
 					}}
 					className={`flex flex-col p-[12px] gap-[6px] rounded-[8px] border border-gray-100 bg-white shadow-dropdown w-max absolute top-[54px] left-0 h-[200px] overflow-auto z-[2]`}>
-					{props.list.map((item) => (
+					{props.list.map((item, i) => (
 						<div
+							key={i}
 							onClick={() =>
 								props.onClick && props.onClick(item.id)
 							}
 							className={`flex gap-[12px] px-[20px] py-[8px] self-stretch items-center ${
-								item.id === props.selectedId && 'bg-brand-01/30 hover:bg-brand-01/30'
+								item.id === props.selectedId &&
+								'bg-brand-01/30 hover:bg-brand-01/30'
 							} rounded-[6px] hover:cursor-pointer hover:bg-brand-01/10`}>
 							<div
 								className={`select-none leading-[normal] self-center text-[16px] ${

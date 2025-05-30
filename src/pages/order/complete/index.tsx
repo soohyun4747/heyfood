@@ -3,7 +3,6 @@ import {
 	IOrder,
 	IOrderItem,
 	IOrderStatus,
-	OrderStatus,
 } from '@/components/pages/profile/OrderInfo';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
@@ -22,7 +21,6 @@ import {
 	addData,
 	addMultipleDatas,
 	fetchDataWithDocId,
-	updateData,
 } from '@/utils/firebase';
 import { convertDateStrToTimestamp } from '@/utils/time';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';

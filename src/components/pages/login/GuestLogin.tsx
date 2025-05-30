@@ -8,15 +8,12 @@ import {
 	fetchDataWithDocId,
 	sendVerificationCode,
 } from '@/utils/firebase';
-import { formatPhoneNumberE164 } from '@/utils/string';
 import { convertDateStrToTimestamp } from '@/utils/time';
 import {
 	ConfirmationResult,
 	getAuth,
 	RecaptchaVerifier,
-	signInWithPhoneNumber,
 	User,
-	UserCredential,
 } from 'firebase/auth';
 import { Timestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
