@@ -4,6 +4,7 @@ export interface IButtonBasicProps {
 	value: string;
 	onClick?: () => void;
 	style?: CSSProperties;
+	className?: string;
 	disabled?: boolean;
 }
 
@@ -21,7 +22,7 @@ export function Button(props: IButtonProps) {
 				color: props.disabled ? '#909090' : '#0F0E0E',
 				...props.style,
 			}}
-			className='text-sm md:text-base select-none bg-brand-01 hover:bg-[#FFB224] font-bold leading-[160%] px-[12px] md:px-[16px] py-[8px] md:py-[14px] rounded-lg flex justify-center items-center'>
+			className={`text-sm md:text-base select-none bg-brand-01 hover:bg-[#FFB224] font-bold leading-[160%] px-[12px] md:px-[16px] py-[8px] md:py-[14px] rounded-lg flex justify-center items-center ${props.className}`}>
 			{props.value}
 		</div>
 	);

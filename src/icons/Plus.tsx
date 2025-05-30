@@ -7,7 +7,8 @@ export function Plus(props: IIconProps) {
 			height='24'
 			viewBox='0 0 24 24'
 			fill='none'
-			xmlns='http://www.w3.org/2000/svg'>
+			xmlns='http://www.w3.org/2000/svg'
+			className='size-[20px] md:size-[24px]'>
 			<path
 				d='M12.0002 7.2002L12.0002 16.8002M16.8002 12.0002L7.2002 12.0002'
 				stroke={props.color ?? '#FFC966'}

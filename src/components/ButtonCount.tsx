@@ -42,14 +42,14 @@ export function ButtonCount(props: IButtonCountProps) {
 	return (
 		<>
 			{props.count ? (
-				<div className='select-none flex justify-center items-center self-stretch h-[54px] relative gap-2 py-[9px] rounded-[100px] bg-[#ffcd70]'>
+				<div className='select-none flex justify-center items-center self-stretch h-[34px] md:h-[54px] relative gap-2 rounded-[100px] bg-[#ffcd70]'>
 					<p
 						onClick={props.onClickMinus}
-						className='hover:cursor-pointer flex-grow text-2xl font-bold text-center text-white'>
+						className='hover:cursor-pointer flex-grow text-sm md:text-2xl font-bold text-center text-white'>
 						-
 					</p>
 					<input
-						className='w-[90px] text-2xl font-bold text-center text-white focus:outline-0 focus:text-black bg-transparent'
+						className='w-[40px] md:w-[90px] text-sm md:text-2xl font-bold text-center text-white focus:outline-0 focus:text-black bg-transparent'
 						value={inputVal}
 						onChange={(e) => setInputVal(e.target.value)}
 						onBlur={onBlur}
@@ -57,19 +57,19 @@ export function ButtonCount(props: IButtonCountProps) {
 					/>
 					<p
 						onClick={props.onClickPlus}
-						className='hover:cursor-pointer flex-grow text-2xl font-bold text-center text-white'>
+						className='hover:cursor-pointer flex-grow text-sm md:text-2xl font-bold text-center text-white'>
 						+
 					</p>
 				</div>
 			) : (
 				<div
 					onClick={props.onClickPlus}
-					className={`select-none hover:cursor-pointer flex justify-center items-center self-stretch h-[54px] relative gap-2 py-3 rounded-[100px] ${
+					className={`select-none hover:cursor-pointer flex justify-center items-center self-stretch h-[34px] md:h-[54px] relative gap-2 rounded-[100px] ${
 						props.disabled
 							? 'bg-[#E5E5E5] text-[#909090]'
 							: 'bg-white border text-[#f2ab27]'
 					} border-[#ffc966] hover:bg-[#fffbea]`}>
-					<p className='flex-grow text-xl text-center'>
+					<p className='flex-grow text-[13px] md:text-xl text-center'>
 						{props.value}
 					</p>
 				</div>

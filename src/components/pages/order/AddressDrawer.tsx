@@ -169,7 +169,11 @@ export function AddressDrawer(props: IAddressDrawerProps) {
 						</p>
 					</div>
 					{addressSearchOpen && (
-						<div className='fixed top-[20%] left-1/2 transform -translate-x-1/2 z-[1000] bg-white p-[16px] rounded-[12px] flex flex-col gap-[12px]'>
+						<div
+							style={{
+								boxShadow: '0px 4px 12px 0 rgba(0,0,0,0.15)',
+							}}
+							className='fixed top-[20%] left-1/2 transform -translate-x-1/2 z-[1000] bg-white p-[16px] rounded-[12px] flex flex-col gap-[12px]'>
 							<div className='flex items-center justify-between'>
 								<div>주소검색</div>
 								<div

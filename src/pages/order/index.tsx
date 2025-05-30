@@ -7,13 +7,18 @@ import { TabMenu } from '@/components/TabMenu';
 import { Reset } from '@/icons/Reset';
 import { useItemsStore } from '@/stores/itemsStore';
 import { UserType, useUserStore } from '@/stores/userStore';
-import { fetchCollectionData, fetchImageUrls, updateData } from '@/utils/firebase';
+import {
+	fetchCollectionData,
+	fetchImageUrls,
+	updateData,
+} from '@/utils/firebase';
 import { useEffect, useMemo, useState } from 'react';
 import { AddressDrawer } from '../../components/pages/order/AddressDrawer';
 import { useRouter } from 'next/router';
 import { DateTimeDrawer } from '../../components/pages/order/DateTimeDrawer';
 import { useCartStore } from '@/stores/cartStore';
 import { ModalCenter } from '@/components/ModalCenter';
+import { getSetCateogories, getSetMenus } from '../menu';
 
 const minimumCount = 1;
 
@@ -52,24 +57,8 @@ function OrderPage() {
 
 	// 초기 데이터 로드
 	useEffect(() => {
-		fetchCollectionData('menuCategories', setCategories);
-		const getSetMenus = async () => {
-			const fetchedMenus =
-				((await fetchCollectionData('menus')) as IMenu[] | undefined) ??
-				[];
-			// 이미지 URL들은 병렬 처리합니다.
-			const updatedMenus = await Promise.all(
-				fetchedMenus.map(async (menu) => {
-					const urls = await fetchImageUrls(menu.imagePaths);
-					if (urls) {
-						menu.imagePaths = urls;
-					}
-					return menu;
-				})
-			);
-			setMenus(updatedMenus);
-		};
-		getSetMenus();
+		getSetCateogories(setCategories);
+		getSetMenus(setMenus);
 	}, []);
 
 	const getCartPrice = () => {
@@ -101,10 +90,7 @@ function OrderPage() {
 		setSelectedCategoryIdx(i);
 	};
 
-	const onBlurMenuCount = (
-		menu: IMenu,
-		numVal: number
-	) => {
+	const onBlurMenuCount = (menu: IMenu, numVal: number) => {
 		setItem(menu, numVal);
 	};
 
@@ -159,21 +145,17 @@ function OrderPage() {
 	return (
 		<div className='h-screen flex flex-col overflow-hidden'>
 			<GNBOrder />
-			<div className='flex flex-col justify-start items-center self-stretch gap-[60px] px-[120px] pb-[100px] bg-white h-[calc(100%-131px-96px)] overflow-y-auto'>
-				<div className='flex flex-col justify-start items-center self-stretch relative gap-2'>
-					<p className='text-[50px] font-bold text-center text-[#0f0e0e]'>
-						주문하기
-					</p>
-				</div>
-				<div className='flex flex-col justify-start items-center w-[1200px] gap-[60px]'>
-					<div className='flex justify-start items-start self-stretch flex-grow-0 flex-shrink-0'>
-						<div className='flex justify-start items-center flex-1 gap-3 px-6 py-4 border border-neutral-200 h-[62px]'>
-							<div className='flex justify-center items-center relative gap-2 pt-0.5'>
-								<p className='text-base font-bold text-left text-[#0f0e0e]'>
-									배달주소
-								</p>
-							</div>
-							<p className='flex-grow text-lg text-left text-[#0f0e0e]'>
+			<div className='flex flex-col justify-start items-center self-stretch gap-[60px] md:px-[120px] pb-[120px] md:pb-[100px] bg-white h-[calc(100%-131px)] overflow-y-auto'>
+				<p className='hidden md:block text-[50px] font-bold text-center text-[#0f0e0e]'>
+					주문하기
+				</p>
+				<div className='flex flex-col justify-start items-center md:w-[1200px] gap-7 md:gap-[60px]'>
+					<div className='flex md:flex-row flex-col justify-start items-start max-w-[100vw] md:w-full'>
+						<div className='flex justify-between md:justify-start items-center flex-1 gap-3 px-5 md:px-6 py-4 border border-neutral-200 md:h-[62px] self-stretch md:self-auto'>
+							<p className='min-w-[76px] md:min-w-[70px] text-sm md:text-base font-bold text-left text-[#0f0e0e]'>
+								배달주소
+							</p>
+							<p className='flex-1 md:flex-grow text-sm md:text-lg text-left text-[#0f0e0e]'>
 								{user?.address} {user?.addressDetail}
 							</p>
 							<ButtonSmall
@@ -181,13 +163,13 @@ function OrderPage() {
 								onClick={() => setAddreessDrawerOpen(true)}
 							/>
 						</div>
-						<div className='flex justify-start items-center flex-1 gap-3 px-6 py-4 border-t border-r border-b border-l-0 border-neutral-200 h-[62px]'>
+						<div className='flex justify-start items-center flex-1 gap-3 px-6 py-4 md:border-t border-r border-b border-l-0 border-neutral-200 md:h-[62px] self-stretch md:self-auto'>
 							<div className='flex justify-center items-center relative gap-2 pt-0.5'>
-								<p className='text-base font-bold text-left text-[#0f0e0e]'>
+								<p className='min-w-[76px] md:min-w-[90px] text-sm md:text-base font-bold text-left text-[#0f0e0e]'>
 									날짜 및 시간
 								</p>
 							</div>
-							<p className='flex-grow text-lg text-left text-[#0f0e0e]'>
+							<p className='flex-grow text-sm md:text-lg text-left text-[#0f0e0e]'>
 								{dateTime?.toLocaleString()}
 							</p>
 							<ButtonSmall
@@ -196,12 +178,15 @@ function OrderPage() {
 							/>
 						</div>
 					</div>
-					<TabMenu
-						menus={categories}
-						selectedIdx={selectedCategoryIdx}
-						onClickMenu={onClickCategory}
-					/>
-					<div className='grid grid-cols-3 gap-x-8 gap-y-16'>
+					<div className='max-w-[calc(100vw-40px)] md:max-w-auto'>
+						<TabMenu
+							menus={categories}
+							selectedIdx={selectedCategoryIdx}
+							onClickMenu={onClickCategory}
+							className='md:justify-center'
+						/>
+					</div>
+					<div className='grid grid-cols-2 md:grid-cols-3 gap-x-5 md:gap-x-8 gap-y-13 md:gap-y-16 pt-4 md:pt-0 self-stretch md:self-auto px-[20px] md:px-0'>
 						{filteredCategoryMenus.map((menu) => {
 							const count = items.find(
 								(item) => item.menu.id === menu.id
@@ -226,14 +211,14 @@ function OrderPage() {
 				</div>
 			</div>
 			<div
-				className='flex items-center w-full justify-center rounded-tl-3xl rounded-tr-3xl bg-white relative'
+				className='flex items-center justify-center rounded-tl-3xl rounded-tr-3xl bg-white relative max-w-[1440px] self-center w-full md:w-auto'
 				style={{ boxShadow: '0px 4px 20px 0 rgba(0,0,0,0.1)' }}>
-				<div className='flex justify-end items-center gap-10 px-[120px] py-8 w-[1440px]'>
+				<div className='flex md:flex-row flex-col justify-end md:items-center gap-[18px] md:gap-10 p-[20px] pb-[24px] md:px-[120px] md:py-8 w-full md:w-[1440px]'>
 					<div className='flex flex-col justify-center items-start flex-grow relative'>
-						<p className='text-[26px] font-medium text-right text-[#0f0e0e]'>
+						<p className='text-[20px] md:text-[26px] font-medium text-right text-[#0f0e0e]'>
 							{getCartPrice().toLocaleString()}원
 						</p>
-						<p className='text-lg font-medium text-right text-[#909090]'>
+						<p className='text-sm md:text-lg font-medium text-right text-[#909090]'>
 							하루 30개부터 배달가능
 						</p>
 					</div>
@@ -241,7 +226,7 @@ function OrderPage() {
 						<div
 							onMouseEnter={() => setResetHover(true)}
 							onMouseLeave={() => setResetHover(false)}
-							className='hover:cursor-pointer flex justify-center items-center rounded-lg hover:bg-[#f8f8f8] bg-white border border-neutral-200 w-[56px] h-[56px]'
+							className='hover:cursor-pointer flex justify-center items-center rounded-lg hover:bg-[#f8f8f8] bg-white border border-neutral-200 size-[52px] md:size-[56px]'
 							onClick={onResetItems}>
 							<Reset />
 						</div>
@@ -252,7 +237,7 @@ function OrderPage() {
 								cartItemsCount < minimumCount ? true : false
 							}
 							onClick={onClickAddToCart}
-							style={{ width: 230 }}
+							className='md:w-[230px] flex-1'
 						/>
 					</div>
 					{resetHover && (
@@ -290,6 +275,7 @@ function OrderPage() {
 					btn1st={{
 						value: '장바구니로 이동',
 						onClick: () => router.push('/order/cart'),
+						className: 'w-full md:min-h-[68px] min-h-[60px]',
 					}}
 					btn2nd={{
 						value: '주문 추가하기',

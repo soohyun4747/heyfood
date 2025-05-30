@@ -212,6 +212,7 @@ export function GuestLogin() {
 							value='인증번호 발송'
 							disabled={phoneNumber ? false : true}
 							onClick={onClickSendCode}
+							className='w-full md:min-h-[68px] min-h-[60px]'
 						/>
 					</div>
 					<div className='flex justify-start items-start self-stretch  gap-2'>
@@ -227,6 +228,7 @@ export function GuestLogin() {
 							value='확인'
 							disabled={verifyCode ? false : true}
 							onClick={onClickConfirmCode}
+							className='w-full md:min-h-[68px] min-h-[60px]'
 						/>
 					</div>
 				</div>

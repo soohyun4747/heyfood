@@ -194,40 +194,40 @@ function OrderCompletePage() {
 	return (
 		<Common meta={<Meta />}>
 			{isSuccess ? (
-				<div className='flex flex-col justify-center items-center self-stretch gap-[24px] px-[120px] pt-[100px] pb-40 min-h-full'>
+				<div className='flex flex-col justify-center items-center self-stretch gap-3 md:gap-[24px] px-[20px] md:px-[120px] md:pt-[100px] md:pb-40 min-h-full'>
 					<div className='flex flex-col justify-start items-center self-stretch relative gap-2'>
-						<p className='text-[50px] font-bold text-center text-[#0f0e0e]'>
+						<p className='text-xl md:text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
 							주문 완료
 						</p>
 					</div>
-					<div className='flex flex-col justify-start items-center gap-[56px]'>
-						<p className='text-[32px] font-bold text-center text-[#0f0e0e]'>
+					<div className='flex flex-col justify-start items-center gap-9 md:gap-[56px]'>
+						<p className='text-2xl md:text-[32px] font-bold text-center text-[#0f0e0e]'>
 							주문이 완료되었습니다!
 						</p>
 						{vbankInfo && (
 							<div className='flex flex-col justify-start items-center relative gap-[12px]'>
-								<p className='text-lg text-[#0f0e0e] font-bold'>
+								<p className='md:text-lg text-[#0f0e0e] font-bold'>
 									주문번호: {vbankInfo?.orderId}
 								</p>
-								<p className='text-xs text-left text-[#0f0e0e]'>
-									아래 가상계좌로 입금해주시면 정상적으로
+								<p className='text-xs text-center text-[#0f0e0e] leading-[160%]'>
+									아래 가상계좌로 입금해주시면 <br className='md:hidden'/>정상적으로
 									결제처리가 완료됩니다.
 								</p>
 								<div className='bg-gray-100 p-[24px] flex flex-col gap-[12px]'>
-									<p className='text-[#0f0e0e] flex items-center gap-[10px]'>
+									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											계좌정보:
 										</span>{' '}
 										{vbankInfo?.vbankName}{' '}
 										{vbankInfo?.vbankNumber}
 									</p>
-									<p className='text-[#0f0e0e] flex items-center gap-[10px]'>
+									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											예금주:
 										</span>{' '}
 										{vbankInfo?.vbankHolder}
 									</p>
-									<p className='text-[#0f0e0e] flex items-center gap-[10px]'>
+									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											결제금액:
 										</span>{' '}
@@ -236,7 +236,7 @@ function OrderCompletePage() {
 										).toLocaleString()}
 										원
 									</p>
-									<p className='text-[#0f0e0e] flex items-center gap-[10px]'>
+									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											입금기간:
 										</span>{' '}

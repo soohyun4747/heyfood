@@ -143,7 +143,7 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 		<Drawer
 			title={'날짜 및 시간 선택'}
 			content={
-				<div className='flex flex-col gap-[32px] w-full flex-1 overflow-hidden'>
+				<div className='flex flex-col gap-4 md:gap-[32px] w-full flex-1 overflow-auto'>
 					<div className='w-full flex flex-col gap-[12px]'>
 						<div className='flex justify-start items-center self-stretch relative gap-3'>
 							<div
@@ -261,7 +261,7 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 							</p>
 						</div>
 					</div>
-					<div className='flex flex-col justify-start items-start self-stretch gap-3 flex-1 overflow-hidden relative'>
+					<div className='flex flex-col justify-start items-start self-stretch gap-3 flex-1 overflow-hidden relative min-h-[240px]'>
 						<div
 							onMouseEnter={() => setInfoHover(true)}
 							onMouseLeave={() => setInfoHover(false)}

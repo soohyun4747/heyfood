@@ -6,7 +6,7 @@ import { Meta } from '@/layouts/Meta';
 import { useMenuStore } from '@/stores/menuStore';
 import { fetchCollectionData, fetchImageUrls } from '@/utils/firebase';
 import { useRouter } from 'next/router';
-import { useEffect, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 
 function MenuPage() {
 	const [categories, setCategories] = useState<ICategory[]>([]);
@@ -18,38 +18,9 @@ function MenuPage() {
 
 	// 초기 데이터 로드
 	useEffect(() => {
-		getSetCateogories();
-		getSetMenus();
+		getSetCateogories(setCategories);
+		getSetMenus(setMenus);
 	}, []);
-
-	const getSetMenus = async () => {
-		const fetchedMenus =
-			((await fetchCollectionData('menus')) as IMenu[] | undefined) ?? [];
-		// 이미지 URL들은 병렬 처리합니다.
-		const updatedMenus = await Promise.all(
-			fetchedMenus.map(async (menu) => {
-				const urls = await fetchImageUrls(menu.imagePaths);
-				if (urls) {
-					menu.imagePaths = urls;
-				}
-				return menu;
-			})
-		);
-		setMenus(updatedMenus);
-	};
-
-	const getSetCateogories = async () => {
-		const menuCategories = await fetchCollectionData('menuCategories') as ICategory[];
-		if (menuCategories) {
-			const orderedCategories: ICategory[] = [];
-
-			menuCategories.forEach((category) => {
-				orderedCategories[category.order] = category;
-			});
-
-			setCategories(orderedCategories);
-		}
-	};
 
 	// 선택된 카테고리에 해당하는 메뉴 필터링 (useMemo로 메모이제이션)
 	const filteredCategoryMenus = useMemo(() => {
@@ -79,7 +50,7 @@ function MenuPage() {
 					menus={categories}
 					selectedIdx={selectedCategoryIdx}
 					onClickMenu={onClickCategory}
-					style={{justifyContent: 'start'}}
+					style={{ justifyContent: 'start' }}
 				/>
 				{filteredCategoryMenus.length > 0 ? (
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16'>
@@ -116,3 +87,38 @@ function MenuPage() {
 }
 
 export default MenuPage;
+
+export const getSetCateogories = async (
+	setCategories: Dispatch<SetStateAction<ICategory[]>>
+) => {
+	const menuCategories = (await fetchCollectionData(
+		'menuCategories'
+	)) as ICategory[];
+	if (menuCategories) {
+		const orderedCategories: ICategory[] = [];
+
+		menuCategories.forEach((category) => {
+			orderedCategories[category.order] = category;
+		});
+
+		setCategories(orderedCategories);
+	}
+};
+
+export const getSetMenus = async (
+	setMenus: (value: SetStateAction<IMenu[]>) => void
+) => {
+	const fetchedMenus =
+		((await fetchCollectionData('menus')) as IMenu[] | undefined) ?? [];
+	// 이미지 URL들은 병렬 처리합니다.
+	const updatedMenus = await Promise.all(
+		fetchedMenus.map(async (menu) => {
+			const urls = await fetchImageUrls(menu.imagePaths);
+			if (urls) {
+				menu.imagePaths = urls;
+			}
+			return menu;
+		})
+	);
+	setMenus(updatedMenus);
+};

@@ -3,6 +3,7 @@ import { IButtonBasicProps } from './Button';
 
 interface IButtonRectYellowProps extends IButtonBasicProps {
 	style?: CSSProperties;
+	className?: string;
 	disabled?: boolean;
 	id?: string;
 }
@@ -26,7 +27,7 @@ export function ButtonRectYellow(props: IButtonRectYellowProps) {
 				fontWeight: props.disabled ? 'light': 'bold',
 				...props.style,
 			}}
-			className='flex justify-center items-center w-full md:min-h-[68px] min-h-[60px] select-none text-sm md:text-lg text-center text-white'>
+			className={`flex justify-center items-center select-none text-sm md:text-lg text-center text-white ${props.className}`}>
 			{props.value}
 		</div>
 	);

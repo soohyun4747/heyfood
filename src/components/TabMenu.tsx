@@ -6,13 +6,14 @@ interface ITabMenuProps {
 	selectedIdx: number;
 	onClickMenu: (i: number) => void;
 	style?: CSSProperties;
+	className?: string;
 }
 
 export function TabMenu(props: ITabMenuProps) {
 	return (
 		<div
 			style={props.style}
-			className='flex justify-center items-start gap-[12px] md:gap-6 w-full overflow-x-auto'>
+			className={`flex items-start gap-[12px] md:gap-6 w-full overflow-x-auto ${props.className}`}>
 			{props.menus.map((category, i) => (
 				<div
 					key={i}
