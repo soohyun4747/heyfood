@@ -21,9 +21,10 @@ export default async function handler(
 
 	let vbank: Vbank | undefined;
 	let status = OrderStatus.ready;
+	let authStr = ''
 
 	if (authResultCode === '0000') {
-		const authStr = `${process.env.NEXT_PUBLIC_NICEPAY_CLIENT_KEY}:${process.env.NEXT_PUBLIC_NICEPAY_SECRET_KEY}`;
+		authStr = `${process.env.NICEPAY_CLIENT_KEY}:${process.env.NICEPAY_SECRET_KEY}`;
 		const authBase64 = Buffer.from(authStr).toString('base64');
 
 		try {
@@ -58,6 +59,7 @@ export default async function handler(
 			`&vbankHolder=${encodeURIComponent(vbank?.vbankHolder || '')}` +
 			`&amount=${encodeURIComponent(amount)}`+
 			`&tid=${encodeURIComponent(tid)}`+
-			`&status=${encodeURIComponent(status)}`
+			`&status=${encodeURIComponent(status)}`+
+			`&authStr=${encodeURIComponent(authStr)}`
 	);
 }
