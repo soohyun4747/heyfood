@@ -350,51 +350,63 @@ export function OrderInfo() {
 	};
 
 	return (
-		<div className='flex flex-col gap-[36px] w-[892px]'>
+		<div className='flex flex-col gap-[36px] md:w-[892px]'>
 			{ordersWithItems.length > 0 ? (
 				ordersWithItems.map((data, i) => (
 					<div
 						key={i}
 						className='flex flex-col justify-center items-start flex-grow'>
-						<div className='flex flex-col justify-start items-start self-stretch gap-6 p-6 bg-white border-t border-r border-b-0 border-l border-neutral-200'>
-							<div className='flex justify-between self-stretch'>
-								<div className='flex items-center gap-[12px]'>
-									<PaymentStatus
-										status={data.orderData.orderStatus}
-									/>
-								</div>
-								<p className='text-2xl font-bold text-right text-[#0f0e0e]'>
-									총 {data.orderData.price?.toLocaleString()}
-									원
-								</p>
+						<div className='flex justify-between self-stretch items-center self-stretch px-4 py-5 md:p-6 border-t border-r border-l border-neutral-200'>
+							<div className='flex items-center gap-[12px]'>
+								<PaymentStatus
+									status={data.orderData.orderStatus}
+								/>
 							</div>
+							<p className='text-md md:text-2xl font-bold text-right text-[#0f0e0e]'>
+								총 {data.orderData.price?.toLocaleString()}원
+							</p>
 						</div>
 						{data.orderItemsWithDeliveryDate.map(
 							(itemsWithDate, idx) => (
-								<div key={idx} className='flex flex-col gap-[24px] p-6 bg-white border border-b-0 border-neutral-200 self-stretch'>
+								<div
+									key={idx}
+									className='flex flex-col gap-4 md:gap-[24px] px-4 py-5 md:p-6 bg-white border border-neutral-200 self-stretch'>
 									<div
 										key={idx}
-										className='flex justify-start items-start self-stretch gap-6'>
-										<div className='flex flex-col justify-start items-start flex-grow gap-5'>
-											<p className='text-lg font-bold text-left text-[#0f0e0e]'>
-												<span>배달날짜</span>
-												{'   '}
-												<span className='font-normal'>
-													{formatTimestampWithMinutes(
-														itemsWithDate.date
-													)}
-												</span>
-											</p>
-											<div className='flex flex-col justify-start items-start self-stretch gap-3'>
+										className='flex md:flex-row flex-col justify-start items-start self-stretch gap-6'>
+										<div className='flex flex-col justify-start items-start flex-grow gap-5 self-stretch'>
+											<div className='flex self-stretch justify-between md:gap-0 gap-2'>
+												<div className=' md:text-lg font-bold text-[#0f0e0e] flex md:items-center gap-1 md:gap-3 flex-col md:flex-row'>
+													<p>배달날짜</p>
+													<p className='font-normal text-sm'>
+														{formatTimestampWithMinutes(
+															itemsWithDate.date
+														)}
+													</p>
+												</div>
+												{isMoreThanTwoDaysLeft(
+													itemsWithDate.date.toDate()
+												) && (
+													<ButtonSmall
+														value={'일정 변경'}
+														onClick={() =>
+															onOpenDateDrawer(
+																itemsWithDate
+															)
+														}
+													/>
+												)}
+											</div>
+											<div className='flex flex-col justify-start items-start self-stretch gap-2 md:gap-3'>
 												{itemsWithDate.items.map(
 													(item, j) => (
 														<div
 															key={j}
-															className='flex justify-start items-center self-stretch h-[30px] gap-1.5'>
-															<p className='text-xl text-left text-[#0f0e0e]'>
+															className='flex justify-start items-center self-stretch gap-1.5'>
+															<p className=' md:text-xl text-[#0f0e0e]'>
 																{item.menuId}
 															</p>
-															<p className='text-[22px] font-light text-left text-[#0f0e0e]'>
+															<p className='md:text-[22px] font-bold md:font-light text-[#0f0e0e]'>
 																{item.quantity.toLocaleString()}
 																개
 															</p>
@@ -403,27 +415,15 @@ export function OrderInfo() {
 												)}
 											</div>
 										</div>
-										{isMoreThanTwoDaysLeft(
-											itemsWithDate.date.toDate()
-										) && (
-											<ButtonSmall
-												value={'배달 일정 변경'}
-												onClick={() =>
-													onOpenDateDrawer(
-														itemsWithDate
-													)
-												}
-											/>
-										)}
 									</div>
 									<div className='self-stretch h-[1px] bg-gray-200' />
 									<div className='flex justify-start items-center self-stretch gap-3'>
 										<div className='flex justify-center items-center gap-2 pt-0.5'>
-											<p className='text-base font-bold text-left text-[#0f0e0e]'>
+											<p className=' md:text-base font-bold text-[#0f0e0e] md:min-w-auto min-w-[62px]'>
 												배달주소
 											</p>
 										</div>
-										<p className='text-lg text-left text-[#0f0e0e]'>
+										<p className=' md:text-lg text-[#0f0e0e]'>
 											{itemsWithDate.items[0].address}{' '}
 											{
 												itemsWithDate.items[0]
@@ -435,17 +435,22 @@ export function OrderInfo() {
 							)
 						)}
 						<div className='flex flex-col justify-start items-start self-stretch gap-3 p-6 border border-neutral-200 '>
-							<p className='text-lg font-bold text-left text-[#0f0e0e]'>
-								주문정보
-							</p>
+							<div className='flex items-center self-stretch justify-between'>
+								<p className=' md:text-lg font-bold text-[#0f0e0e]'>
+									주문정보
+								</p>
+								<p className=' md:text-lg text-black/30'>
+									{data.orderData.id}
+								</p>
+							</div>
 							<div className='flex flex-col justify-start items-start self-stretch gap-3 p-5 rounded-xl bg-[#f8f8f8]'>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
+										<p className='flex-grow md:text-base font-bold text-[#5c5c5c] min-w-[62px] md:min-w-auto'>
 											주문날짜
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										{formatTimestampWithMinutes(
 											data.orderData.createdAt
 										)}
@@ -453,51 +458,51 @@ export function OrderInfo() {
 								</div>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
+										<p className='flex-grow  md:text-base font-bold text-[#5c5c5c] min-w-[48px] md:min-w-auto'>
 											이메일
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										{data.orderData.email}
 									</p>
 								</div>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
+										<p className='flex-grow  md:text-base font-bold text-[#5c5c5c]'>
 											비상 연락처
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										{data.orderData.otherPhone}
 									</p>
 								</div>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow min-w-24 text-base font-bold text-left text-[#5c5c5c]'>
+										<p className='flex-grow md:min-w-24  md:text-base font-bold text-[#5c5c5c]'>
 											업체명/현장명
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										{data.orderData.companyName}
 									</p>
 								</div>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='text-base font-bold text-left text-[#5c5c5c]'>
+										<p className=' md:text-base font-bold text-[#5c5c5c]'>
 											요청사항
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										{data.orderData.comment}
 									</p>
 								</div>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='text-base font-bold text-left text-[#5c5c5c]'>
+										<p className=' md:text-base font-bold text-[#5c5c5c]'>
 											스티커
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										{data.orderData.stickerFile ||
 										data.orderData.stickerPhrase
 											? 'o'
@@ -507,48 +512,48 @@ export function OrderInfo() {
 							</div>
 						</div>
 						<div className='flex flex-col justify-start items-start self-stretch gap-3 p-6 border border-t-0 border-neutral-200'>
-							<p className='text-lg font-bold text-left text-[#0f0e0e]'>
+							<p className=' md:text-lg font-bold text-[#0f0e0e]'>
 								결제정보
 							</p>
 							<div className='flex flex-col justify-start items-start self-stretch gap-3 p-5 rounded-xl bg-[#f8f8f8]'>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
+										<p className='flex-grow  md:text-base font-bold text-[#5c5c5c]'>
 											결제방식
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										가상계좌
 									</p>
 								</div>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
+										<p className='flex-grow  md:text-base font-bold text-[#5c5c5c] min-w-[62px] md:min-w-auto'>
 											계좌정보
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										{data.orderData.vbankName}{' '}
 										{data.orderData.vbankNumber}
 									</p>
 								</div>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
+										<p className='flex-grow  md:text-base font-bold text-[#5c5c5c]'>
 											예금주
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										{data.orderData.vbankHolder}
 									</p>
 								</div>
 								<div className='flex justify-start items-center self-stretch gap-3'>
 									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow text-base font-bold text-left text-[#5c5c5c]'>
+										<p className='flex-grow  md:text-base font-bold text-[#5c5c5c]'>
 											입금기한
 										</p>
 									</div>
-									<p className='text-lg text-left text-[#5c5c5c]'>
+									<p className=' md:text-lg text-[#5c5c5c]'>
 										{data.orderData.vbankExpDate &&
 											new Date(
 												data.orderData.vbankExpDate
@@ -561,7 +566,7 @@ export function OrderInfo() {
 							<div className='flex py-3 justify-start items-start self-stretch gap-6 px-6 py-1 border border-t-0 border-neutral-200'>
 								<p
 									onClick={() => onClickOrderCancel(data)}
-									className='cursor-pointer text-lg text-left text-[#5c5c5c]'>
+									className='cursor-pointer  md:text-lg text-[#5c5c5c]'>
 									주문 취소
 								</p>
 							</div>
@@ -576,7 +581,7 @@ export function OrderInfo() {
 					</div>
 				))
 			) : (
-				<div className='text-[24px] font-bold text-gray-300 h-[600px] flex items-center justify-center border border-gray-300'>
+				<div className='md:text-[24px] font-bold text-gray-300 h-[600px] flex items-center justify-center border border-gray-300'>
 					주문 내역이 없습니다
 				</div>
 			)}
@@ -591,52 +596,77 @@ export function OrderInfo() {
 				<ModalCenter
 					title={'주문 취소'}
 					description={
-						<div className='flex flex-col gap-[24px]'>
-							<p className='text-sm'>
-								환불받을 계좌정보를 입력해주세요
-							</p>
-							<div className='flex flex-col gap-[12px]'>
-								<div className='flex items-center gap-[6px]'>
-									<p className='w-[90px] text-left'>
-										예금주명
+						<>
+							{selectedOrderData?.orderData.orderStatus ===
+							'ready' ? (
+								<div className='flex flex-col gap-2'>
+									<p className='text-md font-bold'>
+										주문을 취소하시겠습니까?
 									</p>
-									<TextField
-										value={refundHolder}
-										onChange={(e) =>
-											setRefundHolder(e.target.value)
-										}
-										style={{ flex: 1 }}
-									/>
-								</div>
-								<div className='flex items-center gap-[6px]'>
-									<p className='w-[90px] text-left'>은행</p>
-									<Dropdown
-										domId={dropdownDomId}
-										list={bankOptions}
-										selectedId={refundBankCode}
-										onClick={(id) => setRefundBankCode(id)}
-										style={{ flex: 1 }}
-									/>
-								</div>
-								<div className='flex items-center gap-[6px]'>
-									<p className='w-[90px] text-left'>
-										계좌번호
+									<p className='text-sm'>
+										입금한지 얼마 안되신 경우 "결제
+										확인중"이 "결제 완료"로 바뀐 후
+										취소해주세요.
 									</p>
-									<TextField
-										value={refundAccount}
-										onChange={(e) =>
-											setRefundAccount(e.target.value)
-										}
-										style={{ flex: 1 }}
-									/>
 								</div>
-							</div>
-						</div>
+							) : (
+								<div className='flex flex-col gap-[24px]'>
+									<p className=''>
+										환불받을 계좌정보를 입력해주세요
+									</p>
+									<div className='flex flex-col gap-[12px]'>
+										<div className='flex items-center gap-[6px]'>
+											<p className='min-w-[60px] md:w-[90px] md:text-base  text-left'>
+												예금주명
+											</p>
+											<TextField
+												value={refundHolder}
+												onChange={(e) =>
+													setRefundHolder(
+														e.target.value
+													)
+												}
+												style={{ flex: 1 }}
+											/>
+										</div>
+										<div className='flex items-center gap-[6px]'>
+											<p className='min-w-[60px] md:w-[90px] md:text-base  text-left'>
+												은행
+											</p>
+											<Dropdown
+												domId={dropdownDomId}
+												list={bankOptions}
+												selectedId={refundBankCode}
+												onClick={(id) =>
+													setRefundBankCode(id)
+												}
+												style={{ flex: 1 }}
+											/>
+										</div>
+										<div className='flex items-center gap-[6px]'>
+											<p className='min-w-[60px] md:w-[90px] md:text-base  text-left'>
+												계좌번호
+											</p>
+											<TextField
+												value={refundAccount}
+												onChange={(e) =>
+													setRefundAccount(
+														e.target.value
+													)
+												}
+												style={{ flex: 1 }}
+											/>
+										</div>
+									</div>
+								</div>
+							)}
+						</>
 					}
 					btn1st={{
 						value: '주문 취소',
 						onClick: onCancelOrder,
 						style: { background: '#DD1C1C', color: 'white' },
+						className: 'w-full md:min-h-[68px] min-h-[58px]',
 					}}
 					btn2nd={{
 						value: '닫기',

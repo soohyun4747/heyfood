@@ -6,6 +6,7 @@ import { auth, db } from '@/configs/firebaseConfig';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
 import { emailDomains } from '@/pages/inquiry';
+import { useMarketingAgreeStore } from '@/stores/marketingAgreeStore';
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
 import {
 	addData,
@@ -44,6 +45,9 @@ function SignUpBasicInfoPage() {
 	const [confirmationResult, setConfirmationResult] =
 		useState<ConfirmationResult>();
 	const [credentialUser, setCredentialUser] = useState<User>();
+	const marketingAgree = useMarketingAgreeStore(
+		(state) => state.marketingAgree
+	);
 
 	const { setUser } = useUserStore();
 
@@ -124,6 +128,7 @@ function SignUpBasicInfoPage() {
 			email: newUser.email,
 			phone: extractNumbers(phone),
 			createdAt: Timestamp.now(),
+			marketingAgree: marketingAgree
 		})) as IUser | false;
 
 		if (addedData) {
@@ -185,17 +190,17 @@ function SignUpBasicInfoPage() {
 				</div>
 				<div className='flex flex-col justify-start items-center gap-[60px] md:p-20 rounded-3xl bg-white self-stretch'>
 					<div className='flex flex-col justify-start items-start md:self-auto self-stretch md:gap-6 gap-5'>
-						<div className='flex flex-col md:gap-6 gap-2'>
+						<div className='flex flex-col md:gap-6 gap-2 self-stretch'>
 							<div className='flex md:flex-row flex-col justify-start md:items-center md:w-[1040px] md:h-8 gap-[6px] md:gap-6'>
 								<div className='flex md:flex-row flex-col justify-start md:items-center gap-[8px] md:gap-12'>
-									<p className=' w-[110px] text-sm md:text-lg text-left text-[#0f0e0e]'>
+									<p className=' w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
 										이메일 아이디
 									</p>
 									<VerticalLine className='hidden md:block' />
-									<div className='flex justify-between items-center md:w-[564px] gap-6'>
+									<div className='flex justify-between items-center md:w-[564px] gap-6 self-stretch'>
 										<div className='flex justify-start items-center h-8 md:gap-6 gap-[6px] '>
 											<input
-												className='text-[13px] md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[96px] md:min-w-[160px]'
+												className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[96px] md:min-w-[160px]'
 												placeholder='아이디 입력'
 												value={emailId}
 												onChange={(e) =>
@@ -211,7 +216,7 @@ function SignUpBasicInfoPage() {
 												@
 											</p>
 											<input
-												className='text-[13px] md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[90px] md:min-w-[160px]'
+												className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[90px] md:min-w-[160px]'
 												placeholder='도메인 입력'
 												value={emailDomain}
 												onChange={
@@ -227,7 +232,7 @@ function SignUpBasicInfoPage() {
 										<VerticalLine className='hidden md:block' />
 										<select
 											value={emailDomainSelectVal}
-											className='focus:outline-0 hover:cursor-pointer md:text-base text-xs'
+											className='focus:outline-0 hover:cursor-pointer md:text-base max-w-[96px] md:max-w-auto'
 											onChange={onSelectEmailDomain}>
 											{emailDomains.map((value) => (
 												<option
@@ -245,7 +250,7 @@ function SignUpBasicInfoPage() {
 											? '#dd1c1c'
 											: 'transparent',
 									}}
-									className='flex-grow w-[246px] text-xs text-left hidden md:block'>
+									className='flex-grow w-[246px]  text-left hidden md:block'>
 									동일한 이메일 주소로 가입된 계정이 있습니다
 								</p>
 							</div>
@@ -256,21 +261,21 @@ function SignUpBasicInfoPage() {
 										? '#dd1c1c'
 										: 'transparent',
 								}}
-								className='md:hidden text-xs text-left'>
+								className='md:hidden  text-left'>
 								동일한 이메일 주소로 가입된 계정이 있습니다
 							</p>
 						</div>
 						<div className='flex flex-col gap-2 md:gap-6 self-stretch'>
 							<div className='flex md:flex-row flex-col justify-start md:items-center self-stretch  gap-6'>
 								<div className='flex md:flex-row flex-col justify-start md:items-center  gap-2 md:gap-12 flex-1'>
-									<p className='w-[110px] text-sm md:text-lg text-left text-[#0f0e0e]'>
+									<p className='w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
 										비밀번호
 									</p>
 									<VerticalLine className='hidden md:block' />
 									<input
 										autoComplete='new-password'
 										type='password'
-										className='flex-1 text-[13px] md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+										className='flex-1 md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 										placeholder='영문+숫자 조합 8~16자리'
 										value={password}
 										onChange={onChangePassword}
@@ -282,7 +287,7 @@ function SignUpBasicInfoPage() {
 											? '#dd1c1c'
 											: 'transparent',
 									}}
-									className='w-[246px] text-xs text-left hidden md:block'>
+									className='w-[246px]  text-left hidden md:block'>
 									영문+숫자 조합 8~16자리로 입력해주세요.
 								</p>
 							</div>
@@ -293,21 +298,21 @@ function SignUpBasicInfoPage() {
 										? '#dd1c1c'
 										: 'transparent',
 								}}
-								className='md:hidden text-xs text-left'>
+								className='md:hidden  text-left'>
 								영문+숫자 조합 8~16자리로 입력해주세요.
 							</p>
 						</div>
 						<div className='flex flex-col gap-2 md:gap-6 self-stretch'>
 							<div className='flex md:flex-row flex-col justify-start md:items-center self-stretch  gap-6'>
 								<div className='flex md:flex-row flex-col justify-start md:items-center gap-2 md:gap-12 flex-1'>
-									<p className='w-[110px] text-sm md:text-lg text-left text-[#0f0e0e]'>
+									<p className='w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
 										비밀번호 확인
 									</p>
 									<VerticalLine className='hidden md:block' />
 									<input
 										autoComplete='new-password'
 										type='password'
-										className='flex-1 text-[13px] md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+										className='flex-1 md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 										placeholder='비밀번호 확인 입력'
 										value={passwordConfirm}
 										onChange={onChangePasswordConfirm}
@@ -319,7 +324,7 @@ function SignUpBasicInfoPage() {
 											? '#dd1c1c'
 											: 'transparent',
 									}}
-									className='w-[246px] text-xs text-left hidden md:block'>
+									className='w-[246px]  text-left hidden md:block'>
 									비밀번호 정보가 일치하지 않습니다
 								</p>
 							</div>
@@ -330,18 +335,18 @@ function SignUpBasicInfoPage() {
 										? '#dd1c1c'
 										: 'transparent',
 								}}
-								className='md:hidden text-xs text-left'>
+								className='md:hidden  text-left'>
 								비밀번호 정보가 일치하지 않습니다
 							</p>
 						</div>
 						<div className='flex flex-col gap-2 md:gap-6 self-stretch md:pb-0 pb-6'>
 							<div className='flex md:flex-row flex-col justify-start  md:items-center  gap-2 md:gap-12 flex-1'>
-								<p className=' w-[110px] text-sm md:text-lg text-left text-[#0f0e0e]'>
+								<p className=' w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
 									이름
 								</p>
 								<VerticalLine className='hidden md:block' />
 								<input
-									className='flex-1 text-[13px] md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+									className='flex-1 md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 									placeholder='이름 입력'
 									value={name}
 									onChange={(e) => setName(e.target.value)}
@@ -351,13 +356,13 @@ function SignUpBasicInfoPage() {
 						</div>
 						<div className='flex flex-col gap-2 md:gap-6 self-stretch md:pb-0 pb-6'>
 							<div className='flex md:flex-row flex-col justify-start md:items-center gap-2 md:gap-12 flex-1'>
-								<p className='min-w-[110px] text-sm md:text-lg text-left text-[#0f0e0e]'>
+								<p className='min-w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
 									휴대폰 번호
 								</p>
 								<VerticalLine className='hidden md:block' />
-								<div className='flex flex-1'>
+								<div className='flex justify-between'>
 									<input
-										className='flex-1 text-[13px] md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+										className='flex-1 md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 md:max-w-auto max-w-[215px]'
 										placeholder='휴대폰 번호 입력'
 										value={phone}
 										onChange={(e) =>
@@ -368,7 +373,7 @@ function SignUpBasicInfoPage() {
 										value='인증번호 발송'
 										disabled={phone ? false : true}
 										onClick={onClickSendCode}
-										className='md:w-[180px] w-[120px] md:min-h-[68px] min-h-[48px]'
+										className='md:w-[180px] min-w-[120px] md:min-h-[68px] min-h-[48px]'
 									/>
 								</div>
 							</div>
@@ -376,13 +381,13 @@ function SignUpBasicInfoPage() {
 						</div>
 						<div className='flex flex-col gap-2 md:gap-6 self-stretch'>
 							<div className='flex md:flex-row flex-col justify-start md:items-center gap-2 md:gap-12 flex-1 self-stretch'>
-								<p className='min-w-[110px] text-sm md:text-lg text-left text-[#0f0e0e]'>
+								<p className='min-w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
 									인증번호
 								</p>
 								<VerticalLine className='hidden md:block' />
-								<div className='flex flex-1 self-stretch'>
+								<div className='flex  justify-between self-stretch'>
 									<input
-										className='flex-1 text-[13px] md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+										className='flex-1 md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 md:max-w-auto max-w-[215px]'
 										placeholder='인증번호 입력'
 										value={verifyCode}
 										onChange={(e) =>
@@ -393,7 +398,7 @@ function SignUpBasicInfoPage() {
 										value='확인'
 										disabled={verifyCode ? false : true}
 										onClick={onClickConfirmCode}
-										className='md:w-[180px] w-[120px] md:min-h-[68px] min-h-[48px]'
+										className='md:w-[180px] min-w-[120px] md:min-h-[68px] min-h-[48px]'
 									/>
 								</div>
 							</div>

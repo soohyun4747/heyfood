@@ -190,7 +190,7 @@ export function GuestLogin() {
 				<div className='flex flex-col justify-start items-start self-stretch  gap-3'>
 					<div className='flex justify-start items-center self-stretch gap-6 px-6 py-[19px] border border-[#d9d9d9] bg-white md:bg-transparent'>
 						<input
-							className='flex-grow text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+							className='flex-grow md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 md:max-w-auto max-w-[285px]'
 							placeholder='이름'
 							value={name}
 							onChange={(e) => setName(e.target.value)}
@@ -199,7 +199,7 @@ export function GuestLogin() {
 					<div className='flex justify-start items-start self-stretch  gap-2'>
 						<div className='flex justify-start items-center  w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9] bg-white md:bg-transparent'>
 							<input
-								className='flex-grow text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+								className='flex-grow md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 md:max-w-auto max-w-[157.5px]'
 								placeholder='휴대폰 번호'
 								value={phoneNumber}
 								onChange={(e) => setPhoneNumber(e.target.value)}
@@ -209,13 +209,13 @@ export function GuestLogin() {
 							value='인증번호 발송'
 							disabled={phoneNumber ? false : true}
 							onClick={onClickSendCode}
-							className='w-full md:min-h-[68px] min-h-[60px]'
+							className='w-full md:min-h-[68px] min-h-[64px]'
 						/>
 					</div>
 					<div className='flex justify-start items-start self-stretch  gap-2'>
 						<div className='flex justify-start items-center  w-[286px] relative gap-6 px-6 py-[19px] border border-[#d9d9d9]  bg-white md:bg-transparent'>
 							<input
-								className='flex-grow text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+								className='flex-grow md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 md:max-w-auto max-w-[157.5px]'
 								placeholder='인증번호'
 								value={verifyCode}
 								onChange={(e) => setVerifyCode(e.target.value)}
@@ -225,7 +225,7 @@ export function GuestLogin() {
 							value='확인'
 							disabled={verifyCode ? false : true}
 							onClick={onClickConfirmCode}
-							className='w-full md:min-h-[68px] min-h-[60px]'
+							className='w-full md:min-h-[68px] min-h-[64px]'
 						/>
 					</div>
 				</div>

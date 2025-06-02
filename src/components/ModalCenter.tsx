@@ -26,7 +26,7 @@ export function ModalCenter(props: IModalCenterProps) {
 						{props.description}
 					</div>
 				</div>
-				<div className='flex flex-col justify-start items-start self-stretch gap-4'>
+				<div className='flex flex-col justify-start items-start self-stretch gap-3 md:gap-4'>
 					{props.btn1st && <ButtonRectYellow {...props.btn1st} />}
 					{props.btn2nd && <ButtonRectBorder {...props.btn2nd} />}
 				</div>

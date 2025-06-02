@@ -7,9 +7,54 @@ import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { Location } from '@/icons/Location';
+import { Calendar } from '@/icons/Calendar';
+import { Sticker } from '@/icons/Sticker';
+import { Card } from '@/icons/Card';
+import { Timestamp } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
+import { fetchImageUrls, getActivePopups } from '@/utils/firebase';
+import { Popup } from '@/components/Popup';
+
+export interface IPopup {
+	id: string;
+	startDate: Timestamp;
+	endDate: Timestamp;
+	imagePath: string;
+	linkUrl: string;
+	title: string;
+	createdAt: Timestamp;
+	updatedAt?: Timestamp;
+}
 
 function LandingPage() {
+	const [popups, setPopups] = useState<IPopup[]>([]);
+	const [isPopupOpens, setIsPopupOpens] = useState<boolean[]>([]);
+
 	const router = useRouter();
+
+	useEffect(() => {
+		setTimeout(() => {
+			getSetPopups();
+		}, 5000);
+	}, []);
+
+	const getSetPopups = async () => {
+		const fetchedPopups = await getActivePopups();
+
+		const updatedPopups = await Promise.all(
+			fetchedPopups.map(async (popup) => {
+				const urls = await fetchImageUrls([popup.imagePath]);
+				if (urls) {
+					popup.imagePath = urls[0];
+				}
+				return popup;
+			})
+		);
+
+		setPopups(updatedPopups);
+		setIsPopupOpens(new Array(updatedPopups.length).fill(true));
+	};
 
 	return (
 		<Common meta={<Meta />}>
@@ -20,55 +65,112 @@ function LandingPage() {
 						alt={'banner'}
 						width={1440}
 						height={668}
-						className='w-full h-auto'
+						className='w-full h-auto hidden md:block object-cover'
 					/>
-					<p className='text-5xl font-bold text-center text-[#0f0e0e] leading-[150%] absolute left-1/2 transform -translate-x-1/2 top-[90px]'>
-						<span className=' text-5xl font-bold text-center text-[#0f0e0e]'>
-							선물 같은 도시락,{' '}
-						</span>
-						<br />
-						<span className=' text-5xl font-bold text-center text-[#0f0e0e]'>
-							행사를 빛내는 특별한 한 끼
-						</span>
-					</p>
+					<Image
+						src={'/images/banner_mob.png'}
+						alt={'banner'}
+						width={360}
+						height={700}
+						className='w-full h-[700px] md:hidden object-cover'
+					/>
+					<div className='md:hidden w-full h-[700px] opacity-40 bg-gradient-to-b from-[#f9ca38] to-[#f1e6c8] absolute top-0 left-0' />
+					<div className='absolute top-[82px] left-[20px] md:top-1/2 md:transform md:-translate-y-1/2 md:left-[120px] flex flex-col gap-[60px]'>
+						<div className='flex flex-col justify-start items-start gap-[9px] md:gap-3'>
+							<p className='text-[37.5px] md:text-[50px] font-bold text-[#0f0e0e]'>
+								<span>도시락, 고민될 땐 </span>
+								<br />
+								<span>HEYDELIBOX</span>
+							</p>
+							<p className='text-[13.5px] md:text-lg text-[#0f0e0e]'>
+								<span>행사 도시락, 어떻게 준비하지?”</span>
+								<br />
+								<span>
+									예산은 한정돼 있고, 참석자들에게 정성도
+									전하고 싶은데...
+								</span>
+								<br />
+								<span className='font-bold'>
+									고민하는 당신을 위해 HEYDELIBOX가{' '}
+									<br className='md:hidden' />
+									해결해 드리겠습니다!
+								</span>
+							</p>
+						</div>
+						<div className='flex md:flex-row flex-col md:items-center gap-3'>
+							<ButtonMono
+								value={'지금 바로 상담받기'}
+								icon={ArrowRight}
+								onClick={() =>
+									router.push('http://pf.kakao.com/_nTXSn')
+								}
+							/>
+							<ButtonMono
+								value={'도시락 메뉴 보기'}
+								icon={ArrowRight}
+								onClick={() => router.push('/menu')}
+							/>
+						</div>
+					</div>
 				</div>
-				<div className='flex flex-col justify-start items-center self-stretch  gap-[60px] px-[120px] py-40'>
-					<div className='flex flex-col justify-start items-center  gap-3'>
-						<p className=' text-[50px] font-bold text-center text-[#0f0e0e]'>
-							실속있는 가격에 남김없이
+				<div className='flex flex-col justify-start items-center self-stretch gap-[60px] py-40'>
+					<div className='flex flex-col justify-start items-center relative gap-5'>
+						<p className='text-[28px] md:text-5xl font-bold text-center text-[#0f0e0e]'>
+							&nbsp;해결의 제안: <br className='md:hidden' />
+							HEYDELIBOX 도시락
 						</p>
-						<p className=' text-lg text-center text-[#0f0e0e]'>
-							<span className=' text-lg font-bold text-center text-[#0f0e0e]'>
-								실속 있는 가격과 호불호 없는 메뉴
-							</span>
-							<span className=' text-lg text-center text-[#0f0e0e]'>
-								로 남김없이 먹을 수 있습니다.
-							</span>
-							<br />
-							<span className=' text-lg font-bold text-center text-[#0f0e0e]'>
-								맞춤형 스티커
-							</span>
-							<span className=' text-lg text-center text-[#0f0e0e]'>
-								로 행사의 특별함을 더하고 받는 분 모두가
+						<p className='text-sm md:text-lg text-center text-[#0f0e0e]'>
+							<span>
+								호불호 없는 구성과 패키지에 정성스러운{' '}
+								<br className='md:hidden' />
+								느낌을 담은 커스텀 스티커로{' '}
 							</span>
 							<br />
-							<span className=' text-lg font-bold text-center text-[#0f0e0e]'>
-								&apos;나만을 위한 도시락&apos;
-							</span>
-							<span className=' text-lg text-center text-[#0f0e0e]'>
-								을 느끼도록 정성을 담았습니다.
+							<span>
+								고객 재주문율 95% 이상으로 끌어올릴 수 있습니다.
 							</span>
 						</p>
 					</div>
-					<ButtonMono
-						icon={ArrowRight}
-						value={'브랜드 스토리'}
-						onClick={() => router.push('/heydelibox')}
-					/>
+					<div className='flex flex-col gap-[60px]'>
+						<div className='flex md:flex-row flex-col gap-[60px] md:gap-8'>
+							<PromiseCard
+								title='홈페이지로 빠른 주문 가능'
+								description='홈페이지에서 원하는 도시락과 행사일정을 입력하기만 하면, 별도의 상담 절차 없이도 쉽고 빠르게 주문할 수 있습니다. 간편한 온라인 주문 시스템으로 바쁜 일정에도 손쉽게 도시락을 준비하세요.'
+								src={`${router.basePath}/images/promise_1.png`}
+							/>
+							<PromiseCard
+								title='고급스러운 패키지'
+								description='김밥, 샌드위치, 닭강정 등 다양한 메뉴를 깔끔하고 고급스러운 패키지에 담아 제공합니다. 도시락을 받는 순간부터 특별함을 느낄 수 있습니다.'
+								src={`${router.basePath}/images/promise_2.png`}
+							/>
+							<PromiseCard
+								title='커스텀스티커 부착'
+								description='행사나 모임, 고객 요청에 따라 맞춤 문구가 담긴 스티커를 제작해 도시락에 부착해드립니다. 받는 이에게 감동을 더하는 세심한 서비스가 특징입니다.'
+								src={`${router.basePath}/images/promise_3.png`}
+							/>
+						</div>
+						<div className='flex md:flex-row flex-col gap-[60px] md:gap-8'>
+							<PromiseCard
+								title='원하는 일정에 배송 가능'
+								description='고객이 원하는 날짜와 시간에 맞춰 신선한 도시락을 정해진 장소로 안전하게 배송합니다. 일정에 맞춘 맞춤형 서비스로 편리함을 제공합니다.'
+								src={`${router.basePath}/images/promise_4.png`}
+							/>
+							<PromiseCard
+								title='대량주문도 문제 없는 시스템'
+								description='최신 설비와 체계적인 생산 시스템으로, 대량 주문에도 신속하고 정확하게 도시락을 준비할 수 있습니다. 기업 행사나 단체 주문도 걱정 없이 맡기실 수 있습니다.'
+								src={`${router.basePath}/images/promise_5.png`}
+							/>
+							<PromiseCard
+								title='HACCP 인증'
+								description='위생과 안전을 최우선으로 하여, HACCP 인증을 받은 시설에서 도시락을 제조합니다. 믿고 먹을 수 있는 건강한 도시락을 약속드립니다.'
+								src={`${router.basePath}/images/promise_6.png`}
+							/>
+						</div>
+					</div>
 				</div>
-				<div className='flex flex-col justify-start items-center self-stretch  gap-[40px] px-[120px] py-40 bg-[#ffc966]'>
+				<div className='flex flex-col justify-start items-center self-stretch  gap-[40px] md:px-[120px] py-40 bg-[#ffc966]'>
 					<div className='flex flex-col justify-start items-center  gap-5'>
-						<p className=' text-[50px] font-bold text-center text-[#0f0e0e]'>
+						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
 							헤이델리박스 메뉴
 						</p>
 						<LandingMenusTab />
@@ -79,171 +181,158 @@ function LandingPage() {
 						onClick={() => router.push('/menu')}
 					/>
 				</div>
-				<div className='flex flex-col justify-start items-center  self-stretch gap-[60px] px-[120px] py-40'>
-					<div className='flex flex-col justify-start items-center  gap-2'>
-						<p className=' text-[50px] font-bold text-center text-[#0f0e0e]'>
-							헤이델리박스의 약속
-						</p>
-						<p className=' text-lg text-center text-[#0f0e0e]'>
-							<span className=' text-lg text-center text-[#0f0e0e]'>
-								헤이델리박스는 따뜻하고 정성이 담긴, 차원이 다른
-								도시락을 제공합니다.{' '}
-							</span>
-							<br />
-							<span className=' text-lg text-center text-[#0f0e0e]'>
-								당일 생산 원칙으로 신선한 식재료를 사용하여
-								다양한 메뉴를 연구개발하였습니다.
-							</span>
-						</p>
-					</div>
-					<div className='flex justify-start items-start  gap-8'>
-						<div className='flex justify-start items-start gap-8'>
-							<PromiseCard
-								title='신선한 식재료 사용'
-								description='깨끗한 물과 비옥한 토지에서 자란 보은 정이품 쌀로 밥을 짓기에 밥알이 살아있습니다. 프리미엄 돌자반으로 주먹밥을 만들어 비린 맛이 적고, 고소함과 감칠맛이 가득합니다.'
-								src={`${router.basePath}/images/promise_1.png`}
-							/>
-							<PromiseCard
-								title='당일 생산 원칙'
-								description='당일 생산 원칙으로 매일 새벽 3시부터 갓 만들어 따뜻하고 신선한 간편식을 전문 배송업체를 통해 안정적으로 배송합니다.'
-								src={`${router.basePath}/images/promise_2.png`}
-							/>
-							<PromiseCard
-								title='다양한 메뉴 개발'
-								description='매달 신메뉴를 출시하고 있으면 분기별로 정기적인 리뉴얼이 이뤄집니다. 20가지가 넘는 다양한 간편식으로 새로운 헤이델리박스 도시락을 선사합니다.'
-								src={`${router.basePath}/images/promise_3.png`}
-							/>
-							<PromiseCard
-								title='기업부설연구소 운영'
-								description='귀사의 기업환경에 맞게 1.식단 2.서비스 매뉴얼 3.배송 관리 4.진열 등을 전담 담당자 매칭을 통해 지속적으로 소통하고 개선하도록 하겠습니다.'
-								src={`${router.basePath}/images/promise_4.png`}
-							/>
-						</div>
-					</div>
-				</div>
-				<div className='flex justify-center items-start self-stretch  gap-[60px] px-[120px] py-40 bg-[#fffbea]'>
-					<Image
-						className='self-stretch  w-[564px] h-[562px] rounded-3xl bg-[#d9d9d9]'
-						src={`${router.basePath}/images/ceo_intro.png`}
-						alt={'ceo_intro'}
-						width={564}
-						height={562}
-					/>
-					<div className='flex flex-col justify-start items-start relative gap-3'>
-						<p className=' text-[32px] font-bold text-left text-[#0f0e0e]'>
-							<span className=' text-[32px] font-bold text-left text-[#0f0e0e]'>
-								정성 가득한 한 끼로{' '}
-							</span>
-							<br />
-							<span className=' text-[32px] font-bold text-left text-[#0f0e0e]'>
-								세상을 조금씩 바꿔나가고 싶습니다.
-							</span>
-						</p>
-						<p className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								대학 시절, 캠퍼스 행사에서 버려지는 수많은
-								도시락을 보며 가슴이 아팠습니다.{' '}
-							</span>
-							<br />
-							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								그 순간, &apos;모두가 즐겁게 먹을 수 있는
-								도시락&apos;에 대한 꿈을 품게 되었습니다.
-							</span>
-							<br />
-							<br />
-							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								이 꿈을 현실로 만들기 위해 PSI 푸드테크에서
-								3년간 현장 경험을 쌓았습니다. 그 시간 동안
-								도시락 제작의 모든 과정을 배우며,
-								&apos;김밥도시락&apos;이라는 아이디어를
-								떠올렸습니다.
-							</span>
-							<br />
-							<br />
-							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								우리의 목표는 단순한 한 끼가 아닙니다. 받는 순간
-								미소 짓게 되는 &apos;선물 같은 도시락&apos;을
-								만들고 싶었습니다. 맞춤형 스티커로 특별한
-								메시지를 담고, 모두가 맛있게 즐길 수 있는 메뉴로
-								구성했습니다.
-							</span>
-							<br />
-							<br />
-							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								이제 우리 도시락은 행사를 빛내는 특별한 요소가
-								되었습니다. 하지만 여기서 멈추지{' '}
-							</span>
-							<br />
-							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								않을 겁니다. 소외된 이웃들에게도 따뜻한 한 끼를
-								전하고 싶어 사회적 기업으로의{' '}
-							</span>
-							<br />
-							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								성장도 꿈꾸고 있습니다.
-							</span>
-							<br />
-							<br />
-							<span className='self-stretch  w-[576px] text-base text-left text-[#0f0e0e]'>
-								정성 가득한 한 끼로 세상을 조금씩 바꿔나가는 것,
-								그것이 바로 우리가 추구하는 도시락의 모습입니다.
-							</span>
-						</p>
-						<p className='self-stretch  w-[576px] text-base font-bold text-right text-[#0f0e0e]'>
-							정태현 대표
-						</p>
-					</div>
-				</div>
-				<div className='flex justify-center items-start self-stretch h-[790px] relative pt-40'>
+				<div className='flex justify-center items-start self-stretch h-[900px] md:h-[790px] relative py-40 md:pt-40'>
 					<div className='flex flex-col justify-start items-center gap-2'>
-						<p className='text-[50px] font-bold text-center text-[#0f0e0e]'>
+						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
 							서비스 이용 후기
 						</p>
-						<p className='text-lg text-center text-[#0f0e0e]'>
+						<p className='md:text-lg text-center text-[#0f0e0e]'>
 							헤이델리박스를 만나고 달라진 고객 후기를 살펴보세요
 						</p>
 					</div>
 					<div className='absolute left-0 right-0 top-[310px]'>
 						<ReviewCarousel />
 					</div>
-					<div
-						className='w-[168px] h-[542px] absolute left-[-1px] top-[247px]'
-						style={{
-							background:
-								'linear-gradient(to left, rgba(255,255,255,0) -10%, #fff 100%)',
-						}}
-					/>
-					<div
-						className='w-[168px] h-[542px] absolute right-[-1px] top-[247px]'
-						style={{
-							background:
-								'linear-gradient(to right, rgba(255,255,255,0) -10%, #fff 100%)',
-						}}
+				</div>
+				<div className='flex md:flex-row flex-col items-center gap-[60px] md:gap-[160px] justify-center pt-[60px] bg-[#FFFBEA]'>
+					<div className='flex flex-col justify-start items-start relative gap-12'>
+						<p className='text-[28px] md:text-[32px] font-bold text-left text-[#0f0e0e]'>
+							주문방법
+						</p>
+						<div className='flex justify-start items-center relative gap-5'>
+							<div className='size-[60px] rounded-full bg-brand-01 flex items-center justify-center'>
+								<Location />
+							</div>
+							<div className='flex flex-col justify-start items-start relative gap-0.5'>
+								<p className='self-stretch text-xl font-bold text-left text-[#0f0e0e]'>
+									주소입력
+								</p>
+								<p className='self-stretch text-sm md:text-base text-left text-[#0f0e0e]'>
+									행사도시락을 받아보실 주소 입력
+								</p>
+							</div>
+						</div>
+						<div className='flex justify-start items-center relative gap-5'>
+							<div className='size-[60px] rounded-full bg-brand-01 flex items-center justify-center'>
+								<Calendar />
+							</div>
+							<div className='flex flex-col justify-start items-start relative gap-0.5'>
+								<p className='self-stretch text-xl font-bold text-left text-[#0f0e0e]'>
+									날짜 및 시간선택
+								</p>
+								<p className='self-stretch text-sm md:text-base text-left text-[#0f0e0e]'>
+									행사 일정에 맞춰 배송일과 시간 지정
+								</p>
+							</div>
+						</div>
+						<div className='flex justify-start items-center relative gap-5'>
+							<div className='size-[60px] rounded-full bg-brand-01 flex items-center justify-center'>
+								<Sticker />
+							</div>
+							<div className='flex flex-col justify-start items-start relative gap-0.5'>
+								<p className='self-stretch text-xl font-bold text-left text-[#0f0e0e]'>
+									스티커문구 입력
+								</p>
+								<p className='self-stretch text-sm md:text-base text-left text-[#0f0e0e]'>
+									도시락에 붙일 커스텀 스티커 문구 입력
+								</p>
+							</div>
+						</div>
+						<div className='flex justify-start items-center relative gap-5'>
+							<div className='size-[60px] rounded-full bg-brand-01 flex items-center justify-center'>
+								<Card />
+							</div>
+							<div className='flex flex-col justify-start items-start relative gap-0.5'>
+								<p className='self-stretch text-xl font-bold text-left text-[#0f0e0e]'>
+									결제 및 주문하기
+								</p>
+							</div>
+						</div>
+						<p className='text-sm md:text-base text-left text-[#0f0e0e]'>
+							<span>
+								문의사항이 있으실 경우, 문의하기 페이지로
+								<br className='md:hidden' />
+								남겨주시면{' '}
+							</span>
+							<br className='hidden md:block' />
+							<span>이메일로 24시간 이내 응답해 드립니다.</span>
+						</p>
+						<div className='w-[4px] h-[65px] bg-brand-01 absolute left-[28px] top-[150px]' />
+						<div className='w-[4px] h-[65px] bg-brand-01 absolute left-[28px] top-[250px]' />
+						<div className='w-[4px] h-[65px] bg-brand-01 absolute left-[28px] top-[360px]' />
+					</div>
+					<Image
+						src={'/images/order_method.png'}
+						width={652}
+						height={737}
+						className='w-[320px] md:w-[652px] h-auto md:h-[737px] object-contain'
+						alt='order_method'
 					/>
 				</div>
 				<div className='flex flex-col justify-start items-center self-stretch relative gap-[60px] px-[120px] py-40'>
-					<div className='w-[1200px] h-[480px] relative overflow-hidden rounded-3xl bg-[#d9d9d9]'>
-						<img
-							src={`${router.basePath}/images/promise_3.png`}
-							className='w-[1200.3px] h-[800px] absolute left-[-1px] top-[-162px] object-cover'
+					<div className='w-[320px] md:w-[1200px] h-[480px] relative overflow-hidden rounded-3xl'>
+						<Image
+							src={`${router.basePath}/images/banner_2.png`}
+							className='w-[1200px] h-[480px] absolute left-0 top-0 object-cover hidden md:block'
+							width={1200}
+							height={480}
+							alt='banner_2'
 						/>
-						<div className='w-[1200px] h-[480px] absolute left-[-1px] top-[-1px] opacity-[0.45] rounded-3xl bg-[#0f0e0e]' />
-						<div className='flex flex-col justify-start items-center absolute left-[380px] top-[110px] gap-[52px]'>
-							<p className='text-[50px] font-bold text-center text-[#f8f8f8]'>
-								<span className='text-[50px] font-bold text-center text-[#f8f8f8]'>
-									더욱 다양한 맞춤형
-								</span>
-								<br />
-								<span className='text-[50px] font-bold text-center text-[#f8f8f8]'>
-									서비스를 알아보세요
-								</span>
-							</p>
-							<ButtonMono
-								value={'문의하기'}
-								onClick={() => router.push('/inquiry')}
-							/>
+						<Image
+							src={`${router.basePath}/images/banner_2_mob.png`}
+							className='w-[320px] h-[480px] absolute left-0 top-0 object-cover md:hidden'
+							width={320}
+							height={480}
+							alt='banner_2_mob'
+						/>
+						<div className='w-[320px] md:w-[1200px] h-[480px] absolute left-0 top-0 opacity-[0.45] rounded-3xl bg-[#0f0e0e]' />
+						<div className='md:w-auto w-[211px] flex flex-col justify-start items-center gap-[52px] absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2'>
+							<div className='flex flex-col justify-center gap-2'>
+								<p className='text-[28px] md:text-[50px] font-bold text-center text-[#f8f8f8]'>
+									궁금한 점이 <br className='md:hidden' />
+									있으신가요?
+								</p>
+								<p className='text-sm md:text-md text-center text-white leading-[160%]'>
+									카카오톡, 전화, 문의하기로 쉽고{' '}
+									<br className='md:hidden' />
+									빠르게 문의/주문하세요!
+								</p>
+							</div>
+							<div className='flex md:flex-row flex-col items-center gap-3'>
+								<ButtonMono
+									value={'카카오톡 문의'}
+									onClick={() =>
+										router.push(
+											'http://pf.kakao.com/_nTXSn'
+										)
+									}
+									white
+								/>
+								<ButtonMono
+									value={'문의글 남기기'}
+									onClick={() => router.push('/inquiry')}
+									white
+								/>
+							</div>
 						</div>
 					</div>
+					{popups.map((popup, i) => (
+						<>
+							{isPopupOpens[i] && (
+								<Popup
+									src={popup.imagePath}
+									link={popup.linkUrl}
+									onClose={() =>
+										setIsPopupOpens((prev) => {
+											prev[i] = false;
+											return [...prev];
+										})
+									}
+									id={popup.id}
+								/>
+							)}
+						</>
+					))}
 				</div>
 			</div>
 		</Common>

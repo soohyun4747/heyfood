@@ -105,9 +105,6 @@ function OrderCompletePage() {
 			alert('주문을 실패하였습니다.');
 		}
 	};
-	
-	console.log(user);
-	
 
 	const goToOrderHistory = () => {
 		if (user?.userType === UserType.user) {
@@ -192,7 +189,7 @@ function OrderCompletePage() {
 	return (
 		<Common meta={<Meta />}>
 			{isSuccess ? (
-				<div className='flex flex-col justify-center items-center self-stretch gap-3 md:gap-[24px] px-[20px] md:px-[120px] md:pt-[100px] md:pb-40 min-h-full'>
+				<div className='flex flex-col justify-center items-center self-stretch gap-3 md:gap-[24px] px-[20px] md:px-[120px] md:pt-[100px] md:pb-40 md:min-h-full min-h-[calc(100vh-70.4px)]'>
 					<div className='flex flex-col justify-start items-center self-stretch relative gap-2'>
 						<p className='text-xl md:text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
 							주문 완료

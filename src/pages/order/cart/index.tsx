@@ -73,7 +73,7 @@ function CartPage() {
 	};
 
 	return (
-		<div className='h-screen flex flex-col overflow-hidden'>
+		<div className='h-screen-dynamic flex flex-col overflow-hidden'>
 			<GNBOrder hideCart />
 			<div className='flex flex-col justify-start items-center self-stretch gap-[60px] px-[20px] md:px-[120px] pt-10 md:pt-20 pb-[60px] md:pb-[100px] bg-[#fffbea] md:h-[calc(100vh-96px)] min-h-[calc(100vh-68px)] overflow-auto'>
 				<p className='hidden md:block text-[50px] font-bold text-center text-[#0f0e0e]'>
@@ -91,19 +91,19 @@ function CartPage() {
 								<div className='flex flex-col justify-start items-start self-stretch '>
 									<div className='flex justify-start md:flex-row flex-col items-start self-stretch bg-white'>
 										<div className='flex justify-start items-center flex-grow gap-3 p-4 md:px-6 md:py-4 border-t-0 md:border-r border-b md:border-b-0 border-l-0 border-neutral-200'>
-											<p className='text-xs md:text-base font-bold text-left text-[#0f0e0e] min-w-[65px] md:min-w-auto'>
+											<p className='text-sm md:text-base font-bold text-left text-[#0f0e0e] min-w-[65px] md:min-w-auto'>
 												배달주소
 											</p>
-											<p className='text-xs md:text-lg text-left text-[#0f0e0e]'>
+											<p className='text-sm md:text-lg text-left text-[#0f0e0e]'>
 												{data.address}{' '}
 												{data.addressDetail}
 											</p>
 										</div>
 										<div className='flex justify-start items-center flex-grow gap-3 p-4 md:px-6 md:py-4'>
-											<p className='text-xs md:text-base font-bold text-left text-[#0f0e0e] min-w-[65px] md:min-w-auto'>
+											<p className='text-sm md:text-base font-bold text-left text-[#0f0e0e] min-w-[65px] md:min-w-auto'>
 												날짜 및 시간
 											</p>
-											<p className='text-xs md:text-lg text-left text-[#0f0e0e]'>
+											<p className='text-sm md:text-lg text-left text-[#0f0e0e]'>
 												{formatDateKR(
 													new Date(data.dateTime)
 												)}
@@ -122,7 +122,7 @@ function CartPage() {
 															<p className='text-[20px] md:text-[28px] font-bold text-left text-[#0f0e0e]'>
 																{item.menu.name}
 															</p>
-															<p className='md:text-[26px] font-light text-left text-[#0f0e0e]'>
+															<p className='text-lg md:text-[26px] font-light text-left text-[#0f0e0e]'>
 																{item.menu.price.toLocaleString()}
 																원
 															</p>

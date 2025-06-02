@@ -14,11 +14,12 @@ interface ICommonProps {
 export function Common(props: ICommonProps) {
 	const user = useUserStore((state) => state.user);
 
+	//min-h-[calc(100%-70.4px)]
 	return (
-		<div className='h-screen md:min-w-[1366px] flex flex-col'>
+		<div className='max-h-[100vh] md:h-screen md:min-w-[1366px] flex flex-col overflow-y-hidden md:overflow-auto'>
 			{props.meta}
 			{!props.hideGnb && <GNB type={user?.userType ?? UserType.guest} />}
-			<div className='flex flex-col overflow-y-auto md:h-[calc(100%-113.6px)] h-[calc(100%-70.4px)]'>
+			<div className='flex flex-col overflow-y-auto md:h-full pt-[70.4px] md:pt-[112px]'>
 				{props.children}
 				{!props.hideFooter && <Footer />}
 			</div>

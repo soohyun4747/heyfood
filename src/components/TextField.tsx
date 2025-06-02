@@ -12,7 +12,7 @@ interface ITextFieldProps {
 
 export function TextField(props: ITextFieldProps) {
 	const commonClasses =
-		'w-full text-sm md:text-base text-left placeholder:text-[#cbcbcb] focus:outline-0';
+		'w-full md:text-base text-left placeholder:text-[#cbcbcb] focus:outline-0';
 
 	return (
 		<div

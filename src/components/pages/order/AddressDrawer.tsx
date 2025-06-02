@@ -85,22 +85,22 @@ export function AddressDrawer(props: IAddressDrawerProps) {
 		<Drawer
 			title={'배달주소'}
 			content={
-				<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-8'>
-					<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 gap-6'>
-						<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-3'>
-							<div className='flex flex-col justify-center items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-1'>
-								<p className='flex-grow-0 flex-shrink-0 text-sm text-left text-[#5c5c5c]'>
+				<div className='flex flex-col  self-stretch  gap-8'>
+					<div className='flex flex-col  self-stretch  gap-6'>
+						<div className='flex flex-col  self-stretch  relative gap-3'>
+							<div className='flex flex-col justify-center items-start self-stretch  relative gap-1'>
+								<p className=' text-sm text-left text-[#5c5c5c]'>
 									기본주소
 								</p>
 								<div
-									className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 py-[3px] hover:cursor-pointer'
+									className='flex justify-start items-center self-stretch  relative gap-2 py-[3px] hover:cursor-pointer'
 									onClick={() => setAddressSearchOpen(true)}>
 									{address ? (
-										<p className='flex-grow-0 flex-shrink-0 text-xl text-left'>
+										<p className=' text-xl text-left'>
 											{address}
 										</p>
 									) : (
-										<p className='flex-grow-0 flex-shrink-0 text-xl text-left text-[#cbcbcb]'>
+										<p className=' text-xl text-left text-[#cbcbcb]'>
 											배달 받으실 주소를 검색해 주세요
 										</p>
 									)}
@@ -112,7 +112,7 @@ export function AddressDrawer(props: IAddressDrawerProps) {
 								viewBox='0 0 354 1'
 								fill='none'
 								xmlns='http://www.w3.org/2000/svg'
-								className='self-stretch flex-grow-0 flex-shrink-0'
+								className='self-stretch '
 								preserveAspectRatio='none'>
 								<line
 									y1='0.5'
@@ -122,9 +122,9 @@ export function AddressDrawer(props: IAddressDrawerProps) {
 								/>
 							</svg>
 						</div>
-						<div className='flex flex-col justify-start items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-3'>
-							<div className='flex flex-col justify-center items-start self-stretch flex-grow-0 flex-shrink-0 relative gap-1'>
-								<p className='flex-grow-0 flex-shrink-0 text-sm text-left text-[#5c5c5c]'>
+						<div className='flex flex-col  self-stretch  relative gap-3'>
+							<div className='flex flex-col justify-center items-start self-stretch  relative gap-1'>
+								<p className=' text-sm text-left text-[#5c5c5c]'>
 									상세주소
 								</p>
 								<input
@@ -142,7 +142,7 @@ export function AddressDrawer(props: IAddressDrawerProps) {
 								viewBox='0 0 354 1'
 								fill='none'
 								xmlns='http://www.w3.org/2000/svg'
-								className='self-stretch flex-grow-0 flex-shrink-0'
+								className='self-stretch '
 								preserveAspectRatio='none'>
 								<line
 									y1='0.5'
@@ -153,7 +153,7 @@ export function AddressDrawer(props: IAddressDrawerProps) {
 							</svg>
 						</div>
 					</div>
-					<div className='flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 p-3 bg-[#f8f8f8]'>
+					<div className='flex justify-center items-center self-stretch  relative gap-2 p-3 bg-[#f8f8f8]'>
 						<p className='flex-grow w-[330px] text-xs text-left text-[#5c5c5c]'>
 							<span className='flex-grow w-[330px] text-xs text-left text-[#5c5c5c]'>
 								기본 배송 지역은{' '}

@@ -6,7 +6,9 @@ body {
 	margin: 0;
 	font-family: 'NEXONLv1Gothic';
 	overflow-x: hidden;
+	overscroll-behavior: none;
 }
+
 td {
 	padding: 0;
 }
@@ -14,6 +16,11 @@ td {
 
 #__next {
 	height: 100%;
+}
+
+/* 사용 */
+.full-height {
+  height: calc(var(--vh, 1vh) * 100);
 }
 
 @font-face {

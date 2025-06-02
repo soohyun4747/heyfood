@@ -88,7 +88,7 @@ function PaymentPage() {
 				wholePrice,
 				`${cart.at(0)?.items.at(0)?.menu.name} 외 ${totalCount - 1}건`,
 				'정수현',
-				'http://localhost:3000/api/nicepay/approve'
+				'http://172.30.1.76:3000/api/nicepay/approve'
 			);
 		}
 	};
@@ -160,7 +160,7 @@ function PaymentPage() {
 	};
 
 	return (
-		<div className='h-screen flex flex-col bg-[#fffbea]'>
+		<div className='h-screen-dynamic flex flex-col bg-[#fffbea]'>
 			<GNBOrder hideCart />
 			<div className='flex flex-col justify-start items-center self-stretch gap-8 md:gap-[60px] px-5 md:px-60 pt-10 md:pt-20 pb-[60px] md:pb-[220px] bg-[#fffbea] overflow-auto md:h-[calc(100vh-70px-120px)]'>
 				<p className='hidden md:block text-[50px] font-bold text-center text-[#0f0e0e]'>
@@ -173,24 +173,24 @@ function PaymentPage() {
 					<div className='flex flex-col justify-start items-start self-stretch gap-6 md:gap-9 p-6 bg-white'>
 						<div className='flex md:flex-row flex-col items-center gap-6 md:gap-[32px]'>
 							<div className='flex justify-start items-start self-stretch relative gap-2'>
-								<p className='text-sm md:text-base font-bold text-left text-[#0f0e0e]'>
+								<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
 									이름
 								</p>
-								<p className='text-sm md:text-base text-left text-[#0f0e0e]'>
+								<p className='md:text-base text-left text-[#0f0e0e]'>
 									{user?.name}
 								</p>
 							</div>
 							<div className='flex justify-start items-start self-stretch relative gap-2'>
-								<p className='text-sm md:text-base font-bold text-left text-[#0f0e0e]'>
+								<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
 									전화번호
 								</p>
-								<p className='text-sm md:text-base text-left text-[#0f0e0e]'>
+								<p className='md:text-base text-left text-[#0f0e0e]'>
 									{user?.phone}
 								</p>
 							</div>
 						</div>
 						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
-							<p className='text-sm md:text-base font-bold text-left text-[#0f0e0e]'>
+							<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
 								이메일
 							</p>
 							<TextField
@@ -217,7 +217,7 @@ function PaymentPage() {
 					</p>
 					<div className='flex flex-col justify-start items-start self-stretch gap-6 md:gap-9 p-6 bg-white'>
 						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
-							<p className='text-sm md:text-base font-bold text-left text-[#0f0e0e]'>
+							<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
 								요청사항 (선택)
 							</p>
 							<TextField
@@ -227,7 +227,7 @@ function PaymentPage() {
 							/>
 						</div>
 						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
-							<p className='text-sm md:text-base font-bold text-left text-[#0f0e0e]'>
+							<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
 								업체명/현장명
 							</p>
 							<TextField
@@ -249,9 +249,7 @@ function PaymentPage() {
 								스티커 (선택)
 							</p>
 						</div>
-						<p className='text-sm text-right text-[#0f0e0e]'>
-							개당 +300원
-						</p>
+						<p className='text-right text-[#0f0e0e]'>개당 +300원</p>
 					</div>
 					<div
 						style={{ opacity: stickerCheck ? 1 : 0.4 }}
@@ -289,8 +287,8 @@ function PaymentPage() {
 								style={{ height: 46, width: '100%' }}
 							/>
 						</div>
-						<div className='flex flex-col justify-start items-start self-stretch relative gap-2 flex-1'>
-							<p className='text-sm md:text-base font-bold text-left text-[#0f0e0e]'>
+						<div className='flex flex-col justify-start items-start self-stretch relative gap-2 flex-1 md:max-h-auto max-h-[200px]'>
+							<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
 								스티커 문구
 							</p>
 							<TextField
@@ -314,7 +312,7 @@ function PaymentPage() {
 						<p className='text-md md:text-2xl font-bold text-left text-[#0f0e0e]'>
 							주문내역
 						</p>
-						<p className='text-xs md:text-sm text-center text-[#0f0e0e]'>
+						<p className='text-sm md:text-sm text-center text-[#0f0e0e]'>
 							배송비는 거리 기반으로 책정됩니다
 						</p>
 					</div>
@@ -325,31 +323,31 @@ function PaymentPage() {
 									key={i}
 									className='flex flex-col justify-start items-start self-stretch '>
 									<div className='flex justify-start items-center self-stretch relative gap-3 px-4 md:px-6 py-4 bg-white border-b border-neutral-200'>
-										<p className='min-w-[52px] text-xs md:text-base font-bold text-left text-[#0f0e0e]'>
+										<p className='min-w-[62px]  md:text-base font-bold text-left text-[#0f0e0e]'>
 											배달주소
 										</p>
-										<p className='text-xs md:text-lg text-left text-[#0f0e0e]'>
+										<p className=' md:text-lg text-left text-[#0f0e0e]'>
 											{bundle.address}{' '}
 											{bundle.addressDetail}
 										</p>
 									</div>
 									<div className='flex flex-col justify-start items-start self-stretch gap-4 md:gap-5 p-4 md:p-6 bg-white'>
-										<div className='flex justify-between items-end md:items-start self-stretch relative'>
-											<div className='flex md:flex-row flex-col md:items-center gap-2 md:gap-[12px]'>
-												<p className='md:text-base text-xs font-bold text-left text-[#0f0e0e]'>
+										<div className='flex md:flex-row flex-col justify-between items-start self-stretch relative gap-3'>
+											<div className='flex md:items-center gap-[12px]'>
+												<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
 													배달날짜
 												</p>
-												<p className='text-xs md:text-lg text-left text-[#0f0e0e]'>
+												<p className=' md:text-lg text-left text-[#0f0e0e]'>
 													{new Date(
 														bundle.dateTime
 													).toLocaleString()}
 												</p>
 											</div>
-											<div className='flex justify-start items-center relative gap-2 md:gap-[12px]'>
-												<p className='md:text-base text-xs text-right text-[#0f0e0e]'>
+											<div className='flex justify-between md:justify-start items-center relative gap-2 md:gap-[12px] md:self-auto self-stretch'>
+												<p className='md:text-base  text-right text-[#0f0e0e]'>
 													배송비
 												</p>
-												<p className='text-sm md:text-xl text-right text-[#0f0e0e]'>
+												<p className='font-bold md:font-[400] md:text-xl text-right text-[#0f0e0e]'>
 													{deliveryPrices[
 														i
 													]?.toLocaleString() ?? 0}
@@ -360,27 +358,29 @@ function PaymentPage() {
 										{bundle.items.map((item, itemIdx) => (
 											<div
 												key={itemIdx}
-												className='flex justify-between items-center self-stretch md:gap-0 gap-1'>
-												<div className='flex justify-start items-center relative gap-1 md:gap-4'>
+												className='flex justify-between items-end self-stretch md:gap-0 gap-1'>
+												<div className='flex flex-col justify-start relative gap-1 md:gap-2'>
 													<div className='flex items-center gap-2 md:gap-[12px]'>
-														<p className='text-xs md:text-[22px] text-left text-[#0f0e0e] md:max-w-auto max-w-[140px]'>
+														<p className=' md:text-[22px] text-left text-[#0f0e0e]'>
 															{item.menu.name}
 														</p>
-														<p className='text-xs md:text-xl text-left text-gray-500'>
+													</div>
+													<div className='flex items-center gap-2 md:gap-3'>
+														<p className=' md:text-xl text-left text-gray-500'>
 															{item.menu.price.toLocaleString()}
 															원
 														</p>
+														<p className=' md:text-xl text-left text-gray-300'>
+															x{' '}
+														</p>
+														<p className=' md:text-xl text-left text-gray-300'>
+															{item.count.toLocaleString()}
+															개
+														</p>
 													</div>
-													<p className='text-xs md:text-xl text-left text-gray-300'>
-														x{' '}
-													</p>
-													<p className='text-xs md:text-xl text-left text-gray-300'>
-														{item.count.toLocaleString()}
-														개
-													</p>
 												</div>
 												<div className='flex justify-end items-center relative gap-2 self-end md:self-auto'>
-													<p className='md:text-[22px] text-right text-[#0f0e0e]'>
+													<p className='font-bold md:font-[400] md:text-[22px] text-right text-[#0f0e0e]'>
 														{(
 															item.menu.price *
 															item.count
@@ -397,22 +397,24 @@ function PaymentPage() {
 								<div className='p-4 md:p-[24px] bg-white flex justify-between items-center self-stretch '>
 									<div className='flex justify-start items-center relative gap-2 md:gap-4'>
 										<div className='flex items-center gap-2 md:gap-[12px]'>
-											<p className='text-xs md:text-[22px] text-left text-[#0f0e0e]'>
+											<p className=' md:text-[22px] text-left text-[#0f0e0e]'>
 												스티커
 											</p>
-											<p className='text-xs md:text-xl text-left text-gray-500'>
+										</div>
+										<div className='flex items-center gap-2 md:gap-[12px]'>
+											<p className=' md:text-xl text-left text-gray-500'>
 												{stickerPrice}원
 											</p>
+											<p className=' md:text-xl text-left text-gray-300'>
+												x{' '}
+											</p>
+											<p className='md:text-xl text-left text-gray-300'>
+												{totalCount.toLocaleString()}개
+											</p>
 										</div>
-										<p className='text-xs md:text-xl text-left text-gray-300'>
-											x{' '}
-										</p>
-										<p className='text-xs md:text-xl text-left text-gray-300'>
-											{totalCount.toLocaleString()}개
-										</p>
 									</div>
 									<div className='flex justify-end items-center relative gap-2 self-end md:self-auto'>
-										<p className='text-sm md:text-[22px] text-right text-[#0f0e0e]'>
+										<p className='font-bold md:font-[400] md:text-[22px] text-right text-[#0f0e0e]'>
 											{(
 												stickerPrice * totalCount
 											).toLocaleString()}
@@ -423,10 +425,10 @@ function PaymentPage() {
 							)}
 						</div>
 						<div className='flex justify-between items-center self-stretch gap-6 p-4 md:p-6 bg-white'>
-							<p className='text-sm md:text-2xl font-bold text-left text-[#0f0e0e]'>
+							<p className='md:text-2xl font-bold text-left text-[#0f0e0e]'>
 								총 결제 금액
 							</p>
-							<p className='text-sm md:text-2xl font-bold text-right text-[#f2ab27]'>
+							<p className='md:text-2xl font-bold text-right text-[#f2ab27]'>
 								{wholePrice.toLocaleString()}원
 							</p>
 						</div>
@@ -438,10 +440,10 @@ function PaymentPage() {
 				style={{ boxShadow: '0px 4px 20px 0 rgba(0,0,0,0.1)' }}>
 				<div className='w-full max-w-[960px] flex justify-center items-center justify-between'>
 					<div className='flex flex-col justify-center items-start gap-1 md:gap-2'>
-						<p className='text-sm md:text-[26px] font-medium text-right text-[#0f0e0e]'>
+						<p className='md:text-[26px] font-medium text-right text-[#0f0e0e]'>
 							{wholePrice.toLocaleString()}원
 						</p>
-						<p className='text-sm md:text-lg font-medium text-right text-[#909090]'>
+						<p className='md:text-lg font-medium text-right text-[#909090]'>
 							부가세 및 배송비 포함
 						</p>
 					</div>

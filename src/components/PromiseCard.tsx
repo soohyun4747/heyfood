@@ -15,15 +15,15 @@ export const PromiseCard: React.FC<PromiseCardProps> = ({
 	return (
 		<div className='flex flex-col justify-start items-start relative gap-8'>
 			<Image
-				className='w-[276px] h-[210px] rounded-2xl object-cover'
+				className='w-[320px] h-[210px] rounded-2xl object-cover'
 				src={src}
-				width={276}
+				width={320}
 				height={210}
 				alt={title}
 			/>
 			{/* 텍스트 영역 */}
-			<div className='flex flex-col justify-start items-start w-[276px] relative gap-3'>
-				<p className='text-xl font-bold text-left text-[#0f0e0e]'>
+			<div className='flex flex-col justify-start items-start w-[320px] relative gap-3'>
+				<p className='text-[20px] md:text-xl font-bold text-left text-[#0f0e0e]'>
 					{title}
 				</p>
 				<p className='text-base text-left text-[#0f0e0e]'>

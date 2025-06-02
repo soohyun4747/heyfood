@@ -1,3 +1,4 @@
+import { useDeviceStore } from '@/stores/deviceStore';
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
 import '@/styles/global.css';
 import { fetchDataWithDocId } from '@/utils/firebase';
@@ -8,6 +9,26 @@ import { useEffect } from 'react';
 
 function App({ Component, pageProps }: AppProps) {
 	const { setUser } = useUserStore();
+	const setIsMobile = useDeviceStore((state) => state.setIsMobile);
+
+	useEffect(() => {
+		function setRealViewportHeight() {
+			const vh = window.innerHeight * 0.01;
+			document.documentElement.style.setProperty('--vh', `${vh}px`);
+		}
+		window.addEventListener('resize', setRealViewportHeight);
+		setRealViewportHeight();
+	}, []);
+
+	useEffect(() => {
+		const checkIsMobile = () => {
+			setIsMobile(window.innerWidth < 768);
+		};
+
+		checkIsMobile(); // 최초 실행
+		window.addEventListener('resize', checkIsMobile);
+		return () => window.removeEventListener('resize', checkIsMobile);
+	}, [setIsMobile]);
 
 	useEffect(() => {
 		const auth = getAuth();
@@ -34,7 +55,7 @@ function App({ Component, pageProps }: AppProps) {
 	return (
 		<>
 			<Component {...pageProps} />
-			<Script src="https://pay.nicepay.co.kr/v1/js/"></Script>
+			<Script src='https://pay.nicepay.co.kr/v1/js/'></Script>
 		</>
 	);
 }

@@ -21,7 +21,7 @@ export function Modal(props: IModalProps) {
 						</div>
 						<div className='self-stretch md:w-[604px] h-[1px] bg-[#0F0E0E]' />
 					</div>
-					<div className='flex justify-center items-start self-stretch md:h-[495px] h-[360px] relative overflow-y-auto gap-2'>
+					<div className='flex justify-center items-start self-stretch md:h-[380px] h-[360px] relative overflow-y-auto gap-2'>
 						{props.content}
 					</div>
 				</div>

@@ -15,7 +15,7 @@ import { useCartStore } from '@/stores/cartStore';
 import { ModalCenter } from '@/components/ModalCenter';
 import { getSetCateogories, getSetMenus } from '../menu';
 
-const minimumCount = 1;
+const minimumCount = 30;
 
 function OrderPage() {
 	const [categories, setCategories] = useState<ICategory[]>([]);
@@ -138,9 +138,9 @@ function OrderPage() {
 	};
 
 	return (
-		<div className='h-screen flex flex-col overflow-hidden'>
+		<div className='h-screen-dynamic flex flex-col overflow-hidden'>
 			<GNBOrder />
-			<div className='flex flex-col justify-start items-center self-stretch gap-[60px] md:px-[120px] pb-[120px] md:pb-[100px] bg-white h-[calc(100%-131px)] overflow-y-auto'>
+			<div className='flex flex-col justify-start items-center self-stretch gap-[60px] md:px-[120px] pb-[120px] md:pb-[100px] bg-white h-[calc(100vh-232px)] md:h-[calc(100vh-131px)] overflow-y-auto'>
 				<p className='hidden md:block text-[50px] font-bold text-center text-[#0f0e0e]'>
 					주문하기
 				</p>
@@ -165,7 +165,7 @@ function OrderPage() {
 								</p>
 							</div>
 							<p className='flex-grow text-sm md:text-lg text-left text-[#0f0e0e]'>
-								{dateTime?.toLocaleString()}
+								{dateTime?.toLocaleString().slice(0, -3)}
 							</p>
 							<ButtonSmall
 								value={'변경'}
@@ -206,7 +206,7 @@ function OrderPage() {
 				</div>
 			</div>
 			<div
-				className='flex items-center justify-center rounded-tl-3xl rounded-tr-3xl bg-white relative max-w-[1440px] self-center w-full md:w-auto'
+				className='fixed bottom-0 flex items-center justify-center rounded-tl-3xl rounded-tr-3xl bg-white relative max-w-[1440px] self-center w-full md:w-auto'
 				style={{ boxShadow: '0px 4px 20px 0 rgba(0,0,0,0.1)' }}>
 				<div className='flex md:flex-row flex-col justify-end md:items-center gap-[18px] md:gap-10 p-[20px] pb-[24px] md:px-[120px] md:py-8 w-full md:w-[1440px]'>
 					<div className='flex flex-col justify-center items-start flex-grow relative'>
@@ -293,6 +293,7 @@ function OrderPage() {
 					btn1st={{
 						value: '대체하기',
 						onClick: replaceCartBundle,
+						className: 'w-full md:min-h-[68px] min-h-[60px]',
 					}}
 					btn2nd={{
 						value: '취소하기',

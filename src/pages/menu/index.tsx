@@ -50,7 +50,7 @@ function MenuPage() {
 					menus={categories}
 					selectedIdx={selectedCategoryIdx}
 					onClickMenu={onClickCategory}
-					style={{ justifyContent: 'start' }}
+					className='md:justify-center'
 				/>
 				{filteredCategoryMenus.length > 0 ? (
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16'>

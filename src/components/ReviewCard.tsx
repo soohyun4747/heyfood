@@ -14,18 +14,18 @@ interface ReviewCardProps {
 export const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
   return (
     <div
-      className="flex flex-col justify-between items-center h-[335px] w-[400px] relative p-8 rounded-3xl bg-white"
+      className="flex flex-col justify-between h-[365px] md:h-[395px] w-[300px] md:w-[400px] relative p-8 rounded-3xl bg-white"
       style={{ boxShadow: '0px 4px 20px 0 rgba(0,0,0,0.1)' }}
     >
-      <div className="flex flex-col justify-start items-start w-[336px] relative gap-3">
-        <p className="w-[336px] text-2xl font-bold text-left text-[#0f0e0e]">
+      <div className="flex flex-col relative gap-3">
+        <p className="text-5 md:text-2xl font-bold text-[#0f0e0e]">
           {review.title}
         </p>
-        <p className="w-[336px] text-lg text-left text-[#0f0e0e]">
+        <p className="text-4 md:text-lg">
           {review.description}
         </p>
       </div>
-      <p className="w-[336px] text-base text-left text-[#909090]">
+      <p className="text-[13px] md:text-base text-[#909090]">
         {review.author}
       </p>
     </div>

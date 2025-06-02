@@ -12,9 +12,9 @@ export interface IDrawerProps {
 
 export function Drawer(props: IDrawerProps) {
 	return (
-		<div className='fixed top-0 left-0 w-[100vw] h-[100vh] bg-black/40 flex items-center justify-end'>
+		<div className='fixed top-0 left-0 w-[100vw] h-[100vh] bg-black/40 flex items-center justify-end z-[2]'>
 			<div
-				className='flex flex-col justify-start items-end h-full w-[450px] max-w-[100vw] relative gap-3 md:gap-6 px-5 md:px-12 py-6 md:py-8 bg-white'
+				className='flex flex-col justify-start items-end h-screen md:h-full w-[450px] max-w-[100vw] relative gap-3 md:gap-6 px-5 md:px-12 py-6 md:py-8 bg-white md:pb-0 pb-[90px]'
 				style={{ boxShadow: '0px 4px 12px 0 rgba(0,0,0,0.15)' }}>
 				<div
 					onClick={props.onClose}

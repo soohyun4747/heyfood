@@ -59,7 +59,7 @@ export function UserLogin() {
 							이메일
 						</p>
 						<input
-							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[180px] md:max-w-auto'
 							placeholder='이메일 입력'
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
@@ -72,7 +72,7 @@ export function UserLogin() {
 						<input
 							autoComplete='new-password'
 							type='password'
-							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[180px] md:max-w-auto'
 							placeholder='비밀번호 입력'
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}

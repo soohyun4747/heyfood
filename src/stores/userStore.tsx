@@ -8,8 +8,9 @@ export interface IUser {
 	phone: string;
 	address: string | null;
 	addressDetail: string | null;
-	createdAt: Timestamp;
     userType: IUserType;
+	marketingAgree?: boolean;
+	createdAt: Timestamp;
 	updatedAt: Timestamp | null;
 }
 

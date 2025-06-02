@@ -19,12 +19,15 @@ import {
 	QueryDocumentSnapshot,
 	setDoc,
 	startAfter,
+	Timestamp,
 	updateDoc,
+	where,
 	writeBatch,
 } from 'firebase/firestore';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { Dispatch, SetStateAction } from 'react';
 import { formatPhoneNumberE164 } from './string';
+import { IPopup } from '@/pages';
 
 export const fetchImageUrls = async (
 	paths: string[]
@@ -340,3 +343,19 @@ export const getDataCount = async (collectionName: string) => {
 	const snapshot = await getCountFromServer(coll);
 	return snapshot.data().count;
 };
+
+export async function getActivePopups(): Promise<IPopup[]> {
+		const now = Timestamp.now();
+
+		const q = query(
+			collection(db, 'popups'),
+			where('startDate', '<=', now),
+			where('endDate', '>=', now)
+		);
+
+		const snapshot = await getDocs(q);
+		return snapshot.docs.map((doc) => ({
+			id: doc.id,
+			...doc.data(),
+		})) as IPopup[];
+	}

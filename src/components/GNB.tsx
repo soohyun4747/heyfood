@@ -45,7 +45,7 @@ export function GNB({ type }: { type: IUserType }) {
 	};
 
 	return (
-		<div className='flex justify-between items-center px-[20px] md:px-[120px] py-[16px] md:py-[30px]'>
+		<div className='fixed top-0 flex w-full justify-between items-center px-[20px] md:px-[120px] py-[16px] md:py-[30px] bg-white z-[1]'>
 			<div className='flex items-center md:gap-[200px]'>
 				<Image
 					src={'/images/logo1.svg'}
@@ -116,12 +116,12 @@ export function GNB({ type }: { type: IUserType }) {
 					/>
 				</div>
 			</div>
-			{menuOpen && <MenuDrawer />}
+			{menuOpen && <MenuDrawer type={type} />}
 		</div>
 	);
 }
 
-const MenuDrawer = () => {
+const MenuDrawer = ({ type }: { type: IUserType }) => {
 	const router = useRouter();
 
 	return (
@@ -151,7 +151,6 @@ const MenuDrawer = () => {
 			</p>
 			<svg
 				id={domId}
-				width={320}
 				height={2}
 				viewBox='0 0 320 2'
 				fill='none'
@@ -171,11 +170,19 @@ const MenuDrawer = () => {
 				className='text-lg text-left text-[#1f2023]'>
 				문의하기
 			</p>
-			<p
-				onClick={() => router.push('/login')}
-				className='text-lg text-left text-[#1f2023]'>
-				로그인
-			</p>
+			{type === UserType.guest ? (
+				<p
+					onClick={() => router.push('/login')}
+					className='text-lg text-left text-[#1f2023]'>
+					로그인
+				</p>
+			) : (
+				<p
+					onClick={() => router.push('/profile')}
+					className='text-lg text-left text-[#1f2023]'>
+					마이페이지
+				</p>
+			)}
 		</div>
 	);
 };

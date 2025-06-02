@@ -25,6 +25,15 @@ module.exports = {
 			animation: {
 				scroll: 'scroll 20s linear infinite',
 			},
+			height: {
+				'screen-dynamic': 'calc(var(--vh) * 100)',
+			},
+			minHeight: {
+				'screen-dynamic': 'calc(var(--vh) * 100)',
+			},
+			maxHeight: {
+				'screen-dynamic': 'calc(var(--vh) * 100)',
+			},
 		},
 	},
 	plugins: [],

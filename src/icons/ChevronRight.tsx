@@ -3,12 +3,13 @@ import { IIconProps } from '@/components/ButtonIcon';
 export function ChevronRight(props: IIconProps) {
 	return (
 		<svg
-			width={props.size ?? 60}
-			height={props.size ?? 60}
+			width={props.size}
+			height={props.size}
 			viewBox='0 0 60 60'
 			fill='none'
 			xmlns='http://www.w3.org/2000/svg'
-			preserveAspectRatio='none'>
+			preserveAspectRatio='none'
+			className='md:size-[60px] size-[36px]'>
 			<path
 				d='M25 17.5L37.5 30L25 42.5'
 				stroke={

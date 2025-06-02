@@ -82,55 +82,37 @@ export function BasicInfo() {
 	};
 
 	return (
-		<>
-			<div className='flex flex-col justify-start items-start flex-grow relative gap-6 rounded-3xl'>
-				<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-6'>
-					<div className='flex justify-start items-center flex-grow relative gap-12'>
-						<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
-							이메일 아이디
-						</p>
-						<svg
-							width={1}
-							height={29}
-							viewBox='0 0 1 29'
-							fill='none'
-							xmlns='http://www.w3.org/2000/svg'
-							className='flex-grow-0 flex-shrink-0'
-							preserveAspectRatio='none'>
-							<line
-								x1='0.5'
-								y1='0.5'
-								x2='0.499999'
-								y2='28.5'
-								stroke='#E5E5E5'
-							/>
-						</svg>
-						<div className='flex justify-start items-center flex-grow gap-6'>
-							<div className='flex justify-center items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-2 py-px bg-white'>
-								<p className='flex-grow-0 flex-shrink-0 text-lg text-left text-[#0f0e0e]'>
-									{user?.email}
-								</p>
-							</div>
-						</div>
-					</div>
+		<div className='flex flex-col  gap-6 self-stretch md:self-auto px-[20px] md:px-0'>
+			<div className='flex flex-col gap-2 md:gap-6 self-stretch md:self-auto'>
+				<div className='flex md:flex-row flex-col md:items-center  gap-3 md:gap-12'>
+					<p className='w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
+						이메일 아이디
+					</p>
+					<svg
+						width={1}
+						height={29}
+						viewBox='0 0 1 29'
+						fill='none'
+						xmlns='http://www.w3.org/2000/svg'
+						className='md:block hidden'
+						preserveAspectRatio='none'>
+						<line
+							x1='0.5'
+							y1='0.5'
+							x2='0.499999'
+							y2='28.5'
+							stroke='#E5E5E5'
+						/>
+					</svg>
+					<p className=' md:text-lg text-left text-[#0f0e0e]'>
+						{user?.email}
+					</p>
 				</div>
-				<svg
-					width={892}
-					height={1}
-					viewBox='0 0 892 1'
-					fill='none'
-					xmlns='http://www.w3.org/2000/svg'
-					className='self-stretch flex-grow-0 flex-shrink-0'
-					preserveAspectRatio='none'>
-					<line
-						y1='0.5'
-						x2={892}
-						y2='0.5'
-						stroke='#E5E5E5'
-					/>
-				</svg>
-				<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-12'>
-					<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
+				<div className='md:w-[892px] h-[1px] self-stretch bg-[#E5E5E5]' />
+			</div>
+			<div className='flex flex-col gap-2 md:gap-6 self-stretch md:self-auto'>
+				<div className='flex md:flex-row flex-col md:items-center self-stretch   gap-3 md:gap-12'>
+					<p className=' w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
 						이름
 					</p>
 					<svg
@@ -139,7 +121,7 @@ export function BasicInfo() {
 						viewBox='0 0 1 28'
 						fill='none'
 						xmlns='http://www.w3.org/2000/svg'
-						className='flex-grow-0 flex-shrink-0'
+						className='hidden md:block'
 						preserveAspectRatio='none'>
 						<line
 							x1='0.5'
@@ -149,56 +131,29 @@ export function BasicInfo() {
 							stroke='#E5E5E5'
 						/>
 					</svg>
-					<p className='flex-grow-0 flex-shrink-0 text-lg text-left text-[#0f0e0e]'>
+					<p className=' md:text-lg text-left text-[#0f0e0e]'>
 						{user?.name}
 					</p>
 				</div>
-				<svg
-					width={892}
-					height={1}
-					viewBox='0 0 892 1'
-					fill='none'
-					xmlns='http://www.w3.org/2000/svg'
-					className='self-stretch flex-grow-0 flex-shrink-0'
-					preserveAspectRatio='none'>
-					<line
-						y1='0.5'
-						x2={892}
-						y2='0.5'
-						stroke='#E5E5E5'
-					/>
-				</svg>
-				<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 relative gap-12'>
-					<p className='flex-grow-0 flex-shrink-0 w-[110px] text-lg text-left text-[#0f0e0e]'>
+				<div className='md:w-[892px] h-[1px] self-stretch bg-[#E5E5E5]' />
+			</div>
+			<div className='flex flex-col gap-2 md:gap-6 self-stretch md:self-auto'>
+				<div className='flex md:flex-row flex-col md:items-center self-stretch gap-4 md:gap-12'>
+					<p className='w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
 						비밀번호
 					</p>
-					<svg
-						width={1}
-						height={28}
-						viewBox='0 0 1 28'
-						fill='none'
-						xmlns='http://www.w3.org/2000/svg'
-						className='flex-grow-0 flex-shrink-0'
-						preserveAspectRatio='none'>
-						<line
-							x1='0.5'
-							y1='2.18557e-8'
-							x2='0.499999'
-							y2={28}
-							stroke='#E5E5E5'
-						/>
-					</svg>
+					<div className='self-stretch w-[1px] bg-[#E5E5E5] md:block hidden' />
 					{isPasswordChange ? (
-						<div className='flex flex-col justify-center items-start flex-grow relative gap-5'>
-							<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 h-7 relative gap-4'>
-								<div className='flex justify-start items-center flex-grow-0 flex-shrink-0 w-[480px] relative gap-8'>
-									<p className='flex-grow-0 flex-shrink-0 w-[132px] text-lg text-left text-[#909090]'>
+						<div className='flex flex-col justify-center items-start gap-5'>
+							<div className='flex flex-col justify-center items-start gap-2 md:gap-5 self-stretch md:self-auto'>
+								<div className='flex md:flex-row flex-col md:items-center md:w-[480px] gap-3 md:gap-8'>
+									<p className='w-[110px] md:w-[132px]  md:text-lg text-left text-[#909090]'>
 										기존 비밀번호
 									</p>
 									<input
 										autoComplete='new-password'
 										type='password'
-										className='flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+										className='flex-1  md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
 										placeholder='기존 비밀번호 입력'
 										value={password}
 										onChange={(e) =>
@@ -206,72 +161,47 @@ export function BasicInfo() {
 										}
 									/>
 								</div>
+								<div className='md:w-[480px] h-[1px] self-stretch bg-[#E5E5E5]' />
 							</div>
-							<svg
-								width={480}
-								height={1}
-								viewBox='0 0 480 1'
-								fill='none'
-								xmlns='http://www.w3.org/2000/svg'
-								className='flex-grow-0 flex-shrink-0'
-								preserveAspectRatio='none'>
-								<line
-									y1='0.5'
-									x2={480}
-									y2='0.5'
-									stroke='#E5E5E5'
-								/>
-							</svg>
-							<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 h-7 relative gap-4'>
-								<div className='flex justify-start items-center flex-grow-0 flex-shrink-0 w-[480px] relative gap-8'>
-									<p className='flex-grow-0 flex-shrink-0 w-[132px] text-lg text-left text-[#909090]'>
-										새 비밀번호
-									</p>
-									<input
-										autoComplete='new-password'
-										type='password'
-										className='flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
-										placeholder='영문+숫자 조합 8~16자리'
-										value={newPassword}
-										onChange={onChangeNewPassword}
-									/>
+							<div className='flex flex-col justify-center items-start gap-2 md:gap-5 self-stretch md:self-auto'>
+								<div className='flex md:items-center self-stretch  gap-4'>
+									<div className='flex md:flex-row flex-col md:items-center md:w-[480px]  gap-4 md:gap-8'>
+										<p className='w-[110px] md:w-[132px]  md:text-lg text-left text-[#909090]'>
+											새 비밀번호
+										</p>
+										<input
+											autoComplete='new-password'
+											type='password'
+											className='flex-1  md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+											placeholder='영문+숫자 조합 8~16자리'
+											value={newPassword}
+											onChange={onChangeNewPassword}
+										/>
+									</div>
+									{newPasswordError && (
+										<p className=' text-xs text-left text-[#dd1c1c]'>
+											영문+숫자 조합 8~16자리로
+											입력해주세요.
+										</p>
+									)}
 								</div>
-								{newPasswordError && (
-									<p className='flex-grow-0 flex-shrink-0 text-xs text-left text-[#dd1c1c]'>
-										영문+숫자 조합 8~16자리로 입력해주세요.
-									</p>
-								)}
+								<div className='md:w-[480px] h-[1px] self-stretch bg-[#E5E5E5]' />
 							</div>
-							<svg
-								width={480}
-								height={1}
-								viewBox='0 0 480 1'
-								fill='none'
-								xmlns='http://www.w3.org/2000/svg'
-								className='flex-grow-0 flex-shrink-0'
-								preserveAspectRatio='none'>
-								<line
-									y1='0.5'
-									x2={480}
-									y2='0.5'
-									stroke='#E5E5E5'
-								/>
-							</svg>
-							<div className='flex justify-start items-center self-stretch flex-grow-0 flex-shrink-0 gap-4'>
-								<div className='flex justify-start items-center flex-grow-0 flex-shrink-0 w-[480px] relative gap-8'>
-									<p className='flex-grow-0 flex-shrink-0 text-lg text-left text-[#909090] w-[132px]'>
+							<div className='flex md:items-center self-stretch gap-4 md:justify-start justify-between'>
+								<div className='flex md:flex-row flex-col md:items-center md:w-[480px]  gap-4 md:gap-8'>
+									<p className='md:w-[132px]  md:text-lg text-left text-[#909090]'>
 										새 비밀번호 확인
 									</p>
 									<input
 										autoComplete='new-password'
 										type='password'
-										className='flex-1 text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0'
+										className='flex-1  md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 md:max-w-[unset] max-w-[200px]'
 										placeholder='비밀번호 확인 입력'
 										value={newPasswordConfirm}
 										onChange={onChangeNewPasswordConfirm}
 									/>
 								</div>
-								<div className='flex justify-start items-start flex-grow-0 flex-shrink-0 gap-2.5'>
+								<div className='flex items-end md:items-start gap-2 md:gap-2.5 min-w-[90px] md:min-w-auto'>
 									<ButtonSmall
 										value='변경'
 										disabled={
@@ -287,33 +217,19 @@ export function BasicInfo() {
 							</div>
 						</div>
 					) : (
-						<>
-							<p className='flex-grow w-[517px] text-lg text-left text-[#0f0e0e]'>
+						<div className='flex items-center w-full justify-between'>
+							<p className=' md:text-lg text-left text-[#0f0e0e]'>
 								**********
 							</p>
 							<ButtonSmall
 								value={'비밀번호 변경'}
 								onClick={() => setIsPasswordChange(true)}
 							/>
-						</>
+						</div>
 					)}
 				</div>
-				<svg
-					width={892}
-					height={1}
-					viewBox='0 0 892 1'
-					fill='none'
-					xmlns='http://www.w3.org/2000/svg'
-					className='self-stretch flex-grow-0 flex-shrink-0'
-					preserveAspectRatio='none'>
-					<line
-						y1='0.5'
-						x2={892}
-						y2='0.5'
-						stroke='#E5E5E5'
-					/>
-				</svg>
+				<div className='md:w-[892px] h-[1px] self-stretch bg-[#E5E5E5]' />
 			</div>
-		</>
+		</div>
 	);
 }

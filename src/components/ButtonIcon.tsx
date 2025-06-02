@@ -7,6 +7,7 @@ export interface IIconProps {
 	size?: number;
 	id?: string;
 	className?: string;
+	disabled?: boolean;
 }
 
 export interface IButtonIconProps extends IIconProps {
@@ -22,8 +23,9 @@ export function ButtonIcon(props: IButtonIconProps) {
 			id={props.id}
 			onMouseEnter={() => setHover(true)}
 			onMouseLeave={() => setHover(false)}
-			onClick={props.onClick}
-			className='hover:cursor-pointer'>
+			onClick={!props.disabled ? props.onClick : undefined}
+			className='hover:cursor-pointer'
+			style={{ opacity: props.disabled ? 0.5 : 1 }}>
 			{props.icon({
 				color: props.color,
 				hoverColor: props.hoverColor,

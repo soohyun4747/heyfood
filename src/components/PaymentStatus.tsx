@@ -11,8 +11,8 @@ export function PaymentStatus({ status }: { status: IOrderStatus }) {
     
 	return (
 		<div
-			className={`flex justify-center items-center relative px-2.5 pt-1.5 pb-1 rounded-md ${statusClassNames[status]}`}>
-			<p className='h-6 text-base font-bold text-left'>
+			className={`flex justify-center items-center relative px-[6px] md:px-2.5 pt-1.5 pb-1 rounded-md ${statusClassNames[status]}`}>
+			<p className='text-sm md:text-base font-bold text-left'>
 				{orderStatusLabels[status]}
 			</p>
 		</div>
