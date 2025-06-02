@@ -26,7 +26,7 @@ export function MenuCardOrder(props: IMenuCardOrderProps) {
 					<p className='self-stretch text-sm md:text-2xl font-bold text-left text-[#0f0e0e]'>
 						{props.title}
 					</p>
-					<p className='self-stretch text-[13px] md:text-[22px] font-light text-left text-[#0f0e0e]'>
+					<p className='self-stretch text-sm md:text-[22px] font-light text-left text-[#0f0e0e]'>
 						{props.price.toLocaleString()}원
 					</p>
 				</div>

@@ -22,6 +22,7 @@ import { CheckRect } from '@/components/CheckRect';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 const stickerPrice = 300;
+const originPath = 'https://heyfood-iota.vercel.app'
 
 function PaymentPage() {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -88,7 +89,7 @@ function PaymentPage() {
 				wholePrice,
 				`${cart.at(0)?.items.at(0)?.menu.name} 외 ${totalCount - 1}건`,
 				'정수현',
-				'http://172.30.1.76:3000/api/nicepay/approve'
+				`${originPath}/api/nicepay/approve`
 			);
 		}
 	};
