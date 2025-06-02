@@ -33,7 +33,7 @@ export function MenuCard(props: IMenuCardProps) {
 						{props.price?.toLocaleString()}원
 					</p>
 				) : (
-					<p className='text-base text-[#909090] truncate whitespace-pre-line max-h-[88px] md:max-h-[78px]'>
+					<p className='text-base text-[#909090] truncate whitespace-pre-line max-h-[98px] md:max-h-[78px]'>
 						{props.description}
 					</p>
 				)}

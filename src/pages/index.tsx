@@ -187,7 +187,7 @@ function LandingPage() {
 							서비스 이용 후기
 						</p>
 						<p className='md:text-lg text-center text-[#0f0e0e]'>
-							헤이델리박스를 만나고 달라진 고객 후기를 살펴보세요
+							헤이델리박스를 만나고 <br className='md:hidden'/>달라진 고객 후기를 살펴보세요
 						</p>
 					</div>
 					<div className='absolute left-0 right-0 top-[310px]'>

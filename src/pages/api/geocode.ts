@@ -18,7 +18,7 @@ export default async function handler(
 		return res.status(400).json({ error: 'address 쿼리가 필요합니다.' });
 	}
 
-	const apiKey = process.env.GOOGLE_MAPS_API_KEY;
+	const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 	if (!apiKey) {
 		return res.status(500).json({ error: 'API 키가 설정되지 않았습니다.' });
 	}
