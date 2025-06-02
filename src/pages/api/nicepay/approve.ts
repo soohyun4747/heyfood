@@ -12,7 +12,6 @@ export interface Vbank {
 
 export const NICEPAY_API_URL = 'https://api.nicepay.co.kr/v1/payments';
 
-
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse
@@ -21,26 +20,26 @@ export default async function handler(
 
 	let vbank: Vbank | undefined;
 	let status = OrderStatus.ready;
-	let authStr = ''
 
 	if (authResultCode === '0000') {
-		authStr = `${process.env.NICEPAY_CLIENT_KEY}:${process.env.NICEPAY_SECRET_KEY}`;
+		const authStr = `${process.env.NICEPAY_CLIENT_KEY}:${process.env.NICEPAY_SECRET_KEY}`;
 		const authBase64 = Buffer.from(authStr).toString('base64');
 
 		try {
-			const response = await fetch(
-				`${NICEPAY_API_URL}/${tid}`,
-				{
-					method: 'POST',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Basic ${authBase64}`, // 환경변수로 관리
-					},
-					body: JSON.stringify({ amount }),
-				}
-			);
+			const response = await fetch(`${NICEPAY_API_URL}/${tid}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Basic ${authBase64}`, // 환경변수로 관리
+				},
+				body: JSON.stringify({ amount }),
+			});
 
-			const data = await response.json();
+			const text = await response.text();
+			console.log('📦 NICEPAY raw response:', text);
+			const data = JSON.parse(text);
+
+			//const data = await response.json();
 			vbank = data.vbank;
 			status = data.status;
 		} catch (error: any) {
@@ -57,9 +56,8 @@ export default async function handler(
 			`&vbankNumber=${encodeURIComponent(vbank?.vbankNumber || '')}` +
 			`&vbankExpDate=${encodeURIComponent(vbank?.vbankExpDate || '')}` +
 			`&vbankHolder=${encodeURIComponent(vbank?.vbankHolder || '')}` +
-			`&amount=${encodeURIComponent(amount)}`+
-			`&tid=${encodeURIComponent(tid)}`+
-			`&status=${encodeURIComponent(status)}`+
-			`&authStr=${encodeURIComponent(authStr)}`
+			`&amount=${encodeURIComponent(amount)}` +
+			`&tid=${encodeURIComponent(tid)}` +
+			`&status=${encodeURIComponent(status)}`
 	);
 }
