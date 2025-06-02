@@ -37,7 +37,7 @@ export function BasicInfo() {
 		if (inputVal === newPassword) {
 			setIsNewPasswordsMatch(true);
 		} else {
-			setIsNewPasswordsMatch(true);
+			setIsNewPasswordsMatch(false);
 		}
 	};
 
@@ -164,7 +164,7 @@ export function BasicInfo() {
 								<div className='md:w-[480px] h-[1px] self-stretch bg-[#E5E5E5]' />
 							</div>
 							<div className='flex flex-col justify-center items-start gap-2 md:gap-5 self-stretch md:self-auto'>
-								<div className='flex md:items-center self-stretch  gap-4'>
+								<div className='flex md:flex-row flex-col md:items-center self-stretch  gap-4'>
 									<div className='flex md:flex-row flex-col md:items-center md:w-[480px]  gap-4 md:gap-8'>
 										<p className='w-[110px] md:w-[132px]  md:text-lg text-left text-[#909090]'>
 											새 비밀번호
