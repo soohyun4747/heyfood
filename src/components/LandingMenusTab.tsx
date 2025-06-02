@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ButtonIcon } from './ButtonIcon';
-import { fetchCollectionData, fetchImageUrls } from '@/utils/firebase';
 import { useMenuStore } from '@/stores/menuStore';
 import { useRouter } from 'next/router';
 import { ChevronLeft } from '@/icons/ChevronLeft';

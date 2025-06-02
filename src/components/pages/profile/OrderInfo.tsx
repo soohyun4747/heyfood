@@ -604,8 +604,8 @@ export function OrderInfo() {
 										주문을 취소하시겠습니까?
 									</p>
 									<p className='text-sm'>
-										입금한지 얼마 안되신 경우 "결제
-										확인중"이 "결제 완료"로 바뀐 후
+										입금한지 얼마 안되신 경우 &quot;결제
+										확인중&quot;이 &quot;결제 완료&quot;로 바뀐 후
 										취소해주세요.
 									</p>
 								</div>
