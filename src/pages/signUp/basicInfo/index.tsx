@@ -19,6 +19,7 @@ import {
 	ApplicationVerifier,
 	ConfirmationResult,
 	createUserWithEmailAndPassword,
+	getAuth,
 	RecaptchaVerifier,
 	User,
 } from 'firebase/auth';
@@ -54,11 +55,12 @@ function SignUpBasicInfoPage() {
 	const { setUser } = useUserStore();
 
 	const router = useRouter();
+	const recaptchaAuth = getAuth();
 
 	// 컴포넌트가 마운트될 때 reCAPTCHA verifier를 초기화합니다.
 	useEffect(() => {
 		window.recaptchaVerifier = new RecaptchaVerifier(
-			auth,
+			recaptchaAuth,
 			'recaptcha-container',
 			{
 				size: 'invisible',
@@ -67,7 +69,7 @@ function SignUpBasicInfoPage() {
 				},
 			}
 		);
-	}, [auth]);
+	}, [recaptchaAuth]);
 
 	const onSelectEmailDomain = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		if (e.target.value !== '직접 입력') {
