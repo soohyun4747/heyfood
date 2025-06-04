@@ -22,8 +22,9 @@ import { CheckRect } from '@/components/CheckRect';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 const stickerPrice = 300;
-const originPath = 'https://heyfood-iota.vercel.app'
+// const originPath = 'https://heyfood-iota.vercel.app'
 // const originPath = 'http://localhost:3000'
+const originPath = 'https://heyfood-scxg.onrender.com/'
 
 function PaymentPage() {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
