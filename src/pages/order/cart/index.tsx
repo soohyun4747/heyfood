@@ -16,8 +16,6 @@ function CartPage() {
 	const { user } = useUserStore();
 	const { cart, setCart } = useCartStore();
 
-	console.log(cart);
-
 	useEffect(() => {
 		if (!user) {
 			router.push('/login');

@@ -68,10 +68,7 @@ export function LandingMenusTab() {
 	const onClickMenu = (menu: IMenu) => {
 		setMenu(menu);
 		router.push('/menu/detail');
-	};
-
-	console.log(slideIdx);
-	
+	};	
 
 	return (
 		<div className='flex flex-col justify-center gap-[40px]'>
