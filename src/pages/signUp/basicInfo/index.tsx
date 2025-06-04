@@ -61,7 +61,7 @@ function SignUpBasicInfoPage() {
 	useEffect(() => {
 		window.recaptchaVerifier = new RecaptchaVerifier(
 			recaptchaAuth,
-			'recaptcha-container',
+			'recaptcha-container2',
 			{
 				size: 'invisible',
 				callback: (response: any) => {
@@ -378,9 +378,9 @@ function SignUpBasicInfoPage() {
 									휴대폰 번호
 								</p>
 								<VerticalLine className='hidden md:block' />
-								<div className='flex justify-between'>
+								<div className='flex justify-between self-stretch flex-1'>
 									<input
-										className='flex-1 md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 md:max-w-auto max-w-[215px]'
+										className='flex-1 md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 md:max-w-[unset] max-w-[215px]'
 										placeholder='휴대폰 번호 입력'
 										value={phone}
 										onChange={(e) =>
@@ -407,7 +407,7 @@ function SignUpBasicInfoPage() {
 									인증번호
 								</p>
 								<VerticalLine className='hidden md:block' />
-								<div className='flex  justify-between self-stretch'>
+								<div className='flex justify-between flex-1'>
 									<input
 										className='flex-1 md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 md:max-w-auto max-w-[215px]'
 										placeholder='인증번호 입력'
@@ -434,6 +434,8 @@ function SignUpBasicInfoPage() {
 						onClick={onSignUp}
 					/>
 				</div>
+				{/* reCAPTCHA 컨테이너 (invisible 옵션으로 보이지 않습니다) */}
+				<div id='recaptcha-container2'></div>
 			</div>
 		</Common>
 	);
