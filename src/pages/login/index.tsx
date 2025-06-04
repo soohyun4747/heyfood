@@ -19,7 +19,7 @@ function LoginPage() {
 
 	return (
 		<Common meta={<Meta />}>
-			<div className='flex flex-col justify-center items-center self-stretch gap-[60px] px-[20px] md:px-[120px] pt-[40px] md:pt-[100px] pb-[120px] md:pb-40 bg-[#fffbea] md:min-h-[calc(100vh-112px)]'>
+			<div className='flex flex-col justify-center items-center self-stretch gap-[60px] px-[20px] md:px-[120px] pt-[40px] md:pt-[100px] pb-[120px] md:pb-40 bg-[#fffbea] md:min-h-auto'>
 				<div className='flex flex-col justify-center items-center md:w-[648px] gap-6 md:px-[100px] md:py-[80px] rounded-3xl md:bg-white md:shadow-[0px_4px_20px_0_rgba(0,0,0,0.1)] self-stretch md:self-center'>
 					<div className='flex justify-start items-start self-stretch border-t-0 border-r-0 border-b border-l-0 border-[#d9d9d9]'>
 						{['회원 로그인', '비회원 주문하기'].map((value, i) => (

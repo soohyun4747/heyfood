@@ -16,8 +16,10 @@ import {
 } from '@/utils/firebase';
 import { extractNumbers, regex } from '@/utils/string';
 import {
+	ApplicationVerifier,
 	ConfirmationResult,
 	createUserWithEmailAndPassword,
+	RecaptchaVerifier,
 	User,
 } from 'firebase/auth';
 import {
@@ -28,7 +30,7 @@ import {
 	where,
 } from 'firebase/firestore';
 import { useRouter } from 'next/router';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 function SignUpBasicInfoPage() {
 	const [emailId, setEmailId] = useState<string>();
@@ -52,6 +54,20 @@ function SignUpBasicInfoPage() {
 	const { setUser } = useUserStore();
 
 	const router = useRouter();
+
+	// 컴포넌트가 마운트될 때 reCAPTCHA verifier를 초기화합니다.
+	useEffect(() => {
+		window.recaptchaVerifier = new RecaptchaVerifier(
+			auth,
+			'recaptcha-container',
+			{
+				size: 'invisible',
+				callback: (response: any) => {
+					console.log('reCAPTCHA 해결 완료:', response);
+				},
+			}
+		);
+	}, [auth]);
 
 	const onSelectEmailDomain = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		if (e.target.value !== '직접 입력') {
@@ -128,7 +144,7 @@ function SignUpBasicInfoPage() {
 			email: newUser.email,
 			phone: extractNumbers(phone),
 			createdAt: Timestamp.now(),
-			marketingAgree: marketingAgree
+			marketingAgree: marketingAgree,
 		})) as IUser | false;
 
 		if (addedData) {
@@ -144,14 +160,14 @@ function SignUpBasicInfoPage() {
 	};
 
 	// 인증번호(OTP) 전송 함수
-	const onClickSendCode = async () => {
+	const onClickSendCode = async (appVerifier?: ApplicationVerifier) => {
 		const users = await findUserByPhone(phone);
 		if (users.length > 0) {
 			alert('이미 존재하는 전화번호입니다.');
 			return;
 		}
 
-		const confirmResult = await sendVerificationCode(phone);
+		const confirmResult = await sendVerificationCode(phone, appVerifier);
 		setConfirmationResult(confirmResult);
 	};
 
@@ -372,7 +388,11 @@ function SignUpBasicInfoPage() {
 									<ButtonRectYellow
 										value='인증번호 발송'
 										disabled={phone ? false : true}
-										onClick={onClickSendCode}
+										onClick={() =>
+											onClickSendCode(
+												window.recaptchaVerifier
+											)
+										}
 										className='md:w-[180px] min-w-[120px] md:min-h-[68px] min-h-[48px]'
 									/>
 								</div>
