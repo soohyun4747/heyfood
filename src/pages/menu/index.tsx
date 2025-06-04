@@ -50,7 +50,7 @@ function MenuPage() {
 					menus={categories}
 					selectedIdx={selectedCategoryIdx}
 					onClickMenu={onClickCategory}
-					className='md:justify-center'
+					className='md:justify-center md:min-h-[47px]'
 				/>
 				{filteredCategoryMenus.length > 0 ? (
 					<div className='grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16'>
