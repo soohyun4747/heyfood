@@ -13,8 +13,10 @@ export interface IMenu {
 	name: string;
 	categoryId: string;
 	description: string;
+	ingredient: string;
 	price: number;
 	imagePaths: string[];
+	imageDetailPath: string;
 }
 
 export interface ICategory {
@@ -68,7 +70,7 @@ export function LandingMenusTab() {
 	const onClickMenu = (menu: IMenu) => {
 		setMenu(menu);
 		router.push('/menu/detail');
-	};	
+	};
 
 	return (
 		<div className='flex flex-col justify-center gap-[40px]'>

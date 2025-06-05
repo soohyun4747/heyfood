@@ -5,6 +5,8 @@ import { useMenuStore } from '@/stores/menuStore';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Hamburger } from '@/icons/Hamburger';
+import { fetchImageUrls } from '@/utils/firebase';
+import { IMenu } from '@/components/LandingMenusTab';
 
 function MenuDetailPage() {
 	const { menu, setMenu } = useMenuStore();
@@ -12,6 +14,7 @@ function MenuDetailPage() {
 
 	const [currentIndex, setCurrentIndex] = useState(0);
 	const [opacity, setOpacity] = useState(1);
+	const [detailSrc, setDetailSrc] = useState<string>('');
 
 	const imagePaths = menu?.imagePaths ?? [];
 
@@ -42,9 +45,22 @@ function MenuDetailPage() {
 		return () => clearInterval(interval);
 	}, [imagePaths]);
 
+	useEffect(() => {
+		if (menu) {
+			getSetDetailImage(menu);
+		}
+	}, [menu]);
+
 	const onClickToList = () => {
 		router.push('/menu');
 		setMenu(undefined);
+	};
+
+	const getSetDetailImage = async (menu: IMenu) => {
+		const urls = await fetchImageUrls([menu.imageDetailPath]);
+		if (urls) {
+			setDetailSrc(urls[0]);
+		}
 	};
 
 	return (
@@ -64,23 +80,29 @@ function MenuDetailPage() {
 						loading='lazy'
 					/>
 					<div className='flex flex-col justify-start items-start self-stretch md:w-[540px] relative gap-10 md:py-4'>
-						<div className='flex flex-col justify-start items-start self-stretch gap-[12px] md:gap-6'>
-							<p className='self-stretch text-[24px] md:text-[32px] font-bold text-left text-[#0f0e0e]'>
-								{menu?.name}
-							</p>
-							<div className='flex justify-start items-center gap-0.5'>
-								<p className='text-[24px] md:text-[26px] font-light text-left text-[#f2ab27]'>
-									{menu?.price.toLocaleString()}
+						<div className='flex flex-col gap-4 md:gap-5'>
+							<div className='flex flex-col justify-start items-start self-stretch gap-[12px] md:gap-6'>
+								<p className='self-stretch text-[24px] md:text-[32px] font-bold text-left text-[#0f0e0e]'>
+									{menu?.name}
 								</p>
-								<p className='text-[22px] md:text-2xl text-left text-[#f2ab27]'>
-									원
-								</p>
+								<div className='flex justify-start items-center gap-0.5'>
+									<p className='text-[24px] md:text-[26px] font-light text-left text-[#f2ab27]'>
+										{menu?.price.toLocaleString()}
+									</p>
+									<p className='text-[22px] md:text-2xl text-left text-[#f2ab27]'>
+										원
+									</p>
+								</div>
 							</div>
+							<p className='self-stretch text-xs md:text-md text-left text-[#0f0e0e]'>
+								{menu?.ingredient}
+							</p>
+							<div className='bg-[#D9D9D9] self-stretch md:w-[540px] h-[1px]' />
+							<p className='flex-grow w-full md:h-[264px] text-sm md:text-lg text-left text-[#0f0e0e]'>
+								{menu?.description}
+							</p>
 						</div>
-						<div className='bg-[#D9D9D9] self-stretch md:w-[540px] h-[1px]' />
-						<p className='flex-grow w-full md:h-[264px] text-sm md:text-lg text-left text-[#0f0e0e]'>
-							{menu?.description}
-						</p>
+
 						<div className='flex justify-center items-center self-stretch relative gap-2 px-3.5 py-1.5 bg-[#fffbea]'>
 							<p className='text-xs md:text-sm text-left text-[#5c5c5c]'>
 								🎁 맞춤 스티커 옵션 제공 | 결제 시 원하는 문구를
@@ -90,6 +112,12 @@ function MenuDetailPage() {
 						<div className='bg-[#D9D9D9] self-stretch md:w-[540px] h-[1px]' />
 					</div>
 				</div>
+				<img
+					src={detailSrc}
+					alt={detailSrc}
+					className={`object-cover max-[90vh] md:max-w-[1200px] w-auto h-auto`}
+					loading='lazy'
+				/>
 				<ButtonMono
 					value={'목록으로'}
 					icon={Hamburger}

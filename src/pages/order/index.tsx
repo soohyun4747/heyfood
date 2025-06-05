@@ -5,7 +5,7 @@ import { ICategory, IMenu } from '@/components/LandingMenusTab';
 import { MenuCardOrder } from '@/components/MenuCardOrder';
 import { TabMenu } from '@/components/TabMenu';
 import { Reset } from '@/icons/Reset';
-import { useItemsStore } from '@/stores/itemsStore';
+import { IItem, useItemsStore } from '@/stores/itemsStore';
 import { useUserStore } from '@/stores/userStore';
 import { useEffect, useMemo, useState } from 'react';
 import { AddressDrawer } from '../../components/pages/order/AddressDrawer';
@@ -14,8 +14,9 @@ import { DateTimeDrawer } from '../../components/pages/order/DateTimeDrawer';
 import { useCartStore } from '@/stores/cartStore';
 import { ModalCenter } from '@/components/ModalCenter';
 import { getSetCateogories, getSetMenus } from '../menu';
+import { categorySideId } from './payment';
 
-const minimumCount = 30;
+export const minimumCount = 30;
 
 function OrderPage() {
 	const [categories, setCategories] = useState<ICategory[]>([]);
@@ -71,8 +72,6 @@ function OrderPage() {
 		});
 		return count;
 	};
-
-	const cartItemsCount = getCartItemsCount();
 
 	// 선택된 카테고리에 해당하는 메뉴 필터링 (useMemo로 메모이제이션)
 	const filteredCategoryMenus = useMemo(() => {
@@ -214,7 +213,7 @@ function OrderPage() {
 							{getCartPrice().toLocaleString()}원
 						</p>
 						<p className='text-sm md:text-lg font-medium text-right text-[#909090]'>
-							하루 30개부터 배달가능
+							하루 도시락 30개부터 배달 가능합니다
 						</p>
 					</div>
 					<div className='flex justify-start items-center gap-3'>
@@ -226,10 +225,10 @@ function OrderPage() {
 							<Reset />
 						</div>
 						<ButtonNumText
-							count={cartItemsCount}
+							count={getCartItemsCount()}
 							value={'장바구니에 넣기'}
 							disabled={
-								cartItemsCount < minimumCount ? true : false
+								getDosirakCount(items) < minimumCount ? true : false
 							}
 							onClick={onClickAddToCart}
 							className='md:w-[230px] flex-1'
@@ -306,3 +305,13 @@ function OrderPage() {
 }
 
 export default OrderPage;
+
+export const getDosirakCount = (items: IItem[]) => {
+	let count = 0;
+	items.forEach((item) => {
+		if (item.menu.categoryId !== categorySideId) {
+			count += item.count;
+		}
+	});
+	return count;
+};

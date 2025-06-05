@@ -10,6 +10,7 @@ import { useUserStore } from '@/stores/userStore';
 import { formatDateKR } from '@/utils/time';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import { getDosirakCount } from '..';
 
 function CartPage() {
 	const router = useRouter();
@@ -21,6 +22,15 @@ function CartPage() {
 			router.push('/login');
 		}
 	}, [user]);
+
+	const isOrderAvailable = () => {
+		for (const bundle of cart) {
+			if (getDosirakCount(bundle.items) < 30) {
+				return false;
+			}
+		}
+		return true;
+	};
 
 	const getTotalPrice = () => {
 		let price = 0;
@@ -197,7 +207,14 @@ function CartPage() {
 							장바구니가 비어있습니다
 						</div>
 					)}
-					<div className='flex flex-col justify-start items-start self-stretch gap-3'>
+					<div className='flex flex-col justify-start items-start self-stretch gap-2'>
+						<p
+							style={{
+								color: isOrderAvailable() ? '#909090' : 'red',
+							}}
+							className='text-sm md:text-lg font-medium text-right self-stretch'>
+							하루 도시락 30개부터 배달 가능합니다
+						</p>
 						<div className='flex md:flex-row flex-col justify-start items-center self-stretch gap-3 md:gap-6 md:px-[60px] md:py-8 p-4 bg-white'>
 							<div className='select-none flex justify-between md:justify-start items-center flex-grow relative gap-6 self-stretch md:self-auto'>
 								<p className='text-md md:text-2xl font-bold text-left text-[#0f0e0e]'>
@@ -220,7 +237,11 @@ function CartPage() {
 										router.push('/order/payment')
 									}
 									className='flex-1'
-									disabled={cart.length === 0 ? true : false}
+									disabled={
+										cart.length === 0 || !isOrderAvailable()
+											? true
+											: false
+									}
 								/>
 							</div>
 						</div>

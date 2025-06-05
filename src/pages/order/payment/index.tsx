@@ -19,12 +19,24 @@ import {
 	useOrderStickerPhraseStore,
 } from '@/stores/orderInfoStore';
 import { CheckRect } from '@/components/CheckRect';
+import { Dropdown } from '@/components/Dropdown';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 const stickerPrice = 300;
 // const originPath = 'https://heyfood-iota.vercel.app'
 //const originPath = 'http://localhost:3000'
-const originPath = 'https://heyfood-scxg.onrender.com/'
+const originPath = 'https://www.heydelibox.com/';
+
+const stickerCoupon = 'stickerCoupon';
+const sideMenuCoupon = 'sideMenuCoupon';
+
+const openEventCoupons = [
+	{ id: '', label: '-선택안함-' },
+	{ id: stickerCoupon, label: '오픈기념 스티커 무료' },
+	{ id: sideMenuCoupon, label: '오픈 기념 사이드 메뉴 50% 할인' },
+];
+
+export const categorySideId = '사이드';
 
 function PaymentPage() {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -32,6 +44,7 @@ function PaymentPage() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [stickerCheck, setStickerCheck] = useState(false);
 	const [file, setFile] = useState<File>();
+	const [coupon, setCoupon] = useState<string>();
 
 	const user = useUserStore((state) => state.user);
 	const { comment, setComment } = useOrderCommentStore();
@@ -65,6 +78,31 @@ function PaymentPage() {
 
 		return totalCount;
 	}, [cart]);
+
+	const sideTotalPrice = useMemo(() => {
+		let sideTotalPrice = 0;
+
+		cart.forEach((bundle) => {
+			bundle.items.forEach((item) => {
+				console.log(item);
+
+				if (item.menu.categoryId === categorySideId) {
+					sideTotalPrice += item.menu.price * item.count;
+				}
+			});
+		});
+
+		return sideTotalPrice;
+	}, [cart]);
+
+	const openEventCouponSalePrice = useMemo(() => {
+		if (coupon === stickerCoupon && stickerCheck) {
+			return totalCount * stickerPrice;
+		} else if (coupon === sideMenuCoupon) {
+			return sideTotalPrice / 2;
+		}
+		return 0;
+	}, [totalCount, sideTotalPrice, coupon, stickerCheck]);
 
 	const onClickPay = async () => {
 		if (!companyName) {
@@ -130,11 +168,16 @@ function PaymentPage() {
 		);
 
 		if (stickerCheck) {
-			return stickerPrice * totalCount + itemsTotal + deliveryTotal;
+			return (
+				stickerPrice * totalCount +
+				itemsTotal +
+				deliveryTotal -
+				openEventCouponSalePrice
+			);
 		}
 
-		return itemsTotal + deliveryTotal;
-	}, [cart, deliveryPrices, stickerCheck]);
+		return itemsTotal + deliveryTotal - openEventCouponSalePrice;
+	}, [cart, deliveryPrices, stickerCheck, openEventCouponSalePrice]);
 
 	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.files?.[0] ?? null;
@@ -310,6 +353,26 @@ function PaymentPage() {
 						)}
 					</div>
 				</div>
+
+				<div className='flex flex-col justify-start items-start md:w-[960px] relative gap-3.5 self-stretch md:self-auto'>
+					<p className='text-md md:text-2xl font-bold text-left text-[#0f0e0e]'>
+						할인 쿠폰
+					</p>
+					<div className='flex flex-col justify-start items-start self-stretch gap-6 md:gap-9 p-6 bg-white'>
+						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
+							<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
+								쿠폰 선택
+							</p>
+							<Dropdown
+								domId={'coupon'}
+								list={openEventCoupons}
+								style={{ width: '100%' }}
+								onClick={(id) => setCoupon(id)}
+								selectedId={coupon}
+							/>
+						</div>
+					</div>
+				</div>
 				<div className='flex flex-col justify-start items-start md:w-[960px] gap-3.5 max-w-[calc(100vw-40px)]'>
 					<div className='flex justify-between items-center self-stretch relative'>
 						<p className='text-md md:text-2xl font-bold text-left text-[#0f0e0e]'>
@@ -427,6 +490,50 @@ function PaymentPage() {
 								</div>
 							)}
 						</div>
+						{coupon && (
+							<div className='flex flex-col self-stretch gap-2'>
+								<div>쿠폰 할인</div>
+								{coupon === stickerCoupon && (
+									<div className='p-4 md:p-[24px] bg-white flex justify-between items-center self-stretch '>
+										<div className='flex items-center gap-2 md:gap-[12px]'>
+											<p className=' md:text-[22px] text-left text-[#0f0e0e]'>
+												오픈기념 스티커 무료
+											</p>
+										</div>
+										<div className='flex justify-end items-center relative gap-2 self-end md:self-auto'>
+											<p className='font-bold md:font-[400] md:text-[22px] text-right text-[#0f0e0e]'>
+												-
+												{stickerCheck
+													? (
+															stickerPrice *
+															totalCount
+													  ).toLocaleString()
+													: 0}
+												원
+											</p>
+										</div>
+									</div>
+								)}
+								{coupon === sideMenuCoupon && (
+									<div className='p-4 md:p-[24px] bg-white flex justify-between items-center self-stretch '>
+										<div className='flex items-center gap-2 md:gap-[12px]'>
+											<p className=' md:text-[22px] text-left text-[#0f0e0e]'>
+												오픈 기념 사이드 메뉴 50% 할인
+											</p>
+										</div>
+										<div className='flex justify-end items-center relative gap-2 self-end md:self-auto'>
+											<p className='font-bold md:font-[400] md:text-[22px] text-right text-[#0f0e0e]'>
+												-
+												{(
+													sideTotalPrice / 2
+												).toLocaleString()}
+												원
+											</p>
+										</div>
+									</div>
+								)}
+							</div>
+						)}
 						<div className='flex justify-between items-center self-stretch gap-6 p-4 md:p-6 bg-white'>
 							<p className='md:text-2xl font-bold text-left text-[#0f0e0e]'>
 								총 결제 금액

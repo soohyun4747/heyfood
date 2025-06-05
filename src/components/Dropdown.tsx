@@ -54,6 +54,7 @@ export function Dropdown(props: IDropdownProps) {
 				<ChevronDown
 					size={18}
 					color='black'
+					id={props.domId}
 				/>
 			</div>
 			{open && (
@@ -62,7 +63,7 @@ export function Dropdown(props: IDropdownProps) {
 						width: '-webkit-fill-available',
 						boxShadow: '0px 2px 15px rgba(0, 0, 0, 0.2)',
 					}}
-					className={`flex flex-col p-[12px] gap-[6px] rounded-[8px] border border-gray-100 bg-white shadow-dropdown w-max absolute top-[54px] left-0 h-[200px] overflow-auto z-[2]`}>
+					className={`flex flex-col p-[12px] gap-[6px] rounded-[8px] border border-gray-100 bg-white shadow-dropdown w-max absolute top-[54px] left-0 max-h-[200px] overflow-auto z-[2]`}>
 					{props.list.map((item, i) => (
 						<div
 							key={i}

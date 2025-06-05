@@ -415,7 +415,7 @@ function InquiryPage() {
 								className={`flex-1 text-sm md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 resize-none`}
 								placeholder={'문의사항 입력'}
 								value={inquiry}
-								rows={6}
+								rows={4}
 								onChange={(e) => setInquiry(e.target.value)}
 							/>
 						</div>
