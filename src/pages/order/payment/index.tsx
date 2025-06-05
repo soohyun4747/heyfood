@@ -44,7 +44,7 @@ function PaymentPage() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [stickerCheck, setStickerCheck] = useState(false);
 	const [file, setFile] = useState<File>();
-	const [coupon, setCoupon] = useState<string>();
+	const [coupon, setCoupon] = useState<string>('');
 
 	const user = useUserStore((state) => state.user);
 	const { comment, setComment } = useOrderCommentStore();
@@ -79,6 +79,20 @@ function PaymentPage() {
 		return totalCount;
 	}, [cart]);
 
+	const dosirakCount = useMemo(() => {
+		let dosirakCount = 0;
+
+		cart.forEach((bundle) => {
+			bundle.items.forEach((item) => {
+				if (item.menu.categoryId !== categorySideId) {
+					dosirakCount += item.count;
+				}
+			});
+		});
+
+		return dosirakCount;
+	}, [cart]);
+
 	const sideTotalPrice = useMemo(() => {
 		let sideTotalPrice = 0;
 
@@ -97,12 +111,12 @@ function PaymentPage() {
 
 	const openEventCouponSalePrice = useMemo(() => {
 		if (coupon === stickerCoupon && stickerCheck) {
-			return totalCount * stickerPrice;
+			return dosirakCount * stickerPrice;
 		} else if (coupon === sideMenuCoupon) {
 			return sideTotalPrice / 2;
 		}
 		return 0;
-	}, [totalCount, sideTotalPrice, coupon, stickerCheck]);
+	}, [dosirakCount, sideTotalPrice, coupon, stickerCheck]);
 
 	const onClickPay = async () => {
 		if (!companyName) {
@@ -169,7 +183,7 @@ function PaymentPage() {
 
 		if (stickerCheck) {
 			return (
-				stickerPrice * totalCount +
+				stickerPrice * dosirakCount +
 				itemsTotal +
 				deliveryTotal -
 				openEventCouponSalePrice
@@ -177,7 +191,13 @@ function PaymentPage() {
 		}
 
 		return itemsTotal + deliveryTotal - openEventCouponSalePrice;
-	}, [cart, deliveryPrices, stickerCheck, openEventCouponSalePrice]);
+	}, [
+		cart,
+		deliveryPrices,
+		stickerCheck,
+		dosirakCount,
+		openEventCouponSalePrice,
+	]);
 
 	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.files?.[0] ?? null;
@@ -475,14 +495,14 @@ function PaymentPage() {
 												x{' '}
 											</p>
 											<p className='md:text-xl text-left text-gray-300'>
-												{totalCount.toLocaleString()}개
+												{dosirakCount.toLocaleString()}개
 											</p>
 										</div>
 									</div>
 									<div className='flex justify-end items-center relative gap-2 self-end md:self-auto'>
 										<p className='font-bold md:font-[400] md:text-[22px] text-right text-[#0f0e0e]'>
 											{(
-												stickerPrice * totalCount
+												stickerPrice * dosirakCount
 											).toLocaleString()}
 											원
 										</p>
@@ -506,7 +526,7 @@ function PaymentPage() {
 												{stickerCheck
 													? (
 															stickerPrice *
-															totalCount
+															dosirakCount
 													  ).toLocaleString()
 													: 0}
 												원

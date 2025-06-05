@@ -180,7 +180,7 @@ function OrderPage() {
 							className='md:justify-center'
 						/>
 					</div>
-					<div className='grid grid-cols-2 md:grid-cols-3 gap-x-5 md:gap-x-8 gap-y-13 md:gap-y-16 pt-4 md:pt-0 self-stretch md:self-auto px-[20px] md:px-0'>
+					<div className='grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-x-8 md:gap-y-16 pt-4 md:pt-0 self-stretch md:self-auto px-[20px] md:px-0'>
 						{filteredCategoryMenus.map((menu) => {
 							const count = items.find(
 								(item) => item.menu.id === menu.id
