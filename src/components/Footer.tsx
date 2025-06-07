@@ -66,7 +66,7 @@ export function Footer() {
 									전화
 								</p>
 								<p className=' text-[15px] text-center text-[#0f0e0e]'>
-									051-715-4600
+									051-1833-4601
 								</p>
 							</div>
 							<div className='flex justify-start items-start  gap-4'>
