@@ -28,19 +28,19 @@ const Meta = (props: IMetaProps) => {
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href={`${router.basePath}/favicon-32.png`}
+          href={`${router.basePath}/images/favicon-32.png`}
           key="icon32"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href={`${router.basePath}/favicon-16.png`}
+          href={`${router.basePath}/images/favicon-16.png`}
           key="icon16"
         />
         <link
           rel="icon"
-          href={`${router.basePath}/favicon.png`}
+          href={`${router.basePath}/images/favicon.png`}
           key="favicon"
         />
       </Head>
@@ -56,7 +56,7 @@ const Meta = (props: IMetaProps) => {
           locale: AppConfig.locale,
           images: [
             {
-              url: `${router.basePath}/sns-image.png`,
+              url: `${router.basePath}/images/sns-image.png`,
               width: 1200,
               height: 800,
             },
