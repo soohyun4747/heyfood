@@ -6,15 +6,15 @@ import Image from 'next/image';
 import { ButtonIcon } from './ButtonIcon';
 import { useEffect, useState } from 'react';
 import { Menu } from '@/icons/Menu';
-import { v4 as uuidv4 } from 'uuid';
 
-const domId = uuidv4();
+const domId = 'humburger';
 
 export function GNB({ type }: { type: IUserType }) {
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	const router = useRouter();
 	const user = useUserStore((state) => state.user);
+	
 
 	useEffect(() => {
 		// Add click listener to the document
@@ -24,7 +24,7 @@ export function GNB({ type }: { type: IUserType }) {
 		return () => {
 			document.removeEventListener('click', handleClickOutside);
 		};
-	}, []);
+	}, [menuOpen]);
 
 	const onClickOrder = () => {
 		if (user?.userType === UserType.user) {
@@ -36,6 +36,7 @@ export function GNB({ type }: { type: IUserType }) {
 
 	const handleClickOutside = (e: MouseEvent) => {
 		const target = e.target as HTMLElement | undefined;
+		
 
 		if (target && target.id === domId) {
 			setMenuOpen(true);
@@ -106,15 +107,14 @@ export function GNB({ type }: { type: IUserType }) {
 					value={'주문하기'}
 					onClick={onClickOrder}
 				/>
-				<div className='md:hidden'>
-					<ButtonIcon
-						icon={Menu}
-						onClick={() => {
-							setMenuOpen(true);
-						}}
-						id={domId}
-					/>
-				</div>
+				<ButtonIcon
+					icon={Menu}
+					onClick={() => {
+						setMenuOpen(true);
+					}}
+					id={domId}
+					className='md:hidden'
+				/>
 			</div>
 			{menuOpen && <MenuDrawer type={type} />}
 		</div>

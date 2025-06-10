@@ -119,11 +119,6 @@ function PaymentPage() {
 	}, [dosirakCount, sideTotalPrice, coupon, stickerCheck]);
 
 	const onClickPay = async () => {
-		if (!companyName) {
-			alert('업체명/현장명을 입력해주세요.');
-			return;
-		}
-
 		if (stickerCheck && !stickerPhrase && stickerCheck && !file) {
 			alert(
 				'스티커를 체크하신 경우 스티커 문구나 사진을 업로드해주세요.'
@@ -257,7 +252,7 @@ function PaymentPage() {
 						</div>
 						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
 							<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
-								이메일
+								이메일 <span className='text-red-500'>*</span>
 							</p>
 							<TextField
 								value={email}
@@ -267,7 +262,7 @@ function PaymentPage() {
 						</div>
 						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
 							<p className='text-base font-bold text-left text-[#0f0e0e]'>
-								비상 연락처 (선택)
+								비상 연락처
 							</p>
 							<TextField
 								value={otherPhone}
@@ -284,7 +279,7 @@ function PaymentPage() {
 					<div className='flex flex-col justify-start items-start self-stretch gap-6 md:gap-9 p-6 bg-white'>
 						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
 							<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
-								요청사항 (선택)
+								요청사항
 							</p>
 							<TextField
 								value={comment}
@@ -294,7 +289,8 @@ function PaymentPage() {
 						</div>
 						<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
 							<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
-								업체명/현장명
+								업체명/현장명{' '}
+								<span className='text-red-500'>*</span>
 							</p>
 							<TextField
 								value={companyName}
@@ -312,7 +308,7 @@ function PaymentPage() {
 								onClick={() => setStickerCheck((prev) => !prev)}
 							/>
 							<p className='text-md md:text-2xl font-bold text-left text-[#0f0e0e]'>
-								스티커 (선택)
+								스티커
 							</p>
 						</div>
 						<p className='text-right text-[#0f0e0e]'>개당 +300원</p>
@@ -495,7 +491,8 @@ function PaymentPage() {
 												x{' '}
 											</p>
 											<p className='md:text-xl text-left text-gray-300'>
-												{dosirakCount.toLocaleString()}개
+												{dosirakCount.toLocaleString()}
+												개
 											</p>
 										</div>
 									</div>
@@ -582,6 +579,7 @@ function PaymentPage() {
 						count={0}
 						onClick={onClickPay}
 						className='min-w-[124px]'
+						disabled={!companyName || !email}
 					/>
 				</div>
 			</div>

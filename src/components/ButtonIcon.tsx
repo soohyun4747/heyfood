@@ -16,7 +16,7 @@ export interface IButtonIconProps extends IIconProps {
 }
 
 export function ButtonIcon(props: IButtonIconProps) {
-	const [hover, setHover] = useState<boolean>(false);
+	const [hover, setHover] = useState<boolean>(false);	
 
 	return (
 		<div

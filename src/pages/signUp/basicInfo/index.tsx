@@ -305,7 +305,7 @@ function SignUpBasicInfoPage() {
 											? '#dd1c1c'
 											: 'transparent',
 									}}
-									className='w-[246px]  text-left hidden md:block'>
+									className='w-[294px]  text-left hidden md:block'>
 									영문+숫자 조합 8~16자리로 입력해주세요.
 								</p>
 							</div>

@@ -1,6 +1,7 @@
 import { IIconProps } from '@/components/ButtonIcon';
 
-export function Menu(props: IIconProps) {
+export function Menu(props: IIconProps) {	
+
 	return (
 		<svg
 			id={props.id}
@@ -9,7 +10,7 @@ export function Menu(props: IIconProps) {
 			viewBox='0 0 24 24'
 			fill='none'
 			xmlns='http://www.w3.org/2000/svg'
-			className='flex-grow-0 flex-shrink-0 w-6 h-6 relative'
+			className='w-6 h-6 relative'
 			preserveAspectRatio='none'>
 			<path
 				id={props.id}

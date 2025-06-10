@@ -108,7 +108,7 @@ export function SignUpAgreementPage() {
 									<div className='flex justify-start items-center self-stretch  relative gap-2'>
 										<div className='flex justify-start items-center  relative gap-[10.7px] pb-0.5'>
 											<CheckRound
-												checked={agree1}
+												checked={agree0}
 												onClick={() =>
 													setAgree0((prev) => !prev)
 												}
