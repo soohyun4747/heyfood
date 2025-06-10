@@ -98,8 +98,6 @@ function PaymentPage() {
 
 		cart.forEach((bundle) => {
 			bundle.items.forEach((item) => {
-				console.log(item);
-
 				if (item.menu.categoryId === categorySideId) {
 					sideTotalPrice += item.menu.price * item.count;
 				}
