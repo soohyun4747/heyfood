@@ -7,7 +7,7 @@ import {
 	getDatesInMonth,
 	timeSlots,
 } from '@/utils/time';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface IDateTimeDrawerProps {
 	date?: Date;
@@ -42,16 +42,26 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 	const [year, setYear] = useState<number>(2025);
 	const [datesArray, setDatesArray] = useState<Date[][]>([]);
 	const [dateTime, setDateTime] = useState<Date>();
-	const [selectedTime, setSelectedTime] = useState<string>(timeSlots[0]);
+	const [selectedTime, setSelectedTime] = useState<string>();
 	const [infoHover, setInfoHover] = useState(false);
+
+	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (props.date) {
 			getSetDateTime(props.date);
 		} else {
-			getSetDateTime(minDateTime);
+			getSetDateTimeTemplate(minDateTime);
 		}
 	}, [props.date]);
+
+	const getSetDateTimeTemplate = (date: Date) => {
+		const month = date.getMonth();
+		const year = date.getFullYear();
+		setMonth(month);
+		setYear(year);
+		setDatesArray(getDatesInMonth(year, month));
+	};
 
 	const getSetDateTime = (date: Date) => {
 		const month = date.getMonth();
@@ -63,11 +73,20 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 		setSelectedTime(getClosestTimeSlot(date));
 	};
 
+	const isMobile = () => {
+		if (typeof window === 'undefined') return false;
+		return window.innerWidth <= 768; // 모바일 기준 너비
+	};
+
 	const onClickDate = (clickedDate: Date) => {
 		if (dateTime) {
 			clickedDate.setHours(dateTime.getHours());
 			clickedDate.setMinutes(dateTime.getMinutes());
-			setDateTime(clickedDate);
+		}
+		setDateTime(clickedDate);
+
+		if (isMobile()) {
+			ref.current?.scrollTo({ top: 500, behavior: 'smooth' });
 		}
 	};
 
@@ -141,9 +160,12 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 
 	return (
 		<Drawer
+			confirmDisabled={!dateTime || !selectedTime}
 			title={'날짜 및 시간 선택'}
 			content={
-				<div className='flex flex-col gap-4 md:gap-[32px] w-full flex-1 overflow-auto'>
+				<div
+					ref={ref}
+					className='flex flex-col gap-4 md:gap-[32px] w-full flex-1 overflow-auto'>
 					<div className='w-full flex flex-col gap-[12px]'>
 						<div className='flex justify-start items-center self-stretch relative gap-3'>
 							<div
