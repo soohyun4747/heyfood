@@ -43,7 +43,7 @@ export function Footer() {
 											대표: 정태현
 										</p>
 									</div>
-									<div className='flex justify-start items-start  gap-7'>
+									<div className='flex justify-start items-start gap-4'>
 										<p className=' text-[15px] font-bold text-center text-[#0f0e0e]'>
 											주소
 										</p>
@@ -68,7 +68,15 @@ export function Footer() {
 							</div>
 						</div>
 						<div className='flex flex-col justify-start items-start  gap-3'>
-							<div className='flex justify-start items-start  gap-[39px]'>
+							<div className='flex justify-start items-start  gap-4'>
+								<p className=' text-[15px] font-bold text-center text-[#0f0e0e]'>
+									통신판매업신고
+								</p>
+								<p className=' text-[15px] text-center text-[#0f0e0e]'>
+									제2025-부산해운대-0825호
+								</p>
+							</div>
+							<div className='flex justify-start items-start  gap-4'>
 								<p className=' text-[15px] font-bold text-center text-[#0f0e0e]'>
 									전화
 								</p>
