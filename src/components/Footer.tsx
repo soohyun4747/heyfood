@@ -1,14 +1,21 @@
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 export function Footer() {
+	const router = useRouter();
+
 	return (
 		<div className='flex flex-col justify-center items-center self-stretch gap-60 pt-10 pb-10 md:pb-[100px] bg-[#ffc966] px-[20px] md:px-0'>
 			<div className='flex flex-col justify-start items-start md:w-[1200px] gap-6'>
 				<div className='flex justify-start items-start  gap-[21px]'>
-					<p className=' text-base font-bold text-center text-[#0f0e0e]'>
+					<p
+						onClick={() => router.push('/policy/privacyPolicy')}
+						className='cursor-pointer text-base font-bold text-center text-[#0f0e0e]'>
 						개인정보처리방침
 					</p>
-					<p className=' text-base text-center text-[#0f0e0e]'>
+					<p
+						onClick={() => router.push('/policy/termsOfUse')}
+						className='cursor-pointer text-base text-center text-[#0f0e0e]'>
 						이용약관
 					</p>
 				</div>
@@ -50,7 +57,7 @@ export function Footer() {
 											이메일
 										</p>
 										<p className=' text-[15px] text-center text-[#0f0e0e]'>
-											heyfood@heyfood.com
+											heyfoodsv@naver.com
 										</p>
 									</div>
 								</div>
@@ -66,7 +73,7 @@ export function Footer() {
 									전화
 								</p>
 								<p className=' text-[15px] text-center text-[#0f0e0e]'>
-									051-1833-4601
+									1833-4601
 								</p>
 							</div>
 							<div className='flex justify-start items-start  gap-4'>

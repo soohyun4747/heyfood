@@ -557,6 +557,9 @@ function PaymentPage() {
 								{wholePrice.toLocaleString()}원
 							</p>
 						</div>
+						<p className='text-left text-[#0f0e0e]'>
+							결제는 가상계좌로만 진행됩니다.
+						</p>
 					</div>
 				</div>
 			</div>

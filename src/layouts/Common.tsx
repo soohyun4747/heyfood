@@ -7,7 +7,7 @@ interface ICommonProps {
 	children: JSX.Element;
 	hideGnb?: boolean;
 	hideFooter?: boolean;
-	meta: JSX.Element;
+	meta?: JSX.Element;
 	ref?: RefObject<HTMLDivElement | null>
 }
 
