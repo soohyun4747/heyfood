@@ -1,7 +1,7 @@
 import { ButtonNumText } from '@/components/ButtonNumText';
 import { ButtonSmall } from '@/components/ButtonSmall';
 import { GNBOrder } from '@/components/GNBOrder';
-import { ICategory, IMenu } from '@/components/LandingMenusTab';
+import { IMenu } from '@/components/LandingMenusTab';
 import { MenuCardOrder } from '@/components/MenuCardOrder';
 import { TabMenu } from '@/components/TabMenu';
 import { Reset } from '@/icons/Reset';
@@ -13,14 +13,15 @@ import { useRouter } from 'next/router';
 import { DateTimeDrawer } from '../../components/pages/order/DateTimeDrawer';
 import { useCartStore } from '@/stores/cartStore';
 import { ModalCenter } from '@/components/ModalCenter';
-import { getSetCateogories, getSetMenus } from '../menu';
 import { categorySideId } from './payment';
+import { useMenuCategoriesStore } from '@/stores/menuCategoriesStore';
+import { useMenusStore } from '@/stores/menusStore';
 
 export const minimumCount = 30;
 
 function OrderPage() {
-	const [categories, setCategories] = useState<ICategory[]>([]);
-	const [menus, setMenus] = useState<IMenu[]>([]);
+	const categories = useMenuCategoriesStore((state) => state.menuCategories);
+	const menus = useMenusStore((state) => state.menus);
 	const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number>(0);
 	const [resetHover, setResetHover] = useState(false);
 	const [addressDrawerOpen, setAddreessDrawerOpen] = useState(false);
@@ -50,12 +51,6 @@ function OrderPage() {
 			router.push('/login');
 		}
 	}, [user]);
-
-	// 초기 데이터 로드
-	useEffect(() => {
-		getSetCateogories(setCategories);
-		getSetMenus(setMenus);
-	}, []);
 
 	const getCartPrice = () => {
 		let price = 0;
@@ -212,7 +207,7 @@ function OrderPage() {
 						<p className='text-[20px] md:text-[26px] font-medium text-right text-[#0f0e0e]'>
 							{getCartPrice().toLocaleString()}원
 						</p>
-						<p className='text-sm md:text-lg font-medium text-right text-[#909090]'>
+						<p className='text-sm md:text-lg font-medium text-right text-red-500'>
 							하루 도시락 30개부터 배달 가능합니다
 						</p>
 					</div>

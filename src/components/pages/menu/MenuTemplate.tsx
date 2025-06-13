@@ -3,24 +3,44 @@ import { MenuCard } from '@/components/MenuCard';
 import { TabMenu } from '@/components/TabMenu';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
+import { useMenuCategoriesStore } from '@/stores/menuCategoriesStore';
+import { useMenusStore } from '@/stores/menusStore';
 import { useMenuStore } from '@/stores/menuStore';
 import { fetchCollectionData, fetchImageUrls } from '@/utils/firebase';
 import { useRouter } from 'next/router';
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-function MenuPage() {
-	const [categories, setCategories] = useState<ICategory[]>([]);
-	const [menus, setMenus] = useState<IMenu[]>([]);
-	const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number>(0);
+const menuUrls = [
+	'/menu/kimbabDosirak',
+	'/menu/deopbabDosirak',
+	'/menu/vipDosirak',
+	'/menu/snackBox',
+	'/menu/side',
+];
 
+export function MenuTemplate({ categoryIdx }: { categoryIdx: number }) {
+	const [selectedCategoryIdx, setSelectedCategoryIdx] =
+		useState<number>(categoryIdx);
 	const { setMenu } = useMenuStore();
+	const categories = useMenuCategoriesStore((state) => state.menuCategories);
+	const menus = useMenusStore((state) => state.menus);
+
 	const router = useRouter();
 
-	// 초기 데이터 로드
 	useEffect(() => {
-		getSetCateogories(setCategories);
-		getSetMenus(setMenus);
-	}, []);
+		setSelectedCategoryIdx(categoryIdx);
+	}, [categoryIdx]);
+
+	const onClickMenu = (menu: IMenu) => {
+		setMenu(menu);
+		router.push('/menu/detail');
+	};
+
+	const onClickCategory = (i: number) => {
+		console.log(menuUrls[i]);
+
+		router.push(menuUrls[i]);
+	};
 
 	// 선택된 카테고리에 해당하는 메뉴 필터링 (useMemo로 메모이제이션)
 	const filteredCategoryMenus = useMemo(() => {
@@ -28,15 +48,6 @@ function MenuPage() {
 		const selectedCategory = categories[selectedCategoryIdx];
 		return menus.filter((menu) => menu.categoryId === selectedCategory.id);
 	}, [menus, categories, selectedCategoryIdx]);
-
-	const onClickCategory = (i: number) => {
-		setSelectedCategoryIdx(i);
-	};
-
-	const onClickMenu = (menu: IMenu) => {
-		setMenu(menu);
-		router.push('/menu/detail');
-	};
 
 	return (
 		<Common meta={<Meta />}>
@@ -53,7 +64,13 @@ function MenuPage() {
 					className='md:justify-center md:min-h-[47px]'
 				/>
 				{filteredCategoryMenus.length > 0 ? (
-					<div className='grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16'>
+					<div
+						className={`grid grid-cols-1 ${
+							filteredCategoryMenus.length === 2 &&
+							'md:grid-cols-2'
+						} ${
+							filteredCategoryMenus.length > 2 && 'md:grid-cols-3'
+						} gap-x-8 gap-y-16`}>
 						{filteredCategoryMenus.map((menu) => (
 							<MenuCard
 								shadowed
@@ -85,40 +102,3 @@ function MenuPage() {
 		</Common>
 	);
 }
-
-export default MenuPage;
-
-export const getSetCateogories = async (
-	setCategories: Dispatch<SetStateAction<ICategory[]>>
-) => {
-	const menuCategories = (await fetchCollectionData(
-		'menuCategories'
-	)) as ICategory[];
-	if (menuCategories) {
-		const orderedCategories: ICategory[] = [];
-
-		menuCategories.forEach((category) => {
-			orderedCategories[category.order] = category;
-		});
-
-		setCategories(orderedCategories);
-	}
-};
-
-export const getSetMenus = async (
-	setMenus: (value: SetStateAction<IMenu[]>) => void
-) => {
-	const fetchedMenus =
-		((await fetchCollectionData('menus')) as IMenu[] | undefined) ?? [];
-	// 이미지 URL들은 병렬 처리합니다.
-	const updatedMenus = await Promise.all(
-		fetchedMenus.map(async (menu) => {
-			const urls = await fetchImageUrls(menu.imagePaths);
-			if (urls) {
-				menu.imagePaths = urls;
-			}
-			return menu;
-		})
-	);
-	setMenus(updatedMenus);
-};

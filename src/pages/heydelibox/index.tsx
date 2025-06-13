@@ -58,7 +58,7 @@ function HeyDeliBoxPage() {
 							헤이델리박스
 						</p>
 						<p className='text-sm md:text-lg text-center text-[#0f0e0e]'>
-							우리는 더 좋은 헤이데이박스를 위해 매일 노력합니다.
+							우리는 더 좋은 헤이델리박스를 위해 매일 노력합니다.
 						</p>
 					</div>
 					<div className='self-stretch h-[731px] relative overflow-hidden'>

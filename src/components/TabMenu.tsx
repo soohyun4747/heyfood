@@ -13,7 +13,7 @@ export function TabMenu(props: ITabMenuProps) {
 	return (
 		<div
 			style={props.style}
-			className={`flex items-start gap-[12px] md:gap-6 w-full overflow-x-auto ${props.className}`}>
+			className={`flex items-center md:justify-center gap-[12px] md:gap-6 w-full max-w-[1200px] overflow-x-auto ${props.className}`}>
 			{props.menus.map((category, i) => (
 				<div
 					key={i}

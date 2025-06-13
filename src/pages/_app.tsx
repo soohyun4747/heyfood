@@ -1,15 +1,64 @@
+import { ICategory, IMenu } from '@/components/LandingMenusTab';
 import { useDeviceStore } from '@/stores/deviceStore';
+import { useMenuCategoriesStore } from '@/stores/menuCategoriesStore';
+import { useMenusStore } from '@/stores/menusStore';
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
 import '@/styles/global.css';
-import { fetchDataWithDocId } from '@/utils/firebase';
+import {
+	fetchCollectionData,
+	fetchDataWithDocId,
+	fetchImageUrls,
+} from '@/utils/firebase';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { AppProps } from 'next/app';
 import Script from 'next/script';
 import { useEffect } from 'react';
 
+export const getSetCateogories = async (
+	setCategories: (value: ICategory[]) => void
+) => {
+	const menuCategories = (await fetchCollectionData(
+		'menuCategories'
+	)) as ICategory[];
+	if (menuCategories) {
+		const orderedCategories: ICategory[] = [];
+
+		menuCategories.forEach((category) => {
+			orderedCategories[category.order] = category;
+		});
+
+		setCategories(orderedCategories);
+	}
+};
+
+export const getSetMenus = async (setMenus: (value: IMenu[]) => void) => {
+	const fetchedMenus =
+		((await fetchCollectionData('menus')) as IMenu[] | undefined) ?? [];
+	// 이미지 URL들은 병렬 처리합니다.
+	const updatedMenus = await Promise.all(
+		fetchedMenus.map(async (menu) => {
+			const urls = await fetchImageUrls(menu.imagePaths);
+			if (urls) {
+				menu.imagePaths = urls;
+			}
+			return menu;
+		})
+	);
+	setMenus(updatedMenus);
+};
+
 function App({ Component, pageProps }: AppProps) {
 	const { setUser } = useUserStore();
 	const setIsMobile = useDeviceStore((state) => state.setIsMobile);
+	const setCategories = useMenuCategoriesStore(
+		(state) => state.setMenuCategories
+	);
+	const setMenus = useMenusStore((state) => state.setMenus);
+
+	useEffect(() => {
+		getSetCateogories(setCategories);
+		getSetMenus(setMenus);
+	}, []);
 
 	useEffect(() => {
 		function setRealViewportHeight() {

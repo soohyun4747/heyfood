@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ButtonIcon } from './ButtonIcon';
 import { useMenuStore } from '@/stores/menuStore';
 import { useRouter } from 'next/router';
 import { ChevronLeft } from '@/icons/ChevronLeft';
 import { ChevronRight } from '@/icons/ChevronRight';
 import { MenuCard } from './MenuCard';
-import { getSetCateogories, getSetMenus } from '@/pages/menu';
 import { useDeviceStore } from '@/stores/deviceStore';
+import { useMenuCategoriesStore } from '@/stores/menuCategoriesStore';
+import { useMenusStore } from '@/stores/menusStore';
 
 export interface IMenu {
 	id: string;
@@ -26,21 +27,14 @@ export interface ICategory {
 }
 
 export function LandingMenusTab() {
-	const [categories, setCategories] = useState<ICategory[]>([]);
+	const categories = useMenuCategoriesStore((state) => state.menuCategories);
+	const menus = useMenusStore((state) => state.menus);
 	const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number>(0);
-	const [menus, setMenus] = useState<IMenu[]>([]);
 	const [slideIdx, setSlideIdx] = useState(0);
 
 	const { setMenu } = useMenuStore();
 	const isMobile = useDeviceStore((state) => state.isMobile);
 	const router = useRouter();
-
-	// 초기 데이터 로드
-	useEffect(() => {
-		getSetCateogories(setCategories);
-		getSetMenus(setMenus);
-	}, []);
-
 	// 선택된 카테고리에 해당하는 메뉴 필터링 (useMemo로 메모이제이션)
 	const filteredCategoryMenus = useMemo(() => {
 		if (!categories[selectedCategoryIdx]) return [];
