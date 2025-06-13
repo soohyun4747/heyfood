@@ -1,4 +1,4 @@
-import { ICategory, IMenu } from '@/components/LandingMenusTab';
+import { IMenu } from '@/components/LandingMenusTab';
 import { MenuCard } from '@/components/MenuCard';
 import { TabMenu } from '@/components/TabMenu';
 import { Common } from '@/layouts/Common';
@@ -6,7 +6,6 @@ import { Meta } from '@/layouts/Meta';
 import { useMenuCategoriesStore } from '@/stores/menuCategoriesStore';
 import { useMenusStore } from '@/stores/menusStore';
 import { useMenuStore } from '@/stores/menuStore';
-import { fetchCollectionData, fetchImageUrls } from '@/utils/firebase';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 

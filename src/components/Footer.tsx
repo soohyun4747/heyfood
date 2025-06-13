@@ -90,10 +90,10 @@ export function Footer() {
 								</p>
 								<div className='flex flex-col justify-center items-start  gap-0.5'>
 									<p className=' text-[15px] text-center text-[#0f0e0e]'>
-										평일 오전 10:00 - 오후 5:00
+										평일 오전 9:00 - 오후 5:00
 									</p>
 									<p className=' text-[15px] text-center text-[#0f0e0e]'>
-										(점심시간 오후 12:00 - 오후 1:00)
+										(점심시간 오후 12:30 - 오후 1:30)
 									</p>
 								</div>
 							</div>

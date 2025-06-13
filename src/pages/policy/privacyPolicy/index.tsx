@@ -11,8 +11,8 @@ function PrivacyPolicyPage() {
 				</div>
 				<p className='md:max-w-[1200px]'>
 					<span className='self-stretch md:text-lg text-left text-[#0f0e0e]'>
-						‘헤이푸드서비스'는 (이하 '회사'는) 고객님의 개인정보를
-						중요시하며, '정보통신망 이용촉진 및 정보보호'에 관한
+						&apos;헤이푸드서비스&apos;는 (이하 &apos;회사&apos;는) 고객님의 개인정보를
+						중요시하며, &apos;정보통신망 이용촉진 및 정보보호&apos;에 관한
 						법률을 준수하고 있습니다. 회사는 개인정보취급방침을
 						통하여 고객님께서 제공하시는 개인정보가 어떠한 용도와
 						방식으로 이용되고 있으며, 개인정보보호를 위해 어떠한

@@ -1,4 +1,4 @@
-import { MenuTemplate } from '@/components/pages/menu/menuTemplate';
+import { MenuTemplate } from '@/components/pages/menu/MenuTemplate';
 
 function VipDosirakPage() {
 	return <MenuTemplate categoryIdx={2} />;
