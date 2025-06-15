@@ -61,7 +61,7 @@ function LandingPage() {
 			<div className='flex flex-col'>
 				<div className='flex flex-col justify-start items-center self-stretch relative gap-[345px] h-auto'>
 					<Image
-						src={'/images/banner.png'}
+						src={'/images/banner.jpg'}
 						alt={'banner'}
 						width={1440}
 						height={668}

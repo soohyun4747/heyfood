@@ -1,7 +1,9 @@
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
+import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 interface PromiseSectionProps {
 	image: string;
@@ -45,9 +47,24 @@ function PromiseSection({
 	);
 }
 
+const introImages = [
+	'/images/heyfood_intro_1.jpg',
+	'/images/heyfood_intro_2.jpg',
+	'/images/heyfood_intro_3.jpg',
+];
+
 function HeyDeliBoxPage() {
 	const router = useRouter();
 	const basePath = router.basePath;
+
+	const [index, setIndex] = useState(0);
+
+	useEffect(() => {
+		const interval = setInterval(() => {
+			setIndex((prev) => (prev + 1) % introImages.length);
+		}, 4000);
+		return () => clearInterval(interval);
+	}, []);
 
 	return (
 		<Common meta={<Meta />}>
@@ -62,13 +79,31 @@ function HeyDeliBoxPage() {
 						</p>
 					</div>
 					<div className='self-stretch h-[731px] relative overflow-hidden'>
-						<div className='w-full h-[731px] absolute bg-[#d9d9d9]' />
-						<Image
-							src={`${router.basePath}/images/heyfood_intro.png`}
-							className='md:block hidden w-full h-[1225px] absolute top-[-394px] object-cover'
-							alt={'heyfood_intro'}
-							fill
-						/>
+						{/* 데스크탑 슬라이드 (vw 단위로 컨테이너 지정) */}
+						<motion.div
+							className='flex absolute top-0 left-0'
+							animate={{ x: `-${index * 100}vw` }}
+							transition={{
+								duration: 0.8,
+								ease: 'easeInOut',
+							}}
+							style={{
+								width: `${introImages.length * 100}vw`,
+								height: '731px',
+							}}>
+							{introImages.map((src, i) => (
+								<div
+									key={i}
+									className='w-screen h-[731px] relative'>
+									<Image
+										src={`${basePath}${src}`}
+										alt={`intro-${i}`}
+										fill
+										className='object-cover'
+									/>
+								</div>
+							))}
+						</motion.div>
 						<Image
 							src={`${router.basePath}/images/heyfood_intro_mob.png`}
 							className='md:hidden w-full h-[540px] absolute object-cover'
@@ -180,14 +215,14 @@ function HeyDeliBoxPage() {
 					</div>
 					<div className='flex flex-col justify-center items-center md:w-[1200px] gap-[120px]'>
 						<PromiseSection
-							image={`${basePath}/images/hey_promise_1.png`}
+							image={`${basePath}/images/hey_promise_1.jpg`}
 							title='신선한 식재료 사용'
 							description={[
 								'모든 원재료는 인증된 재료와 자체 입고 기준에 적합한 제품만을 사용합니다. 사용 전 철저히 세척 및 소독해, 식재료부터 안전하고 위생적으로 관리하고 있습니다. 당일 생산 원칙을 준수하며, 고객에게 가장 신선한 상태로 제공하기 위해 노력합니다.',
 							]}
 						/>
 						<PromiseSection
-							image={`${basePath}/images/hey_promise_2.png`}
+							image={`${basePath}/images/hey_promise_2.jpg`}
 							title='당일 생산 원칙'
 							description={[
 								'김밥, 샌드위치, 닭강정 등 누구나 좋아할 만한 조합으로 구성된 메뉴를 제공합니다. 주기적인 선호도 조사와 트렌드 분석을 통해 고객의 다양한 입맛을 반영한 신메뉴를 꾸준히 개발해 고객들에게 선택의 즐거움을 제공하고자 합니다.',
@@ -196,13 +231,13 @@ function HeyDeliBoxPage() {
 						/>
 						<PromiseSection
 							image={`${basePath}/images/hey_promise_3.png`}
-							title='다양한 메뉴 개발'
+							title='커스텀 스티커'
 							description={[
 								'고객 요청에 따라 원하는 문구를 담은 스티커를 제작하여 도시락에 부착해드립니다. 행사와 모임에서 특별한 감동을 더해줍니다.',
 							]}
 						/>
 						<PromiseSection
-							image={`${basePath}/images/hey_promise_4.png`}
+							image={`${basePath}/images/hey_promise_4.jpg`}
 							title='HACCP 인증 & 기업부설연구소 운영'
 							description={[
 								'HACCP 인증 공장에서 철저히 관리된 위생 환경에서 도시락을 생산합니다. 자체 기업부설연구소에서 실온김밥의 안전성을 연구하고 자가테스트를 통해 품질 유지 방안을 지속적으로 개발합니다.',
@@ -211,7 +246,7 @@ function HeyDeliBoxPage() {
 						/>
 					</div>
 				</div>
-				<div className='self-stretch flex justify-center relative'>
+				{/* <div className='self-stretch flex justify-center relative'>
 					<Image
 						src={`${router.basePath}/images/company_group.png`}
 						className='object-cover w-full md:h-auto h-[250px]'
@@ -219,7 +254,7 @@ function HeyDeliBoxPage() {
 						height={500}
 						width={1440}
 					/>
-				</div>
+				</div> */}
 			</>
 		</Common>
 	);

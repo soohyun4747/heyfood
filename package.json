@@ -13,6 +13,7 @@
     "@firebasegen/default-connector": "file:dataconnect-generated/js/default-connector",
     "firebase": "^11.6.0",
     "firebase-admin": "^13.2.0",
+    "framer-motion": "^12.18.1",
     "next": "^15.2.4",
     "next-seo": "^6.6.0",
     "react": "^19.1.0",
