@@ -247,7 +247,7 @@ function HeyDeliBoxPage() {
 							reverse
 						/>
 						<PromiseSection
-							image={`${basePath}/images/hey_promise_3.png`}
+							image={`${basePath}/images/hey_promise_3.jpeg`}
 							title='맞춤형 스티커 부착'
 							description={[
 								'고객 요청에 따라 원하는 문구를 담은 맞춤형 스티커를 부착해드려 ‘나만을 위한 도시락’임을 느낄 수 있어 행사와 모임에서 특별한 감동을 더해줍니다.',
