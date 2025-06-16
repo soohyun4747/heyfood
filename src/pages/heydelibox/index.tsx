@@ -81,7 +81,7 @@ function HeyDeliBoxPage() {
 					<div className='self-stretch h-[600px] md:h-[731px] relative overflow-hidden'>
 						{/* 데스크탑 슬라이드 (vw 단위로 컨테이너 지정) */}
 						<motion.div
-							className='flex absolute top-0 left-0 hidden md:block'
+							className='md:flex absolute top-0 left-0 hidden'
 							animate={{ x: `-${index * 100}vw` }}
 							transition={{
 								duration: 0.8,
@@ -104,12 +104,6 @@ function HeyDeliBoxPage() {
 								</div>
 							))}
 						</motion.div>
-						{/* <Image
-							src={`${router.basePath}/images/heyfood_intro_mob.png`}
-							className='md:hidden w-full h-[540px] absolute object-cover'
-							alt={'heyfood_intro_mob'}
-							fill
-						/> */}
 						<motion.div
 							className='flex absolute top-0 left-0 md:hidden'
 							animate={{ x: `-${index * 100}vw` }}
