@@ -103,7 +103,7 @@ export function LandingMenusTab() {
 					{/* 내부 컨테이너: 모든 카드가 한 줄에 있고, translateX와 transition이 적용됨 */}
 					{filteredCategoryMenus.length > 0 ? (
 						<div
-							className='flex gap-[32px] transition-transform ease-out duration-300'
+							className='flex gap-[32px] transition-transform ease-out duration-300 justify-center'
 							style={{
 								transform: `translateX(-${
 									slideIdx * (isMobile ? 332 : 1236)

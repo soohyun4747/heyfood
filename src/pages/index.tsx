@@ -108,12 +108,14 @@ function LandingPage() {
 							<ButtonMono
 								value={'도시락 메뉴 보기'}
 								icon={ArrowRight}
-								onClick={() => router.push('/menu')}
+								onClick={() =>
+									router.push('/menu/kimbabDosirak')
+								}
 							/>
 						</div>
 					</div>
 				</div>
-				<div className='flex flex-col justify-start items-center self-stretch gap-[60px] py-40'>
+				<div className='flex flex-col justify-start items-center self-stretch gap-[60px] pt-40 pb-20 md:py-40'>
 					<div className='flex flex-col justify-start items-center relative gap-5'>
 						<p className='text-[28px] md:text-5xl font-bold text-center text-[#0f0e0e]'>
 							&nbsp;해결의 제안: <br className='md:hidden' />
@@ -168,6 +170,18 @@ function LandingPage() {
 						</div>
 					</div>
 				</div>
+
+				<div className='self-stretch flex items-center pb-[180px] justify-center'>
+					<div className='aspect-video w-[1200px] max-[1200px]'>
+						<iframe
+							className='w-full h-full'
+							src='https://www.youtube.com/embed/42hPD0oPAGs'
+							title='YouTube video player'
+							frameBorder='0'
+							allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+							allowFullScreen></iframe>
+					</div>
+				</div>
 				<div className='flex flex-col justify-start items-center self-stretch  gap-[40px] md:px-[120px] py-40 bg-[#ffc966]'>
 					<div className='flex flex-col justify-start items-center  gap-5'>
 						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
@@ -178,16 +192,17 @@ function LandingPage() {
 					<ButtonMono
 						value={'더보기'}
 						icon={ArrowRight}
-						onClick={() => router.push('/menu')}
+						onClick={() => router.push('/menu/kimbabDosirak')}
 					/>
 				</div>
-				<div className='flex justify-center items-start self-stretch h-[900px] md:h-[790px] relative py-40 md:pt-40'>
+				<div className='flex justify-center items-start self-stretch h-[900px] md:h-[890px] relative py-40 md:pt-40'>
 					<div className='flex flex-col justify-start items-center gap-2'>
 						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
 							서비스 이용 후기
 						</p>
 						<p className='md:text-lg text-center text-[#0f0e0e]'>
-							헤이델리박스를 만나고 <br className='md:hidden'/>달라진 고객 후기를 살펴보세요
+							헤이델리박스를 만나고 <br className='md:hidden' />
+							달라진 고객 후기를 살펴보세요
 						</p>
 					</div>
 					<div className='absolute left-0 right-0 top-[310px]'>

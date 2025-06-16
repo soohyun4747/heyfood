@@ -20,11 +20,11 @@ function PromiseSection({
 }: PromiseSectionProps) {
 	return (
 		<div
-			className={`flex flex-col justify-start items-start md:w-[1200px] relative gap-[32px] md:gap-[60px] ${
+			className={`flex flex-col justify-start md:justify-between items-start md:items-center md:w-[1200px] relative gap-[32px] md:gap-[60px] ${
 				reverse ? 'md:flex-row-reverse' : 'md:flex-row'
 			}`}>
 			<Image
-				className='w-[320px] md:w-[570px] h-[236px] md:h-[420px] rounded-2xl object-cover'
+				className='w-[320px] md:w-[500px] h-[236px] md:h-[350px] rounded-2xl object-cover'
 				src={image}
 				alt={title}
 				width={320}
@@ -69,19 +69,19 @@ function HeyDeliBoxPage() {
 	return (
 		<Common meta={<Meta />}>
 			<>
-				<div className='flex flex-col justify-start items-center self-stretch h-[1001px] relative gap-[60px] pt-[40px] md:pt-[100px] bg-white'>
-					<div className='flex flex-col justify-start items-center self-stretch relative gap-2'>
+				<div className='flex flex-col justify-start items-center self-stretch h-[1001px] relative gap-[60px] bg-white'>
+					{/* <div className='flex flex-col justify-start items-center self-stretch relative gap-2'>
 						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
 							헤이델리박스
 						</p>
 						<p className='text-sm md:text-lg text-center text-[#0f0e0e]'>
 							우리는 더 좋은 헤이델리박스를 위해 매일 노력합니다.
 						</p>
-					</div>
-					<div className='self-stretch h-[731px] relative overflow-hidden'>
+					</div> */}
+					<div className='self-stretch h-[600px] md:h-[731px] relative overflow-hidden'>
 						{/* 데스크탑 슬라이드 (vw 단위로 컨테이너 지정) */}
 						<motion.div
-							className='flex absolute top-0 left-0'
+							className='flex absolute top-0 left-0 hidden md:block'
 							animate={{ x: `-${index * 100}vw` }}
 							transition={{
 								duration: 0.8,
@@ -104,12 +104,36 @@ function HeyDeliBoxPage() {
 								</div>
 							))}
 						</motion.div>
-						<Image
+						{/* <Image
 							src={`${router.basePath}/images/heyfood_intro_mob.png`}
 							className='md:hidden w-full h-[540px] absolute object-cover'
 							alt={'heyfood_intro_mob'}
 							fill
-						/>
+						/> */}
+						<motion.div
+							className='flex absolute top-0 left-0 md:hidden'
+							animate={{ x: `-${index * 100}vw` }}
+							transition={{
+								duration: 0.8,
+								ease: 'easeInOut',
+							}}
+							style={{
+								width: `${introImages.length * 100}vw`,
+								height: '600px',
+							}}>
+							{introImages.map((src, i) => (
+								<div
+									key={i}
+									className='w-screen h-[600px] relative'>
+									<Image
+										src={`${basePath}${src}`}
+										alt={`intro-${i}`}
+										fill
+										className='object-cover'
+									/>
+								</div>
+							))}
+						</motion.div>
 						<div className='w-full h-[731px] absolute opacity-[0.45] bg-[#0f0e0e]' />
 						<div className='flex flex-col justify-center items-center relative gap-12 top-1/2 transform -translate-y-1/2'>
 							<p className='text-[28px] md:text-[50px] font-bold text-center text-white'>
@@ -150,7 +174,7 @@ function HeyDeliBoxPage() {
 				<div className='flex flex-col justify-start items-center self-stretch gap-[60px] md:px-[120px] py-40'>
 					<div className='flex flex-col justify-start items-center relative gap-2'>
 						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
-							기존 행사도시락 현황
+							기존 행사도시락 문제점
 						</p>
 					</div>
 					<div className='flex flex-col justify-start items-start md:w-[1200px] relative gap-8'>
@@ -195,7 +219,6 @@ function HeyDeliBoxPage() {
 				<div className='flex flex-col justify-start items-center self-stretch relative gap-[60px] md:gap-[100px] px-[20px] md:px-[120px] pt-[100px] pb-40'>
 					<div className='w-full h-[412px] bg-[#fffbea] absolute top-[279px]' />
 					<div className='w-full h-[623px] bg-[#fffbea] absolute top-[1138px]' />
-					<div className='w-full h-[222px] bg-[#fffbea] absolute bottom-0' />
 					<div className='flex flex-col justify-start items-center relative gap-2'>
 						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
 							헤이델리박스의 약속
@@ -223,7 +246,7 @@ function HeyDeliBoxPage() {
 						/>
 						<PromiseSection
 							image={`${basePath}/images/hey_promise_2.jpg`}
-							title='당일 생산 원칙'
+							title='다양한 메뉴 개발'
 							description={[
 								'김밥, 샌드위치, 닭강정 등 누구나 좋아할 만한 조합으로 구성된 메뉴를 제공합니다. 주기적인 선호도 조사와 트렌드 분석을 통해 고객의 다양한 입맛을 반영한 신메뉴를 꾸준히 개발해 고객들에게 선택의 즐거움을 제공하고자 합니다.',
 							]}
@@ -231,30 +254,67 @@ function HeyDeliBoxPage() {
 						/>
 						<PromiseSection
 							image={`${basePath}/images/hey_promise_3.png`}
-							title='커스텀 스티커'
+							title='맞춤형 스티커 부착'
 							description={[
-								'고객 요청에 따라 원하는 문구를 담은 스티커를 제작하여 도시락에 부착해드립니다. 행사와 모임에서 특별한 감동을 더해줍니다.',
+								'고객 요청에 따라 원하는 문구를 담은 맞춤형 스티커를 부착해드려 ‘나만을 위한 도시락’임을 느낄 수 있어 행사와 모임에서 특별한 감동을 더해줍니다.',
 							]}
 						/>
-						<PromiseSection
-							image={`${basePath}/images/hey_promise_4.jpg`}
-							title='HACCP 인증 & 기업부설연구소 운영'
-							description={[
-								'HACCP 인증 공장에서 철저히 관리된 위생 환경에서 도시락을 생산합니다. 자체 기업부설연구소에서 실온김밥의 안전성을 연구하고 자가테스트를 통해 품질 유지 방안을 지속적으로 개발합니다.',
-							]}
-							reverse
-						/>
+						<div
+							className={`flex flex-col justify-start md:justify-between items-start md:items-center md:w-[1200px] relative gap-[32px] md:gap-[60px] md:flex-row-reverse`}>
+							<Image
+								className='w-[320px] md:w-[500px] h-[236px] md:h-[350px] rounded-2xl object-cover'
+								src={`${basePath}/images/hey_promise_4.jpg`}
+								alt={'hey_promise_4'}
+								width={320}
+								height={236}
+							/>
+							<div className='flex flex-col gap-12'>
+								<div className='flex flex-col justify-start items-start relative gap-3'>
+									<p className='text-[24px] md:text-[32px] font-bold text-left text-[#0f0e0e]'>
+										{'HACCP인증 업체'}
+									</p>
+									<p className='self-stretch md:w-[570px] text-sm leading-[160%] md:text-xl text-left text-[#0f0e0e]'>
+										HACCP 인증 공장에서 철저히 관리된 위생
+										환경에서 도시락을 생산합니다. 자체
+										기업부설연구소에서 실온김밥의 안전성을
+										연구하고 자가테스트를 통해 품질 유지
+										방안을 지속적으로 개발합니다.
+									</p>
+								</div>
+								<div className='flex flex-col justify-start items-start relative gap-3'>
+									<p className='text-[24px] md:text-[32px] font-bold text-left text-[#0f0e0e]'>
+										{'자체 기업부설연구소 운영'}
+									</p>
+									<p className='self-stretch md:w-[570px] text-sm leading-[160%] md:text-xl text-left text-[#0f0e0e]'>
+										기업부설연구소에서 실온김밥의 안전성을
+										연구하고 자가테스트를 통해 품질 유지
+										방안을 지속적으로 연구하고 제품을
+										개발합니다.
+									</p>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
-				{/* <div className='self-stretch flex justify-center relative'>
+				<div className='self-stretch h-[595px] md:h-[644px] flex flex-col bg-[#ffebc4] items-center pt-[50px] md:pt-[80px] pb-[90px] md:pb-[92px] md:gap-0 gap-[44px]'>
+					<p className='text-[24px] md:text-[42px] font-bold text-center text-[#0f0e0e]'>
+						안심하세요! 깨끗하고 <br className='md:hidden'/>안전한 시설에서 제조되어요.
+					</p>
 					<Image
-						src={`${router.basePath}/images/company_group.png`}
-						className='object-cover w-full md:h-auto h-[250px]'
-						alt={'company_group'}
-						height={500}
-						width={1440}
+						src={'/images/certificate.png'}
+						alt={'certificate'}
+						width={1279}
+						height={400.43}
+						className='hidden md:block'
 					/>
-				</div> */}
+					<Image
+						src={'/images/certificate_mob.png'}
+						alt={'certificate'}
+						width={320}
+						height={375}
+						className='md:hidden'
+					/>
+				</div>
 			</>
 		</Common>
 	);
