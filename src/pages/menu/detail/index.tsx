@@ -39,8 +39,8 @@ function MenuDetailPage() {
 			setTimeout(() => {
 				setCurrentIndex((prev) => (prev + 1) % imagePaths.length);
 				setOpacity(1);
-			}, 300);
-		}, 2000);
+			}, 500);
+		}, 4000);
 
 		return () => clearInterval(interval);
 	}, [imagePaths]);
