@@ -163,7 +163,20 @@ export function isMoreThanOneDayLeft(targetDate: Date): boolean {
 	const now = new Date();
 
 	const diffInMs = targetDate.getTime() - now.getTime();
-	const oneDayInMs =  24 * 60 * 60 * 1000;
+	const oneDayInMs = 24 * 60 * 60 * 1000;
 
 	return diffInMs > oneDayInMs;
+}
+
+export function isMoreThanThreeMonthsLater(targetDate: Date): boolean {
+	const now = new Date();
+
+	// 오늘 기준으로 3개월 후 날짜 계산
+	const threeMonthsLater = new Date(
+		now.getFullYear(),
+		now.getMonth() + 3,
+		now.getDate()
+	);
+
+	return targetDate > threeMonthsLater;
 }

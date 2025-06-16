@@ -57,6 +57,8 @@ function MenuDetailPage() {
 	};
 
 	const getSetDetailImage = async (menu: IMenu) => {
+		console.log(menu.imageDetailPath);
+
 		const urls = await fetchImageUrls([menu.imageDetailPath]);
 		if (urls) {
 			setDetailSrc(urls[0]);
@@ -94,7 +96,7 @@ function MenuDetailPage() {
 									</p>
 								</div>
 							</div>
-							<p className='self-stretch text-xs md:text-md text-left text-[#0f0e0e]'>
+							<p className='self-stretch text-xs md:text-[16px] text-left text-[#0f0e0e]'>
 								{menu?.ingredient}
 							</p>
 							<div className='bg-[#D9D9D9] self-stretch md:w-[540px] h-[1px]' />
@@ -103,11 +105,19 @@ function MenuDetailPage() {
 							</p>
 						</div>
 
-						<div className='flex justify-center items-center self-stretch relative gap-2 px-3.5 py-1.5 bg-[#fffbea]'>
-							<p className='text-xs md:text-sm text-left text-[#5c5c5c]'>
-								🎁 맞춤 스티커 옵션 제공 | 결제 시 원하는 문구를
-								입력해 주세요.
-							</p>
+						<div className='flex flex-col gap-2 self-stretch'>
+							<div className='flex justify-center items-center self-stretch relative px-3.5 py-1.5 bg-[#fffbea]'>
+								<p className='text-xs md:text-sm text-left text-[#5c5c5c]'>
+									🎁 맞춤 스티커 옵션 제공 | 결제 시 원하는
+									문구를 입력해 주세요.
+								</p>
+							</div>
+							<div className='flex justify-center items-center self-stretch relative px-3.5 py-1.5 bg-[#fffbea]'>
+								<p className='text-xs md:text-sm text-left text-[#5c5c5c]'>
+									⏱️ 서비스 제공 기간 | 도시락 주문은 최대
+									3개월 이내로 가능합니다
+								</p>
+							</div>
 						</div>
 						<div className='bg-[#D9D9D9] self-stretch md:w-[540px] h-[1px]' />
 					</div>

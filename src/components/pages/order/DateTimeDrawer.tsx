@@ -5,6 +5,7 @@ import {
 	dayLetters,
 	getClosestTimeSlot,
 	getDatesInMonth,
+	isMoreThanThreeMonthsLater,
 	timeSlots,
 } from '@/utils/time';
 import { useEffect, useRef, useState } from 'react';
@@ -36,6 +37,7 @@ function getTwoDaysLaterAtNine(): Date {
 }
 
 const minDateTime = getTwoDaysLaterAtNine();
+const today = new Date();
 
 export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 	const [month, setMonth] = useState<number>(0);
@@ -135,7 +137,7 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 	};
 
 	const monthRightDisabled = () => {
-		if (minDateTime.getFullYear() + 2 <= year) {
+		if (today.getMonth() + 3 === month) {
 			return true;
 		}
 		return false;
@@ -156,6 +158,23 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 			0
 		);
 		setDateTime(newDateTime);
+	};
+
+	const isDateDisabled = (d: Date, j: number) => {
+		if (
+			minDateTime.getMonth() === d.getMonth() &&
+			d.getDate() < minDateTime.getDate()
+		) {
+			return true;
+		}
+		if (j % 7 === 0) {
+			return true;
+		}
+		
+		if (isMoreThanThreeMonthsLater(d)) {
+			return true;
+		}
+		return false;
 	};
 
 	return (
@@ -217,13 +236,7 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 									className='flex text-[16px] font-bold justify-between w-full'
 									key={i}>
 									{dates.map((d, j) => {
-										if (
-											(minDateTime.getMonth() ===
-												d.getMonth() &&
-												d.getDate() <
-													minDateTime.getDate()) ||
-											j % 7 === 0
-										) {
+										if (isDateDisabled(d, j)) {
 											return (
 												<span
 													key={j}
@@ -277,9 +290,12 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 								</div>
 							))}
 						</div>
-						<div className='flex justify-center items-center self-stretch relative gap-2 px-3 py-2 bg-[#f8f8f8]'>
+						<div className='flex flex-col justify-center items-center self-stretch relative gap-1 px-3 py-2 bg-[#f8f8f8]'>
 							<p className='flex-grow w-[330px] text-[10px] text-center text-[#5c5c5c]'>
-								배송 날짜 기준 최소 이틀 전에 주문이 가능합니다
+								* 배송 날짜 기준 최소 이틀 전에 주문이 가능합니다
+							</p>
+							<p className='flex-grow w-[330px] text-[10px] text-center text-[#5c5c5c]'>
+								* 주문은 최대 3개월 이내로 가능합니다
 							</p>
 						</div>
 					</div>
