@@ -199,11 +199,33 @@ function PaymentPage() {
 
 	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.files?.[0] ?? null;
-		if (selected) {
-			setFile(selected);
-			setIsFile(true);
-			setPreviewUrl(URL.createObjectURL(selected));
+
+		if (!selected) return;
+
+		// 용량 검사 (4MB 이하)
+		if (selected.size > 4 * 1024 * 1024) {
+			alert('4MB 이하의 이미지만 업로드할 수 있습니다.');
+			return;
 		}
+
+		// 이미지 크기 검사 (500px 이상)
+		const img = new Image();
+		const objectUrl = URL.createObjectURL(selected);
+		img.onload = () => {
+			if (img.width >= 500 && img.height >= 500) {
+				setFile(selected);
+				setIsFile(true);
+				setPreviewUrl(objectUrl);
+			} else {
+				alert('가로세로 500px 이상의 이미지만 업로드할 수 있습니다.');
+				URL.revokeObjectURL(objectUrl); // 메모리 정리
+			}
+		};
+		img.onerror = () => {
+			alert('유효한 이미지 파일이 아닙니다.');
+			URL.revokeObjectURL(objectUrl);
+		};
+		img.src = objectUrl;
 	};
 
 	const handleSelectClick = () => {
@@ -318,22 +340,27 @@ function PaymentPage() {
 					</div>
 					<div
 						style={{ opacity: stickerCheck ? 1 : 0.4 }}
-						className='relative flex md:flex-row flex-col justify-start items-start self-stretch gap-6 p-6 bg-white'>
-						<div className='flex flex-col items-center p-4 bg-white border border-neutral-200 rounded-lg gap-[10px] w-full md:w-auto'>
-							<div className='w-full h-[120px] min-w-[120px] border-2 border-dashed border-neutral-300 rounded-lg flex items-center justify-center overflow-hidden'>
-								{previewUrl ? (
-									<img
-										src={previewUrl}
-										alt='Preview'
-										className='object-cover w-full h-full'
-									/>
-								) : (
-									<div className='flex flex-col items-center text-neutral-500'>
-										<span className='mt-2 text-sm'>
-											<Camera />
-										</span>
-									</div>
-								)}
+						className='relative flex flex-col justify-start items-start self-stretch gap-6 p-6 bg-white'>
+						<div className='flex md:flex-row flex-col items-center gap-1 md:gap-5 w-full md:w-auto'>
+							<div className='flex flex-col gap-2 self-stretch'>
+								<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
+									스티커 이미지
+								</p>
+								<div className='w-full md:w-[120px] h-[120px] min-w-[120px] border-2 border-dashed border-neutral-300 rounded-lg flex items-center justify-center overflow-hidden'>
+									{previewUrl ? (
+										<img
+											src={previewUrl}
+											alt='Preview'
+											className='object-cover w-full h-full'
+										/>
+									) : (
+										<div className='flex flex-col items-center text-neutral-500'>
+											<span className='mt-2 text-sm'>
+												<Camera />
+											</span>
+										</div>
+									)}
+								</div>
 							</div>
 
 							{/* 파일 선택 인풋 (보이지 않음) */}
@@ -345,14 +372,20 @@ function PaymentPage() {
 								className='hidden'
 							/>
 
-							{/* 로컬에서 파일 선택 트리거 버튼 */}
-							<Button
-								value={'업로드'}
-								onClick={handleSelectClick}
-								style={{ height: 46, width: '100%' }}
-							/>
+							<div className='flex flex-col justify-end gap-2 h-full'>
+								<p className='text-xs text-gray-400 md:w-[160px] pt-2'>
+									가로세로 500px 이상 / 4MB 이하 / jpg, png
+									확장자 권장
+								</p>
+								{/* 로컬에서 파일 선택 트리거 버튼 */}
+								<Button
+									value={'업로드'}
+									onClick={handleSelectClick}
+									style={{ height: 46, width: '100%' }}
+								/>
+							</div>
 						</div>
-						<div className='flex flex-col justify-start items-start self-stretch relative gap-2 flex-1 md:max-h-auto max-h-[200px]'>
+						<div className='flex flex-col justify-start items-start self-stretch relative gap-2 flex-1'>
 							<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
 								스티커 문구
 							</p>
@@ -364,7 +397,7 @@ function PaymentPage() {
 								placeholder='스티커 문구를 작성해주세요'
 								style={{ height: '-webkit-fill-available' }}
 								multiline
-								rows={6}
+								rows={2}
 							/>
 						</div>
 						{!stickerCheck && (
