@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 interface IMenuCardProps {
 	onClick: () => void;
 	src: string;
@@ -17,11 +19,13 @@ export function MenuCard(props: IMenuCardProps) {
 					: 'hover:shadow-[0px_4px_12px_0px_rgba(0,0,0,0.15)]'
 			} ${props.price ? 'h-[auto]' : 'md:h-[528px]'}`}>
 			<div className='w-full'>
-				<img
+				<Image
 					src={props.src}
 					alt={props.title}
-					className='w-full h-auto md:w-[332px] md:h-[320px] object-cover rounded-3xl'
-					loading='lazy'
+					className='w-full h-[272px] md:w-[332px] md:h-[320px] object-cover rounded-3xl'
+					width={332}
+					height={320}
+					priority
 				/>
 			</div>
 			<div className='flex flex-col gap-2 w-[252px] md:w-[332px] text-center'>

@@ -20,6 +20,7 @@ export const PromiseCard: React.FC<PromiseCardProps> = ({
 				width={320}
 				height={210}
 				alt={title}
+				priority
 			/>
 			{/* 텍스트 영역 */}
 			<div className='flex flex-col justify-start items-start w-[320px] relative gap-3'>

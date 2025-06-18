@@ -80,6 +80,11 @@ export function GNB({ type }: { type: IUserType }) {
 						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
 						자주묻는 질문
 					</div>
+					<div
+						onClick={() => router.push('/review')}
+						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
+						후기
+					</div>
 				</div>
 			</div>
 			<div className='flex items-center gap-[12px] md:gap-[52px]'>

@@ -1,4 +1,5 @@
 import { ButtonCount } from './ButtonCount';
+import Image from 'next/image';
 
 interface IMenuCardOrderProps {
 	src: string;
@@ -14,11 +15,13 @@ export function MenuCardOrder(props: IMenuCardOrderProps) {
 	return (
 		<div
 			className={`hover:cursor-pointer flex flex-col gap-3 md:gap-8 items-center w-full md:w-[380px] p-2 pb-3 md:p-6 rounded-xl md:rounded-3xl bg-white shadow-[0px_4px_12px_0px_rgba(0,0,0,0.15)]`}>
-			<img
+			<Image
 				src={props.src}
 				alt={props.title}
 				className='w-full h-[120px] md:h-[320px] object-cover rounded-xl md:rounded-3xl'
-				loading='lazy'
+				width={332}
+				height={320}
+				priority
 			/>
 			<div className='self-stretch h-[1px] bg-[#E5E5E5] hidden md:block' />
 			<div className='flex flex-col justify-start items-start self-stretch gap-3 md:gap-6'>

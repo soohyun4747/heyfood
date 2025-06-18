@@ -20,7 +20,7 @@ function MenuDetailPage() {
 
 	useEffect(() => {
 		if (!menu) {
-			router.push('/menu');
+			router.push('/menu/kimbabDosirak');
 		}
 
 		return () => {
@@ -52,7 +52,7 @@ function MenuDetailPage() {
 	}, [menu]);
 
 	const onClickToList = () => {
-		router.push('/menu');
+		router.push('/menu/kimbabDosirak');
 		setMenu(undefined);
 	};
 

@@ -66,6 +66,7 @@ function LandingPage() {
 						width={1440}
 						height={668}
 						className='w-full h-auto hidden md:block object-cover'
+						priority
 					/>
 					<Image
 						src={'/images/banner_mob.png'}
@@ -73,6 +74,7 @@ function LandingPage() {
 						width={360}
 						height={700}
 						className='w-full h-[700px] md:hidden object-cover'
+						priority
 					/>
 					<div className='md:hidden w-full h-[700px] opacity-40 bg-gradient-to-b from-[#f9ca38] to-[#f1e6c8] absolute top-0 left-0' />
 					<div className='absolute top-[82px] left-[20px] md:top-1/2 md:transform md:-translate-y-1/2 md:left-[120px] flex flex-col gap-[60px]'>
@@ -282,6 +284,7 @@ function LandingPage() {
 						height={737}
 						className='w-[320px] md:w-[652px] h-auto md:h-[737px] object-contain'
 						alt='order_method'
+						priority
 					/>
 				</div>
 				<div className='flex flex-col justify-start items-center self-stretch relative gap-[60px] px-[120px] py-40'>
@@ -292,6 +295,7 @@ function LandingPage() {
 							width={1200}
 							height={480}
 							alt='banner_2'
+							priority
 						/>
 						<Image
 							src={`${router.basePath}/images/banner_2_mob.png`}
@@ -299,6 +303,7 @@ function LandingPage() {
 							width={320}
 							height={480}
 							alt='banner_2_mob'
+							priority
 						/>
 						<div className='w-[320px] md:w-[1200px] h-[480px] absolute left-0 top-0 opacity-[0.45] rounded-3xl bg-[#0f0e0e]' />
 						<div className='md:w-auto w-[211px] flex flex-col justify-start items-center gap-[52px] absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2'>

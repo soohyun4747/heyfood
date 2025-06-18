@@ -3,14 +3,15 @@ import { ICategory } from '@/components/LandingMenusTab';
 import { TabMenu } from '@/components/TabMenu';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
-import { fetchCollectionData } from '@/utils/firebase';
+import { fetchCollectionData, fetchImageUrls } from '@/utils/firebase';
 import { Timestamp } from 'firebase/firestore';
+import Image from 'next/image';
 import { useEffect, useMemo, useState } from 'react';
 
 export interface IFaq {
 	id: string;
 	title: string;
-	content: string;
+	imagePath: string;
 	categoryId: string;
 	createdAt: Timestamp;
 }
@@ -23,11 +24,13 @@ export function FaqPage() {
 	// 초기 데이터 로드
 	useEffect(() => {
 		getSetCategories();
-		fetchCollectionData('FAQs', setFaqs);
+		getSetFaqs();
 	}, []);
 
 	const getSetCategories = async () => {
-		const faqCategories = await fetchCollectionData('FAQCategories') as ICategory[];
+		const faqCategories = (await fetchCollectionData(
+			'FAQCategories'
+		)) as ICategory[];
 		if (faqCategories) {
 			const orderedCategories: ICategory[] = [];
 
@@ -35,10 +38,27 @@ export function FaqPage() {
 				orderedCategories[category.order] = category;
 			});
 
-			orderedCategories.unshift({ id: 'all', name: '전체', order: -1 })
+			orderedCategories.unshift({ id: 'all', name: '전체', order: -1 });
 
 			setCategories(orderedCategories);
 		}
+	};
+
+	const getSetFaqs = async () => {
+		const fetchedFaqs =
+			((await fetchCollectionData('FAQs')) as IFaq[] | undefined) ?? [];
+
+		const updatedFaqs = await Promise.all(
+			fetchedFaqs.map(async (faq) => {
+				const urls = await fetchImageUrls([faq.imagePath]);
+				if (urls) {
+					faq.imagePath = urls[0];
+				}
+				return faq;
+			})
+		);
+
+		setFaqs(updatedFaqs);
 	};
 
 	// 선택된 카테고리에 해당하는 메뉴 필터링 (useMemo로 메모이제이션)
@@ -83,12 +103,24 @@ export function FaqPage() {
 						</span>
 					</p>
 					<div className='flex flex-col justify-start items-start self-stretch  relative'>
-						<div className='md:w-[1200px] self-stretch h-[3px] bg-[#0F0E0E]'/>
+						<div className='md:w-[1200px] self-stretch h-[3px] bg-[#0F0E0E]' />
 						{filteredCategoryFaqs.map((faq) => (
 							<Accordion
 								key={faq.id}
 								title={faq.title}
-								content={faq.content}
+								content={
+									faq.imagePath ? (
+										<Image
+											src={faq.imagePath}
+											alt={faq.title}
+											width={300}
+											height={600}
+											className='w-[320px] md:w-[1200px] h-auto object-cover relative'
+										/>
+									) : (
+										<></>
+									)
+								}
 							/>
 						))}
 					</div>

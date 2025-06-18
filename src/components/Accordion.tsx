@@ -1,10 +1,10 @@
-import { ChevronDown } from '@/icons/ChevronDown';
+import { ChevronDownSmall } from '@/icons/ChevronDownSmall';
 import { ChevronUp } from '@/icons/ChevronUp';
-import { useState } from 'react';
+import { JSX, useState } from 'react';
 
 interface IAccordionProps {
 	title: string;
-	content: string;
+	content: JSX.Element;
 }
 
 export function Accordion(props: IAccordionProps) {
@@ -19,20 +19,17 @@ export function Accordion(props: IAccordionProps) {
 					{props.title}
 				</p>
 				{open ? (
-					<ChevronUp />
-				) : (
-					<ChevronDown
+					<ChevronUp
 						color='#909090'
-						size={32}
+					/>
+				) : (
+					<ChevronDownSmall
+						color='#909090'
 					/>
 				)}
 			</div>
 			{open && (
-				<div className='flex items-center self-stretch  gap-2 px-4 py-[12px] md:py-[26px] bg-[#fffbea] border-b border-[#c8cddb]'>
-					<p className='select-none text-[12px] md:text-xl text-left text-black whitespace-pre-line'>
-						{props.content}
-					</p>
-				</div>
+				<div className='w-[1200px] max-w-[1200px]'>{props.content}</div>
 			)}
 		</div>
 	);
