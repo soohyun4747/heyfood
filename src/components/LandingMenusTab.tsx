@@ -31,7 +31,6 @@ export function LandingMenusTab() {
 	const menus = useMenusStore((state) => state.menus);
 	const [selectedCategoryIdx, setSelectedCategoryIdx] = useState<number>(0);
 	const [slideIdx, setSlideIdx] = useState(0);
-	
 
 	const { setMenu } = useMenuStore();
 	const isMobile = useDeviceStore((state) => state.isMobile);
@@ -47,6 +46,8 @@ export function LandingMenusTab() {
 	const maxSlideIdx = useMemo(() => {
 		return Math.ceil(filteredCategoryMenus.length / (isMobile ? 1 : 3)) - 1;
 	}, [filteredCategoryMenus, isMobile]);
+
+	console.log({ maxSlideIdx, slideIdx });
 
 	const onClickMenusLeft = () => {
 		setSlideIdx((prev) => Math.max(prev - 1, 0));
@@ -126,14 +127,14 @@ export function LandingMenusTab() {
 						</div>
 					)}
 				</div>
-
 				<div className='md:ml-[12px] md:w-[60px]'>
 					<ButtonIcon
 						icon={ChevronRight}
 						onClick={onClickMenusRight}
 						disabled={
-							slideIdx < maxSlideIdx &&
-							filteredCategoryMenus.length > (isMobile ? 1 : 3)
+							slideIdx < maxSlideIdx 
+							// &&
+							// filteredCategoryMenus.length > (isMobile ? 1 : 3)
 								? false
 								: true
 						}

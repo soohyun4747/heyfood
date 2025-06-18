@@ -1,3 +1,4 @@
+import { useDeviceStore } from '@/stores/deviceStore';
 import { JSX, useState } from 'react';
 
 export interface IIconProps {
@@ -16,7 +17,8 @@ export interface IButtonIconProps extends IIconProps {
 }
 
 export function ButtonIcon(props: IButtonIconProps) {
-	const [hover, setHover] = useState<boolean>(false);	
+	const [hover, setHover] = useState<boolean>(false);
+	const isMobile = useDeviceStore((state) => state.isMobile);
 
 	return (
 		<div
@@ -29,7 +31,7 @@ export function ButtonIcon(props: IButtonIconProps) {
 			{props.icon({
 				color: props.color,
 				hoverColor: props.hoverColor,
-				hover: hover,
+				hover: !isMobile ? hover : false,
 				id: props.id,
 			})}
 		</div>
