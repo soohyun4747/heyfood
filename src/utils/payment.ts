@@ -3,7 +3,8 @@ export async function serverAuthVBank(
 	price: number,
 	goodsName: string,
 	vbankHolder: string,
-	returnUrl: string
+	returnUrl: string,
+	method: string
 ) {
 	if (typeof window !== 'undefined') {
 		const pay_obj: any = window;
@@ -11,7 +12,7 @@ export async function serverAuthVBank(
 		await AUTHNICE.requestPay({
 			//NOTE :: 발급받은 클라이언트키 clientId에 따라 Server / Client 방식 분리
 			clientId: process.env.NEXT_PUBLIC_NICEPAY_CLIENT_KEY,
-			method: 'vbank',
+			method: method,
 			vbankHolder: vbankHolder,
 			orderId: orderId,
 			amount: price,

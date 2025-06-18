@@ -45,6 +45,9 @@ function PaymentPage() {
 	const [stickerCheck, setStickerCheck] = useState(false);
 	const [file, setFile] = useState<File>();
 	const [coupon, setCoupon] = useState<string>('');
+	const [paymentMethod, setPaymentMethod] = useState<'card' | 'vbank'>(
+		'card'
+	);
 
 	const user = useUserStore((state) => state.user);
 	const { comment, setComment } = useOrderCommentStore();
@@ -136,7 +139,9 @@ function PaymentPage() {
 				wholePrice,
 				`${cart.at(0)?.items.at(0)?.menu.name} 외 ${totalCount - 1}건`,
 				'정수현',
-				`${originPath}/api/nicepay/approve`
+				`${originPath}/api/nicepay/approve`,
+				//'vbank'
+				paymentMethod
 			);
 		}
 	};
@@ -557,9 +562,33 @@ function PaymentPage() {
 								{wholePrice.toLocaleString()}원
 							</p>
 						</div>
-						<p className='text-left text-[#0f0e0e]'>
+						{/* <p className='text-left text-[#0f0e0e]'>
 							결제는 가상계좌로만 진행됩니다.
-						</p>
+						</p> */}
+						<div className='flex items-center gap-4'>
+							<div
+								className='hover:cursor-pointer flex items-center gap-1'
+								onClick={() => setPaymentMethod('card')}>
+								<input
+									type='radio'
+									checked={
+										paymentMethod === 'card' ? true : false
+									}
+								/>
+								<label>신용카드</label>
+							</div>
+							<div
+								className='hover:cursor-pointer flex items-center gap-1'
+								onClick={() => setPaymentMethod('vbank')}>
+								<input
+									type='radio'
+									checked={
+										paymentMethod === 'vbank' ? true : false
+									}
+								/>
+								<label>가상계좌</label>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
