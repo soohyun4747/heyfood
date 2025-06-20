@@ -1,12 +1,5 @@
+import { ReviewList } from '@/components/ReviewList';
 import { Common } from '@/layouts/Common';
-import { Timestamp } from 'firebase/firestore';
-
-export interface IReview {
-	email: string;
-	comment: string;
-	imagePaths: string[];
-	createdAt: Timestamp;
-}
 
 function ReviewPage() {
 	return (
@@ -20,29 +13,7 @@ function ReviewPage() {
 						저희 도시락을 이용해주신 고객님들의 후기입니다.
 					</p>
 				</div>
-				<div className='flex flex-col justify-center items-start md:w-[1200px] self-stretch relative gap-5 md:self-center justify-self-center'>
-					<p className=' text-lg text-left'>
-						<span className=' text-lg font-medium text-left text-[#909090]'>
-							총{' '}
-						</span>
-						<span className=' text-lg font-bold text-left text-[#0f0e0e]'>
-							12개
-						</span>
-						<span className=' text-lg font-medium text-left text-[#909090]'>
-							의 게시물이 있습니다.
-						</span>
-					</p>
-					<div className='flex flex-col justify-start items-start self-stretch  relative'>
-						<div className='md:w-[1200px] self-stretch h-[3px] bg-[#0F0E0E]' />
-						{/* {filteredCategoryFaqs.map((faq) => (
-							<Accordion
-								key={faq.id}
-								title={faq.title}
-								content={faq.content}
-							/>
-						))} */}
-					</div>
-				</div>
+				<ReviewList />
 			</div>
 		</Common>
 	);

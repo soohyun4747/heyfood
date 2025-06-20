@@ -292,7 +292,10 @@ export const createDocId = (collectionName: string) => {
 };
 
 // 인증번호(OTP) 전송 함수
-export const sendVerificationCode = async (phone: string, appVerifier?: ApplicationVerifier) => {
+export const sendVerificationCode = async (
+	phone: string,
+	appVerifier?: ApplicationVerifier
+) => {
 	// 입력된 번호를 E.164 형식으로 변환
 	const formattedPhone = formatPhoneNumberE164(phone);
 
@@ -346,17 +349,17 @@ export const getDataCount = async (collectionName: string) => {
 };
 
 export async function getActivePopups(): Promise<IPopup[]> {
-		const now = Timestamp.now();
+	const now = Timestamp.now();
 
-		const q = query(
-			collection(db, 'popups'),
-			where('startDate', '<=', now),
-			where('endDate', '>=', now)
-		);
+	const q = query(
+		collection(db, 'popups'),
+		where('startDate', '<=', now),
+		where('endDate', '>=', now)
+	);
 
-		const snapshot = await getDocs(q);
-		return snapshot.docs.map((doc) => ({
-			id: doc.id,
-			...doc.data(),
-		})) as IPopup[];
-	}
+	const snapshot = await getDocs(q);
+	return snapshot.docs.map((doc) => ({
+		id: doc.id,
+		...doc.data(),
+	})) as IPopup[];
+}
