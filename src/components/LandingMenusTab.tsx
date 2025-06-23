@@ -47,8 +47,6 @@ export function LandingMenusTab() {
 		return Math.ceil(filteredCategoryMenus.length / (isMobile ? 1 : 3)) - 1;
 	}, [filteredCategoryMenus, isMobile]);
 
-	console.log({ maxSlideIdx, slideIdx });
-
 	const onClickMenusLeft = () => {
 		setSlideIdx((prev) => Math.max(prev - 1, 0));
 	};

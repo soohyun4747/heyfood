@@ -1,10 +1,10 @@
 import { IReview, ReviewItem } from '@/components/ReviewItem';
 import {
-	fetchCollectionTableDataWithConstraints,
 	fetchImageUrls,
+	fetchTableData,
 	getDataCount,
+	StartDocInfo,
 } from '@/utils/firebase';
-import { DocumentData, QueryDocumentSnapshot } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { Pagination } from './Pagination';
 import { ReviewModal } from './ReviewModal';
@@ -14,56 +14,65 @@ const pageSize = 8;
 export function ReviewList() {
 	const [onPageReviews, setOnPageReviews] = useState<IReview[]>([]);
 	const [page, setPage] = useState(1);
-	const [startAfterDoc, setStartAfterDoc] =
-		useState<QueryDocumentSnapshot<DocumentData, DocumentData>>();
-	const [totalPages, setTotalPages] = useState(1);
+	const [startDocInfo, setStartDocInfo] = useState<StartDocInfo>();
+	const [total, setTotal] = useState(1);
 	const [reviewModalOpen, setReviewModalOpen] = useState(false);
 
 	useEffect(() => {
-		getSetReviews();
-		getSetTotalPages();
+		getSetInitData();
 	}, []);
 
-	const onPageChange = (page: number) => {
-		setPage(page);
+	const getSetInitData = async () => {
+		const totalDataCount = await getDataCount('reviews');
 
-		//pagination용 데이터 불러오기
-	};
-
-	const getSetReviews = async () => {
-		const fetchedReviews = (await fetchCollectionTableDataWithConstraints(
+		setTotal(totalDataCount);
+		const fetchedReviews = (await fetchTableData(
 			'reviews',
-			startAfterDoc,
+			startDocInfo,
 			pageSize,
-			[],
-			setStartAfterDoc
+			1,
+			totalDataCount,
+			undefined,
+			setStartDocInfo
 		)) as IReview[] | undefined;
+		setPage(1);
 		if (fetchedReviews) {
-			// 이미지 URL들은 병렬 처리합니다.
-			const updatedReviews = await Promise.all(
-				fetchedReviews.map(async (review) => {
-					const urls = await fetchImageUrls(review.imagePaths);
-					if (urls) {
-						review.imagePaths = urls;
-					}
-					return review;
-				})
-			);
-			setOnPageReviews(updatedReviews);
+			getSetReviewsImages(fetchedReviews);
 		}
 	};
 
-	const getSetTotalPages = async () => {
-		const dataCount = await getDataCount('reviews');
-		setTotalPages(Math.ceil(dataCount / pageSize));
+	const getSetReviewsImages = async (reviews: IReview[]) => {
+		// 이미지 URL들은 병렬 처리합니다.
+		const updatedReviews = await Promise.all(
+			reviews.map(async (review) => {
+				const urls = await fetchImageUrls(review.imagePaths);
+				if (urls) {
+					review.imagePaths = urls;
+				}
+				return review;
+			})
+		);
+		setOnPageReviews(updatedReviews);
+	};
+
+	const onPageChange = async (page: number) => {
+		setPage(page);
+		const fetchedReviews = (await fetchTableData(
+			'reviews',
+			startDocInfo,
+			pageSize,
+			page,
+			total,
+			undefined,
+			setStartDocInfo
+		)) as IReview[] | undefined;
+		if (fetchedReviews) {
+			getSetReviewsImages(fetchedReviews);
+		}
 	};
 
 	const onRegistered = async () => {
-		if (page === 1) {
-			await getSetReviews();
-		} else {
-			onPageChange(1);
-		}
+		getSetInitData();
 		setReviewModalOpen(false);
 	};
 
@@ -75,7 +84,7 @@ export function ReviewList() {
 						총{' '}
 					</span>
 					<span className=' text-lg font-bold text-left text-[#0f0e0e]'>
-						{onPageReviews.length}개
+						{total}개
 					</span>
 					<span className=' text-lg font-medium text-left text-[#909090]'>
 						의 게시물이 있습니다.
@@ -97,15 +106,19 @@ export function ReviewList() {
 						))}
 					</div>
 					<Pagination
-						totalPages={totalPages}
-						pageGroupMax={10}
+						total={total}
 						page={page}
+						pageSize={pageSize}
+						pageGroupMax={10}
 						onChangePage={(val) => onPageChange(val)}
 					/>
 				</div>
 			</div>
 			{reviewModalOpen && (
-				<ReviewModal onClose={() => setReviewModalOpen(false)} />
+				<ReviewModal
+					onClose={() => setReviewModalOpen(false)}
+					onRegistered={onRegistered}
+				/>
 			)}
 		</div>
 	);

@@ -39,8 +39,6 @@ export function ImagesUpload(props: IImageUploadProps) {
 	const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const selected = e.target.files?.[0] ?? null;
 
-		console.log({ selected });
-
 		if (!selected) return;
 
 		props.setFileList((prev) => {

@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 
 export interface IReview {
+	id: string;
 	email: string;
 	comment: string;
 	imagePaths: string[];
@@ -14,12 +15,12 @@ export function ReviewItem(props: IReview) {
 	const [open, setOpen] = useState(false);
 
 	return (
-		<div className='flex justify-start items-start self-stretch relative gap-[100px] px-4 py-6 border-b border-neutral-200'>
+		<div
+			onClick={() => setOpen((prev) => !prev)}
+			className='cursor-pointer flex justify-start items-start self-stretch relative gap-[100px] px-4 py-6 border-b border-neutral-200'>
 			<div className='flex justify-start items-start flex-grow relative gap-6'>
 				<Profile />
-				<div
-					onClick={() => setOpen((prev) => !prev)}
-					className='cursor-pointer flex flex-col justify-center items-start flex-grow relative gap-3'>
+				<div className='flex flex-col justify-center items-start flex-grow relative gap-3'>
 					<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
 						<p className='self-stretch w-[876px] text-base text-left text-[#0f0e0e]'>
 							{props.email} |{' '}

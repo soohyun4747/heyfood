@@ -36,8 +36,6 @@ export function MenuTemplate({ categoryIdx }: { categoryIdx: number }) {
 	};
 
 	const onClickCategory = (i: number) => {
-		console.log(menuUrls[i]);
-
 		router.push(menuUrls[i]);
 	};
 

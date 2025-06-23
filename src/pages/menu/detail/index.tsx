@@ -57,8 +57,6 @@ function MenuDetailPage() {
 	};
 
 	const getSetDetailImage = async (menu: IMenu) => {
-		console.log(menu.imageDetailPath);
-
 		const urls = await fetchImageUrls([menu.imageDetailPath]);
 		if (urls) {
 			setDetailSrc(urls[0]);

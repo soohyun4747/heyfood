@@ -11,7 +11,13 @@ import { Timestamp } from 'firebase/firestore';
 const maxWordCount = 3000;
 const minWordCount = 10;
 
-export function ReviewModal({ onClose }: { onClose: () => void }) {
+export function ReviewModal({
+	onClose,
+	onRegistered,
+}: {
+	onClose: () => void;
+	onRegistered: () => void;
+}) {
 	const [fileList, setFileList] = useState<File[]>([]);
 	const [comment, setComment] = useState<string>('');
 	const [wordCount, setWordCount] = useState(0);
@@ -46,7 +52,7 @@ export function ReviewModal({ onClose }: { onClose: () => void }) {
 				createdAt: Timestamp.now(),
 			});
 		}
-		onClose();
+		onRegistered();
 	};
 
 	return (
@@ -59,7 +65,7 @@ export function ReviewModal({ onClose }: { onClose: () => void }) {
 					<ButtonIcon
 						icon={Close}
 						className='absolute top-1/2 -translate-y-1/2 right-[30px]'
-                        onClick={onClose}
+						onClick={onClose}
 					/>
 				</div>
 				<div className='flex flex-col justify-start items-center self-stretch gap-8 px-9 py-8 rounded-bl-3xl rounded-br-3xl bg-white'>

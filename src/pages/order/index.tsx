@@ -17,7 +17,7 @@ import { categorySideId } from './payment';
 import { useMenuCategoriesStore } from '@/stores/menuCategoriesStore';
 import { useMenusStore } from '@/stores/menusStore';
 
-export const minimumCount = 30;
+export const minimumCount = 1;
 
 function OrderPage() {
 	const categories = useMenuCategoriesStore((state) => state.menuCategories);

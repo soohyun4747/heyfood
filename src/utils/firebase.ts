@@ -15,11 +15,14 @@ import {
 	getDoc,
 	getDocs,
 	limit,
+	orderBy,
 	query,
 	QueryConstraint,
 	QueryDocumentSnapshot,
+	QuerySnapshot,
 	setDoc,
 	startAfter,
+	startAt,
 	Timestamp,
 	updateDoc,
 	where,
@@ -363,3 +366,139 @@ export async function getActivePopups(): Promise<IPopup[]> {
 		...doc.data(),
 	})) as IPopup[];
 }
+
+export interface StartDocInfo {
+	pageIdx: number;
+	doc: QueryDocumentSnapshot<DocumentData, DocumentData>;
+}
+
+export const fetchTableData = async (
+	collectionName: string,
+	startDocInfo: StartDocInfo | undefined,
+	pageSize: number,
+	page: number,
+	total: number,
+	setRowData: ((value: React.SetStateAction<any[]>) => void) | undefined,
+	setStartDocInfo: React.Dispatch<
+		React.SetStateAction<StartDocInfo | undefined>
+	>,
+	queryConstraints?: QueryConstraint[]
+) => {
+	try {
+		const pageIdx = page - 1;
+		const lastPage = Math.ceil(total / pageSize);
+
+		let q;
+		let newData: any[] = [];
+		let querySnapshot: QuerySnapshot<DocumentData, DocumentData> | null =
+			null;
+		let startDocIdx = 0;
+
+		if (page === 1) {
+			q = queryConstraints
+				? query(
+						collection(db, collectionName),
+						...queryConstraints,
+						limit(pageSize)
+				  )
+				: query(
+						collection(db, collectionName),
+						orderBy('createdAt', 'desc'),
+						limit(pageSize)
+				  );
+
+			querySnapshot = await getDocs(q);
+			newData = querySnapshot.docs.map((doc) => ({
+				id: doc.id,
+				...doc.data(),
+			}));
+		} else if (page === lastPage) {
+			q = queryConstraints
+				? query(
+						collection(db, collectionName),
+						...queryConstraints,
+						total % pageSize
+							? limit(total % pageSize)
+							: limit(pageSize)
+				  )
+				: query(
+						collection(db, collectionName),
+						orderBy('createdAt'),
+						total % pageSize
+							? limit(total % pageSize)
+							: limit(pageSize)
+				  );
+			querySnapshot = await getDocs(q);
+			startDocIdx = querySnapshot.docs.length - 1;
+			for (let i = startDocIdx; 0 <= i; i--) {
+				const doc = querySnapshot.docs[i];
+				newData.push({ id: doc.id, ...doc.data() });
+			}
+		} else {
+			if (startDocInfo && startDocInfo.pageIdx < pageIdx) {
+				q = queryConstraints
+					? query(
+							collection(db, collectionName),
+							...queryConstraints,
+							startAt(startDocInfo.doc),
+							limit(
+								(pageIdx - startDocInfo.pageIdx + 1) * pageSize
+							)
+					  )
+					: query(
+							collection(db, collectionName),
+							orderBy('createdAt', 'desc'),
+							startAt(startDocInfo.doc),
+							limit(
+								(pageIdx - startDocInfo.pageIdx + 1) * pageSize
+							)
+					  );
+				querySnapshot = await getDocs(q);
+				startDocIdx = (pageIdx - startDocInfo.pageIdx) * pageSize;
+				for (let i = startDocIdx; i < querySnapshot.docs.length; i++) {
+					const doc = querySnapshot.docs[i];
+					newData.push({ id: doc.id, ...doc.data() });
+				}
+			} else if (startDocInfo && pageIdx < startDocInfo.pageIdx) {
+				q = queryConstraints
+					? query(
+							collection(db, collectionName),
+							...queryConstraints,
+							startAfter(startDocInfo.doc),
+							limit((startDocInfo.pageIdx - pageIdx) * pageSize)
+					  )
+					: query(
+							collection(db, collectionName),
+							orderBy('createdAt'),
+							startAfter(startDocInfo.doc),
+							limit((startDocInfo.pageIdx - pageIdx) * pageSize)
+					  );
+				querySnapshot = await getDocs(q);
+				startDocIdx = querySnapshot.docs.length - 1;
+
+				for (
+					let i = startDocIdx;
+					querySnapshot.docs.length - 1 - pageSize < i;
+					i--
+				) {
+					const doc = querySnapshot.docs[i];
+					newData.push({ id: doc.id, ...doc.data() });
+				}
+			}
+		}
+
+		if (querySnapshot) {
+			setStartDocInfo({
+				pageIdx: page - 1,
+				doc: querySnapshot.docs[startDocIdx],
+			});
+		}
+
+		if (setRowData) {
+			setRowData(newData);
+		}
+		return newData;
+	} catch (error) {
+		console.error('Error fetching data:', error);
+	}
+};

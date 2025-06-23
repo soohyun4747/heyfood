@@ -378,7 +378,7 @@ export function OrderInfo() {
 											<div className='flex self-stretch justify-between md:gap-0 gap-2'>
 												<div className=' md:text-lg font-bold text-[#0f0e0e] flex md:items-center gap-1 md:gap-3 flex-col md:flex-row'>
 													<p>배달날짜</p>
-													<p className='font-normal text-sm'>
+													<p className='font-normal text-sm md:text-lg'>
 														{formatTimestampWithMinutes(
 															itemsWithDate.date
 														)}
@@ -419,7 +419,7 @@ export function OrderInfo() {
 									<div className='self-stretch h-[1px] bg-gray-200' />
 									<div className='flex justify-start items-center self-stretch gap-3'>
 										<div className='flex justify-center items-center gap-2 pt-0.5'>
-											<p className=' md:text-base font-bold text-[#0f0e0e] md:min-w-auto min-w-[62px]'>
+											<p className='md:text-lg font-bold text-[#0f0e0e] md:min-w-auto min-w-[62px]'>
 												배달주소
 											</p>
 										</div>

@@ -1,12 +1,13 @@
 import { ChevronLeftSmall } from '@/icons/ChevronLeftSmall';
-import { ButtonIcon, IIconProps } from './ButtonIcon';
+import { ButtonIcon } from './ButtonIcon';
 import { ChevronRightSmall } from '@/icons/ChevronRightSmall';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IPaginationProps {
-	totalPages: number;
-	pageGroupMax: number;
+	total: number;
 	page: number;
+	pageSize: number;
+	pageGroupMax: number;
 	onChangePage: (page: number) => void;
 }
 
@@ -14,28 +15,42 @@ export function Pagination(props: IPaginationProps) {
 	const [totalPageGroups, setTotalPageGroups] = useState(1);
 	const [pageGroup, setPageGroup] = useState(1);
 
+	const totalPages = Math.ceil(props.total / props.pageSize);
+
+	useEffect(() => {
+		setTotalPageGroups(Math.ceil(totalPages / props.pageGroupMax));
+	}, [totalPages, props.pageGroupMax]);
+
 	const getCurrentPageGroupPages = () => {
-		if (pageGroup < totalPageGroups) {
+		if (pageGroup <= totalPageGroups) {
 			return Array.from(
 				{ length: 10 },
 				(_, i) => 10 * (pageGroup - 1) + i + 1
 			);
 		}
 		return Array.from(
-			{ length: props.totalPages % props.pageGroupMax },
-			(_, i) => i + 1
+			{ length: totalPages % props.pageGroupMax },
+			(_, i) => 10 * (pageGroup - 1) + i + 1
 		);
 	};
 
-	useEffect(() => {
-		setTotalPageGroups(Math.ceil(props.totalPages / props.pageGroupMax));
-	}, [props.totalPages]);
+	const onClickPageGroupBack = () => {
+		const newPageGroup = pageGroup - 1;
+		props.onChangePage((newPageGroup - 1) * props.pageGroupMax + 1);
+		setPageGroup(newPageGroup);
+	};
+
+	const onClickPageGroupForward = () => {
+		const newPageGroup = pageGroup + 1;
+		props.onChangePage((newPageGroup - 1) * props.pageGroupMax + 1);
+		setPageGroup(newPageGroup);
+	};
 
 	return (
 		<div className='flex items-center gap-2'>
 			<ButtonIcon
 				icon={ChevronLeftSmall}
-				onClick={() => setPageGroup((prev) => prev - 1)}
+				onClick={onClickPageGroupBack}
 				disabled={pageGroup === 1 ? true : false}
 			/>
 			<div className='flex items-center gap-1'>
@@ -59,7 +74,7 @@ export function Pagination(props: IPaginationProps) {
 			</div>
 			<ButtonIcon
 				icon={ChevronRightSmall}
-				onClick={() => setPageGroup((prev) => prev + 1)}
+				onClick={onClickPageGroupForward}
 				disabled={pageGroup < totalPageGroups ? false : true}
 			/>
 		</div>

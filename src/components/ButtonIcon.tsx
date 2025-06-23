@@ -27,7 +27,7 @@ export function ButtonIcon(props: IButtonIconProps) {
 			onMouseLeave={() => setHover(false)}
 			onClick={!props.disabled ? props.onClick : undefined}
 			className={`hover:cursor-pointer ${props.className}`}
-			style={{ opacity: props.disabled ? 0.5 : 1 }}>
+			style={{ opacity: props.disabled ? 0.3 : 1 }}>
 			{props.icon({
 				color: props.color,
 				hoverColor: props.hoverColor,
