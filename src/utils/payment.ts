@@ -4,7 +4,9 @@ export async function serverAuthVBank(
 	goodsName: string,
 	vbankHolder: string,
 	returnUrl: string,
-	method: string
+	method: string,
+	buyerTel: string,
+	buyerEmail: string
 ) {
 	if (typeof window !== 'undefined') {
 		const pay_obj: any = window;
@@ -18,6 +20,8 @@ export async function serverAuthVBank(
 			amount: price,
 			goodsName: goodsName,
 			returnUrl: returnUrl,
+			buyerTel: buyerTel,
+			buyerEmail: buyerEmail,
 			// NOTE :: err 발생시 실행 함수
 			fnError: (result: any) => {
 				console.log(result.errorMsg);
