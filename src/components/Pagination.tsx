@@ -57,13 +57,16 @@ export function Pagination(props: IPaginationProps) {
 				{getCurrentPageGroupPages().map((val) => {
 					if (val === props.page) {
 						return (
-							<div className='flex items-center justify-center cursor-pointer w-[34px] h-[32px] rounded-[6px] bg-brand-01 text-[15px] text-gray-900'>
+							<div
+								key={val}
+								className='flex items-center justify-center cursor-pointer w-[34px] h-[32px] rounded-[6px] bg-brand-01 text-[15px] text-gray-900'>
 								{val}
 							</div>
 						);
 					} else {
 						return (
 							<div
+								key={val}
 								onClick={() => props.onChangePage(val)}
 								className='flex items-center justify-center cursor-pointer w-[34px] h-[32px] rounded-[6px] hover:bg-gray-900/9 text-[15px] text-gray-900'>
 								{val}
