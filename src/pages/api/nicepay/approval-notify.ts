@@ -15,6 +15,7 @@ export default async function handler(
 				orderStatus: status,
 				updatedAt: Timestamp.now(),
 			});
+			console.log('📦 NICEPAY webhook:', req.body);
 		}
 	} catch (error) {
 		console.error('Failed to update order status:', error);

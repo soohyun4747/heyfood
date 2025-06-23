@@ -349,6 +349,17 @@ export function OrderInfo() {
 		return false;
 	};
 
+	const orderStatusAddInfo = (orderStatus: IOrderStatus) => {
+		switch (orderStatus) {
+			case OrderStatus.ready:
+				return '입금 후 결제 확인까지 15분 정도 소요됩니다.';
+			case OrderStatus.cancelled:
+				return '주문 취소 후 입금까지 이틀정도 소요됩니다.';
+			default:
+				return '';
+		}
+	};
+
 	return (
 		<div className='flex flex-col gap-[36px] md:w-[892px]'>
 			{ordersWithItems.length > 0 ? (
@@ -357,10 +368,15 @@ export function OrderInfo() {
 						key={i}
 						className='flex flex-col justify-center items-start flex-grow'>
 						<div className='flex justify-between self-stretch items-center self-stretch px-4 py-5 md:p-6 border-t border-r border-l border-neutral-200'>
-							<div className='flex items-center gap-[12px]'>
+							<div className='flex items-start items-center gap-[12px]'>
 								<PaymentStatus
 									status={data.orderData.orderStatus}
 								/>
+								<p className='text-xs max-w-[120px] md:max-w-auto'>
+									{orderStatusAddInfo(
+										data.orderData.orderStatus
+									)}
+								</p>
 							</div>
 							<p className='text-md md:text-2xl font-bold text-right text-[#0f0e0e]'>
 								총 {data.orderData.price?.toLocaleString()}원
@@ -605,8 +621,8 @@ export function OrderInfo() {
 									</p>
 									<p className='text-sm'>
 										입금한지 얼마 안되신 경우 &quot;결제
-										확인중&quot;이 &quot;결제 완료&quot;로 바뀐 후
-										취소해주세요.
+										확인중&quot;이 &quot;결제 완료&quot;로
+										바뀐 후 취소해주세요.
 									</p>
 								</div>
 							) : (
