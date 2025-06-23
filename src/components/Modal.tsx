@@ -15,7 +15,7 @@ export function Modal(props: IModalProps) {
 				<div className='flex flex-col justify-start items-start self-stretch gap-6'>
 					<div className='flex flex-col justify-start items-start self-stretch relative gap-3'>
 						<div className='flex flex-col justify-center items-start self-stretch relative gap-2 py-0.5'>
-							<p className='text-xl font-bold text-left text-[#0f0e0e]'>
+							<p className='text-xl font-bold text-left text-[#0f0e0e] whitespace-pre-wrap md:whitespace-normal'>
 								{props.title}
 							</p>
 						</div>

@@ -16,6 +16,7 @@ import {
 	useOrderStickerFileStore,
 	useOrderStickerPhraseStore,
 } from '@/stores/orderInfoStore';
+import { useProfileTabIdxStore } from '@/stores/profileTabIdxStore';
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
 import {
 	addData,
@@ -46,6 +47,7 @@ function OrderCompletePage() {
 
 	const router = useRouter();
 	const { user, setUser } = useUserStore();
+	const setTabIdx = useProfileTabIdxStore((state) => state.setTabIdx);
 
 	const { comment, setComment } = useOrderCommentStore();
 	const { companyName, setCompanyName } = useOrderCompanyNameStore();
@@ -108,6 +110,7 @@ function OrderCompletePage() {
 
 	const goToOrderHistory = () => {
 		if (user?.userType === UserType.user) {
+			setTabIdx(0);
 			router.push('/profile');
 		} else {
 			router.push('/guestProfile');
@@ -205,8 +208,9 @@ function OrderCompletePage() {
 									주문번호: {vbankInfo?.orderId}
 								</p>
 								<p className='text-xs text-center text-[#0f0e0e] leading-[160%]'>
-									아래 가상계좌로 입금해주시면 <br className='md:hidden'/>정상적으로
-									결제처리가 완료됩니다.
+									아래 가상계좌로 입금해주시면{' '}
+									<br className='md:hidden' />
+									정상적으로 결제처리가 완료됩니다.
 								</p>
 								<div className='bg-gray-100 p-[24px] flex flex-col gap-[12px]'>
 									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
@@ -233,7 +237,7 @@ function OrderCompletePage() {
 									</p>
 									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
-											입금기간:
+											입금기한:
 										</span>{' '}
 										{vbankInfo &&
 											new Date(

@@ -310,7 +310,7 @@ export function SignUpAgreementPage() {
 				{agree2ModalOpen && (
 					<Modal
 						onClose={() => setAgree2ModalOpen(false)}
-						title={'개인정보 수집 및 이용에 대한 동의'}
+						title={'개인정보 수집 및 이용에 \n대한 동의'}
 						content={
 							<p className='md:w-[604px] text-xs text-left text-black'>
 								<span className='md:w-[604px] text-xs text-left text-black'>

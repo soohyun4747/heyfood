@@ -352,7 +352,7 @@ export function OrderInfo() {
 	const orderStatusAddInfo = (orderStatus: IOrderStatus) => {
 		switch (orderStatus) {
 			case OrderStatus.ready:
-				return '입금 후 결제 확인까지 15분 정도 소요됩니다.';
+				return '입금 후 결제 확인까지 10분 정도 소요됩니다.';
 			case OrderStatus.cancelled:
 				return '주문 취소 후 입금까지 이틀정도 소요됩니다.';
 			default:
@@ -372,7 +372,7 @@ export function OrderInfo() {
 								<PaymentStatus
 									status={data.orderData.orderStatus}
 								/>
-								<p className='text-xs max-w-[120px] md:max-w-auto'>
+								<p className='md:text-sm text-xs max-w-[120px] md:max-w-fit'>
 									{orderStatusAddInfo(
 										data.orderData.orderStatus
 									)}
