@@ -11,6 +11,7 @@ export async function serverAuthVBank(
 	if (typeof window !== 'undefined') {
 		const pay_obj: any = window;
 		const { AUTHNICE } = pay_obj;
+
 		await AUTHNICE.requestPay({
 			//NOTE :: 발급받은 클라이언트키 clientId에 따라 Server / Client 방식 분리
 			clientId: process.env.NEXT_PUBLIC_NICEPAY_CLIENT_KEY,

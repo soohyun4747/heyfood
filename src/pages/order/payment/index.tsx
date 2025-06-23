@@ -140,10 +140,10 @@ function PaymentPage() {
 				`${cart.at(0)?.items.at(0)?.menu.name} 외 ${totalCount - 1}건`,
 				'정수현',
 				`${originPath}/api/nicepay/approve`,
+				//'vbank'
+				paymentMethod,
 				user.phone,
 				email,
-				//'vbank'
-				paymentMethod
 			);
 		}
 	};
