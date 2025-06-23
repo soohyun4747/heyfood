@@ -38,6 +38,7 @@ export function ReviewItem(props: IReview) {
 							<div className='flex flex-col gap-5'>
 								{props.imagePaths.map((path, i) => (
 									<Image
+										key={path}
 										src={path}
 										alt={`image-${i}`}
 										width={652}

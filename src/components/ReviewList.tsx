@@ -102,7 +102,10 @@ export function ReviewList() {
 				<div className='flex flex-col justify-center gap-[60px] items-center'>
 					<div className='flex flex-col'>
 						{onPageReviews.map((review) => (
-							<ReviewItem {...review} />
+							<ReviewItem
+								key={review.id}
+								{...review}
+							/>
 						))}
 					</div>
 					<Pagination
