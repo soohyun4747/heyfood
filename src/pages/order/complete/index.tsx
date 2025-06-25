@@ -125,27 +125,49 @@ function OrderCompletePage() {
 		cart: IItemsBundle[]
 	): Promise<boolean> => {
 		try {
-			const orderData: IOrder = {
-				id: orderQ.orderId,
-				email,
-				otherPhone,
-				ordererId: user.id,
-				ordererType: user.userType,
-				stickerFile: isFile,
-				stickerPhrase,
-				companyName,
-				comment,
-				orderStatus: orderQ.status,
-				vbankName: orderQ.vbankName,
-				vbankNumber: orderQ.vbankNumber,
-				vbankHolder: orderQ.vbankHolder,
-				vbankExpDate: orderQ.vbankExpDate,
-				price: Number(orderQ.amount),
-				paymentId: orderQ.tid,
-				heating,
-				createdAt: Timestamp.now(),
-				updatedAt: null,
-			};
+			const orderData: IOrder =
+				typeof heating === 'boolean'
+					? {
+							id: orderQ.orderId,
+							email,
+							otherPhone,
+							ordererId: user.id,
+							ordererType: user.userType,
+							stickerFile: isFile,
+							stickerPhrase,
+							companyName,
+							comment,
+							heating,
+							orderStatus: orderQ.status,
+							vbankName: orderQ.vbankName,
+							vbankNumber: orderQ.vbankNumber,
+							vbankHolder: orderQ.vbankHolder,
+							vbankExpDate: orderQ.vbankExpDate,
+							price: Number(orderQ.amount),
+							paymentId: orderQ.tid,
+							createdAt: Timestamp.now(),
+							updatedAt: null,
+					  }
+					: {
+							id: orderQ.orderId,
+							email,
+							otherPhone,
+							ordererId: user.id,
+							ordererType: user.userType,
+							stickerFile: isFile,
+							stickerPhrase,
+							companyName,
+							comment,
+							orderStatus: orderQ.status,
+							vbankName: orderQ.vbankName,
+							vbankNumber: orderQ.vbankNumber,
+							vbankHolder: orderQ.vbankHolder,
+							vbankExpDate: orderQ.vbankExpDate,
+							price: Number(orderQ.amount),
+							paymentId: orderQ.tid,
+							createdAt: Timestamp.now(),
+							updatedAt: null,
+					  };
 
 			const newOrderData = (await addData('orders', orderData)) as IOrder;
 			if (!newOrderData) return false;
@@ -250,7 +272,7 @@ function OrderCompletePage() {
 										까지
 									</p>
 								</div>
-								<p className='text-sm text-center text-[#0f0e0e] leading-[160%]'>
+								<p className='text-sm text-center leading-[160%] text-blue-500'>
 									24시간 이내로 입금 부탁드립니다.
 								</p>
 							</div>
