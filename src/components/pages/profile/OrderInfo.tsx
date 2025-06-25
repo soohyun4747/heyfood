@@ -66,6 +66,7 @@ export interface IOrder extends Omit<Vbank, 'vbankCode'> {
 	otherPhone?: string;
 	price: number;
 	paymentId: string;
+	heating?: boolean;
 	createdAt: Timestamp;
 	updatedAt: Timestamp | null;
 }
@@ -525,6 +526,19 @@ export function OrderInfo() {
 											: 'x'}
 									</p>
 								</div>
+								{typeof data.orderData.heating ===
+									'boolean' && (
+									<div className='flex justify-start items-center self-stretch gap-3'>
+										<div className='flex justify-center items-center gap-2 pt-0.5'>
+											<p className=' md:text-base font-bold text-[#5c5c5c]'>
+												발열 (덮밥)
+											</p>
+										</div>
+										<p className=' md:text-lg text-[#5c5c5c]'>
+											{data.orderData.heating ? 'o' : 'x'}
+										</p>
+									</div>
+								)}
 							</div>
 						</div>
 						<div className='flex flex-col justify-start items-start self-stretch gap-3 p-6 border border-t-0 border-neutral-200'>

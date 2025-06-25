@@ -17,19 +17,19 @@ export function ReviewItem(props: IReview) {
 	return (
 		<div
 			onClick={() => setOpen((prev) => !prev)}
-			className='cursor-pointer flex justify-start items-start self-stretch relative gap-[100px] px-4 py-6 border-b border-neutral-200'>
-			<div className='flex justify-start items-start flex-grow relative gap-6'>
+			className='cursor-pointer flex md:flex-row flex-col justify-start items-start self-stretch relative gap-3 md:gap-5 md:gap-[100px] md:px-4 py-6 border-b border-neutral-200  self-stretch'>
+			<div className='flex justify-start items-start flex-grow relative gap-2 md:gap-6'>
 				<Profile />
-				<div className='flex flex-col justify-center items-start flex-grow relative gap-3'>
+				<div className='flex flex-col justify-center items-start flex-grow relative gap-3 mt-[6px]'>
 					<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
-						<p className='self-stretch w-[876px] text-base text-left text-[#0f0e0e]'>
+						<p className='self-stretch text-[13px] md:text-base text-left text-[#0f0e0e]'>
 							{props.email} |{' '}
 							{props.createdAt.toDate().toLocaleDateString()}
 						</p>
 					</div>
 					<div className='flex flex-col gap-6'>
 						<p
-							className={`self-stretch w-[876px] text-lg text-left text-[#0f0e0e] ${
+							className={`self-stretch text-sm md:text-lg text-left text-[#0f0e0e] ${
 								!open && 'max-h-[80px] line-clamp-3'
 							}`}>
 							{props.comment}
@@ -44,6 +44,7 @@ export function ReviewItem(props: IReview) {
 										width={652}
 										height={652}
 										objectFit='cover'
+                                        className='max-w-[300px] md:max-w-[652px]'
 									/>
 								))}
 							</div>
@@ -51,7 +52,19 @@ export function ReviewItem(props: IReview) {
 					</div>
 				</div>
 			</div>
-			<div className='w-[120px] h-[120px] relative'>
+			<div className='grid grid-cols-2 gap-4 md:hidden pl-10'>
+				{!open &&
+					props.imagePaths.map((path, i) => (
+						<Image
+							src={path}
+							alt={'preview'}
+							width={120}
+							height={120}
+							className='min-w-[120px] min-h-[120px] max-w-[120px] max-h-[120px] object-cover'
+						/>
+					))}
+			</div>
+			<div className='w-[120px] h-[120px] relative hidden md:block'>
 				{props.imagePaths[0] && !open && (
 					<Image
 						src={props.imagePaths[0]}

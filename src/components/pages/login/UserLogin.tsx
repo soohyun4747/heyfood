@@ -54,25 +54,25 @@ export function UserLogin() {
 					<span>다양한 서비스를 이용할 수 있습니다.</span>
 				</p>
 				<div className='flex flex-col justify-start items-start self-stretch md:gap-0 gap-[12px] '>
-					<div className='bg-white md:bg-transparent flex justify-start items-center self-stretch  gap-6 px-6 py-[22px] border border-[#d9d9d9]'>
+					<div className='bg-white md:bg-transparent flex justify-start items-center self-stretch  gap-6 px-6 h-[70px] border border-[#d9d9d9]'>
 						<p className='md:w-[110px] w-[70px] text-base text-left text-[#0f0e0e]'>
 							이메일
 						</p>
 						<input
-							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[180px] md:max-w-auto'
+							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[180px] md:max-w-[260px] md:w-[260px] min-h-[68px]'
 							placeholder='이메일 입력'
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
 						/>
 					</div>
-					<div className='bg-white md:bg-transparent flex justify-start items-center self-stretch  gap-6 px-6 py-[22px] border-t md:border-t-0 border-r border-b border-l border-[#d9d9d9]'>
+					<div className='bg-white md:bg-transparent flex justify-start items-center self-stretch  gap-6 px-6 h-[70px] border-t md:border-t-0 border-r border-b border-l border-[#d9d9d9]'>
 						<p className='md:w-[110px] w-[70px] text-base text-left text-[#0f0e0e]'>
 							비밀번호
 						</p>
 						<input
 							autoComplete='new-password'
 							type='password'
-							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[180px] md:max-w-auto'
+							className='md:text-lg text-left placeholder:text-[#cbcbcb] focus:outline-0 max-w-[180px] md:max-w-[260px] md:w-[260px] min-h-[68px]'
 							placeholder='비밀번호 입력'
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}

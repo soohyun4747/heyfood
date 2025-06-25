@@ -14,12 +14,14 @@ import {
 	useOrderCommentStore,
 	useOrderCompanyNameStore,
 	useOrderEmailStore,
+	useOrderHeatingStore,
 	useOrderOtherPhoneStore,
 	useOrderStickerFileStore,
 	useOrderStickerPhraseStore,
 } from '@/stores/orderInfoStore';
 import { CheckRect } from '@/components/CheckRect';
 import { Dropdown } from '@/components/Dropdown';
+import { ButtonRadio } from '@/components/ButtonRadio';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 const stickerPrice = 300;
@@ -37,6 +39,7 @@ const openEventCoupons = [
 ];
 
 export const categorySideId = '사이드';
+export const categoryDeopbabId = '덮밥도시락';
 
 function PaymentPage() {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -45,6 +48,7 @@ function PaymentPage() {
 	const [stickerCheck, setStickerCheck] = useState(false);
 	const [file, setFile] = useState<File>();
 	const [coupon, setCoupon] = useState<string>('');
+
 	const [paymentMethod, setPaymentMethod] = useState<'card' | 'vbank'>(
 		'card'
 	);
@@ -56,6 +60,7 @@ function PaymentPage() {
 	const { setIsFile } = useOrderStickerFileStore();
 	const { email, setEmail } = useOrderEmailStore();
 	const { otherPhone, setOtherPhone } = useOrderOtherPhoneStore();
+	const { heating, setHeating } = useOrderHeatingStore();
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const cart = useCartStore((state) => state.cart);
@@ -119,6 +124,18 @@ function PaymentPage() {
 		return 0;
 	}, [dosirakCount, sideTotalPrice, coupon, stickerCheck]);
 
+	const isDeopbabAdded = useMemo(() => {
+		for (const bundle of cart) {
+			for (const item of bundle.items) {
+				if (item.menu.categoryId === categoryDeopbabId) {
+					setHeating(true);
+					return true;
+				}
+			}
+		}
+		return false;
+	}, [cart]);
+
 	const onClickPay = async () => {
 		if (stickerCheck && !stickerPhrase && stickerCheck && !file) {
 			alert(
@@ -143,7 +160,7 @@ function PaymentPage() {
 				//'vbank'
 				paymentMethod,
 				user.phone,
-				email,
+				email
 			);
 		}
 	};
@@ -407,7 +424,34 @@ function PaymentPage() {
 						)}
 					</div>
 				</div>
-
+				{isDeopbabAdded && (
+					<div className='flex flex-col justify-start items-start md:w-[960px] relative gap-3.5 self-stretch md:self-auto'>
+						<p className='text-md md:text-2xl font-bold text-left text-[#0f0e0e]'>
+							발열 덮밥
+						</p>
+						<div className='flex flex-col justify-start items-start self-stretch gap-6 md:gap-9 p-6 bg-white'>
+							<div className='flex flex-row justify-between items-center self-stretch relative gap-2'>
+								<p className='md:text-base font-bold text-left text-[#0f0e0e]'>
+									발열 여부
+								</p>
+								<div className='flex items-center gap-5'>
+									<div
+										className='hover:cursor-pointer flex items-center gap-2'
+										onClick={() => setHeating(true)}>
+										<ButtonRadio checked={heating} />
+										<label>발열 o</label>
+									</div>
+									<div
+										className='hover:cursor-pointer flex items-center gap-2'
+										onClick={() => setHeating(false)}>
+										<ButtonRadio checked={!heating} />
+										<label>발열 x</label>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				)}
 				<div className='flex flex-col justify-start items-start md:w-[960px] relative gap-3.5 self-stretch md:self-auto'>
 					<p className='text-md md:text-2xl font-bold text-left text-[#0f0e0e]'>
 						할인 쿠폰

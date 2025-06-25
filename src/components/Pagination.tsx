@@ -22,7 +22,13 @@ export function Pagination(props: IPaginationProps) {
 	}, [totalPages, props.pageGroupMax]);
 
 	const getCurrentPageGroupPages = () => {
-		if (pageGroup <= totalPageGroups) {
+		if (pageGroup < totalPageGroups) {
+			return Array.from(
+				{ length: 10 },
+				(_, i) => 10 * (pageGroup - 1) + i + 1
+			);
+		}
+		if (totalPages % props.pageGroupMax === 0) {
 			return Array.from(
 				{ length: 10 },
 				(_, i) => 10 * (pageGroup - 1) + i + 1
@@ -53,7 +59,7 @@ export function Pagination(props: IPaginationProps) {
 				onClick={onClickPageGroupBack}
 				disabled={pageGroup === 1 ? true : false}
 			/>
-			<div className='flex items-center gap-1'>
+			<div className='flex items-center md:gap-1'>
 				{getCurrentPageGroupPages().map((val) => {
 					if (val === props.page) {
 						return (

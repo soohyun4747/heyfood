@@ -1,5 +1,6 @@
 import { CloseRound } from '@/icons/CloseRound';
 import { PlusRound } from '@/icons/PlusRound';
+import { PlusRoundSmall } from '@/icons/PlusRoundSmall';
 import Image from 'next/image';
 import {
 	ChangeEvent,
@@ -52,11 +53,11 @@ export function ImagesUpload(props: IImageUploadProps) {
 	};
 
 	return (
-		<div className='flex items-center gap-3'>
+		<div className='flex items-center gap-2 md:gap-3'>
 			{previewUrls.map((url, i) => (
 				<div
 					key={i}
-					className='size-[92px] rounded-[8px] relative'>
+					className='size-[60px] md:size-[92px] rounded-[8px] relative'>
 					<Image
 						src={url}
 						width={92}
@@ -73,10 +74,17 @@ export function ImagesUpload(props: IImageUploadProps) {
 			))}
 			<div
 				onClick={handleSelectClick}
-				className='flex items-center justify-center size-[92px] border border-gray-200 rounded-[8px] bg-gray-100 cursor-pointer'>
+				className='flex items-center justify-center size-[60px] md:size-[92px] border border-gray-200 rounded-[8px] bg-gray-100 cursor-pointer'>
 				<div className='flex flex-col items-center gap-[6px]'>
-					<PlusRound />
-					<p className='text-gray-700 text-center'>사진 추가</p>
+					<div className='hidden md:block'>
+						<PlusRound />
+					</div>
+					<div className='md:hidden'>
+						<PlusRoundSmall />
+					</div>
+					<p className='md:text-base text-[10px] text-gray-700 text-center'>
+						사진 추가
+					</p>
 				</div>
 			</div>
 			{/* 파일 선택 인풋 (보이지 않음) */}

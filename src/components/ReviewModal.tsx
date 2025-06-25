@@ -28,8 +28,8 @@ export function ReviewModal({
 		const value = e.target.value;
 		if (value.length <= 3000) {
 			setComment(value);
+			setWordCount(value.length);
 		}
-		setWordCount(value.length);
 	};
 
 	const onAddComment = async () => {
@@ -52,25 +52,26 @@ export function ReviewModal({
 				createdAt: Timestamp.now(),
 			});
 		}
+
 		onRegistered();
 	};
 
 	return (
-		<div className='fixed top-0 left-0 w-[100vw] h-[100vh] bg-black/40 flex items-center justify-center px-[20px] md:px-0'>
-			<div className='flex flex-col justify-start items-start w-[612px] relative'>
-				<div className='self-stretch h-[76px] relative rounded-tl-3xl rounded-tr-3xl bg-white border-t-0 border-r-0 border-b border-l-0 border-neutral-200 relative'>
-					<p className='absolute left-[269px] top-[26px] text-lg font-bold text-left text-[#0f0e0e]'>
+		<div className='fixed top-0 left-0 w-[100vw] h-[100vh] bg-black/40 flex items-center justify-center px-[20px] md:px-0 z-[2]'>
+			<div className='flex flex-col justify-start items-start md:w-[612px] relative w-full'>
+				<div className='self-stretch h-[76px] flex items-center justify-center relative rounded-tl-3xl rounded-tr-3xl bg-white border-t-0 border-r-0 border-b border-l-0 border-neutral-200 relative'>
+					<p className='text-lg font-bold text-left text-[#0f0e0e]'>
 						후기 작성
 					</p>
 					<ButtonIcon
 						icon={Close}
-						className='absolute top-1/2 -translate-y-1/2 right-[30px]'
+						className='absolute top-1/2 -translate-y-1/2 right-[20px] md:right-[30px]'
 						onClick={onClose}
 					/>
 				</div>
-				<div className='flex flex-col justify-start items-center self-stretch gap-8 px-9 py-8 rounded-bl-3xl rounded-br-3xl bg-white'>
+				<div className='flex flex-col justify-start items-center self-stretch gap-8 md:px-9 md:py-8 p-5 rounded-bl-3xl rounded-br-3xl bg-white'>
 					<div className='flex flex-col justify-start items-center self-stretch gap-6'>
-						<p className='self-stretch w-[540px] text-[22px] font-bold text-left text-[#5c5c5c]'>
+						<p className='self-stretch md:text-[22px] font-bold text-left text-[#5c5c5c]'>
 							어떤 점이 좋았나요?
 						</p>
 					</div>
@@ -82,19 +83,19 @@ export function ReviewModal({
 									fileList={fileList}
 									setFileList={setFileList}
 								/>
-								<p className='text-sm text-right text-[#a0a0a0]'>
-									{wordCount} / {maxWordCount}
-								</p>
 							</div>
-							<div className='flex flex-col justify-between items-start self-stretch h-[186px] px-9 py-6 rounded-2xl bg-gray-100'>
+							<div className='flex flex-col justify-between items-start self-stretch h-[186px] md:px-9 md:py-6 p-5 rounded-2xl bg-gray-100 gap-2'>
 								<textarea
 									value={comment}
 									placeholder={
 										'사용하신 만족도에 대한 후기를 남겨주세요. (최소 10자 이상)'
 									}
 									onChange={onChangeText}
-									className='self-stretch h-full bg-gray-100 resize-none outline-none'
+									className='self-stretch h-full bg-gray-100 resize-none outline-none md:text-base text-xs'
 								/>
+								<p className='text-xs md:text-sm text-right text-[#a0a0a0] self-end'>
+									{wordCount} / {maxWordCount}
+								</p>
 							</div>
 						</div>
 						<ButtonRectYellow

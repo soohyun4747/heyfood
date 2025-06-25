@@ -154,6 +154,11 @@ const MenuDrawer = ({ type }: { type: IUserType }) => {
 				className='text-lg font-bold text-left text-[#1f2023]'>
 				자주묻는 질문
 			</p>
+			<p
+				onClick={() => router.push('/review')}
+				className='text-lg font-bold text-left text-[#1f2023]'>
+				후기
+			</p>
 			<svg
 				id={domId}
 				height={2}

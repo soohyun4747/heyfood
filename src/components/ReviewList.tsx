@@ -8,6 +8,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Pagination } from './Pagination';
 import { ReviewModal } from './ReviewModal';
+import { useUserStore } from '@/stores/userStore';
 
 const pageSize = 8;
 
@@ -17,6 +18,8 @@ export function ReviewList() {
 	const [startDocInfo, setStartDocInfo] = useState<StartDocInfo>();
 	const [total, setTotal] = useState(1);
 	const [reviewModalOpen, setReviewModalOpen] = useState(false);
+
+	const user = useUserStore((state) => state.user);
 
 	useEffect(() => {
 		getSetInitData();
@@ -77,30 +80,34 @@ export function ReviewList() {
 	};
 
 	return (
-		<div className='flex flex-col justify-center gap-5'>
+		<div className='flex flex-col justify-center gap-5 self-stretch md:self-auto'>
 			<div className='flex items-center justify-between'>
-				<p className='text-lg text-left'>
-					<span className=' text-lg font-medium text-left text-[#909090]'>
+				<p className='text-sm md:text-lg text-left'>
+					<span className='font-medium text-left text-[#909090]'>
 						총{' '}
 					</span>
-					<span className=' text-lg font-bold text-left text-[#0f0e0e]'>
+					<span className='font-bold text-left text-[#0f0e0e]'>
 						{total}개
 					</span>
-					<span className=' text-lg font-medium text-left text-[#909090]'>
+					<span className='font-medium text-left text-[#909090]'>
 						의 게시물이 있습니다.
 					</span>
 				</p>
-				<div
-					className='px-3 pt-[6px] pb-[4px] relative rounded-lg border border-neutral-200 hover:bg-gray-100 cursor-pointer'
-					onClick={() => setReviewModalOpen(true)}>
-					<p className='text-center text-[#5c5c5c]'>후기 작성</p>
-				</div>
+				{user && (
+					<div
+						className='px-3 pt-[6px] pb-[4px] relative rounded-lg border border-neutral-200 hover:bg-gray-100 cursor-pointer'
+						onClick={() => setReviewModalOpen(true)}>
+						<p className='md:text-base text-sm text-center text-[#5c5c5c]'>
+							후기 작성
+						</p>
+					</div>
+				)}
 			</div>
 			<div className='flex flex-col justify-start items-start self-stretch  relative'>
 				<div className='md:w-[1200px] self-stretch h-[3px] bg-[#0F0E0E]' />
 
-				<div className='flex flex-col justify-center gap-[60px] items-center'>
-					<div className='flex flex-col'>
+				<div className='flex flex-col justify-center gap-[60px] items-center self-stretch'>
+					<div className='flex flex-col self-stretch'>
 						{onPageReviews.map((review) => (
 							<ReviewItem
 								key={review.id}
@@ -112,7 +119,7 @@ export function ReviewList() {
 						total={total}
 						page={page}
 						pageSize={pageSize}
-						pageGroupMax={10}
+						pageGroupMax={8}
 						onChangePage={(val) => onPageChange(val)}
 					/>
 				</div>

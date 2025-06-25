@@ -12,6 +12,7 @@ import {
 	useOrderCommentStore,
 	useOrderCompanyNameStore,
 	useOrderEmailStore,
+	useOrderHeatingStore,
 	useOrderOtherPhoneStore,
 	useOrderStickerFileStore,
 	useOrderStickerPhraseStore,
@@ -55,6 +56,7 @@ function OrderCompletePage() {
 	const { isFile, setIsFile } = useOrderStickerFileStore();
 	const { email, setEmail } = useOrderEmailStore();
 	const { otherPhone, setOtherPhone } = useOrderOtherPhoneStore();
+	const { heating, setHeating } = useOrderHeatingStore();
 	const { cart, setCart } = useCartStore();
 	const onResetItems = useItemsStore((state) => state.onResetItems);
 
@@ -140,6 +142,7 @@ function OrderCompletePage() {
 				vbankExpDate: orderQ.vbankExpDate,
 				price: Number(orderQ.amount),
 				paymentId: orderQ.tid,
+				heating,
 				createdAt: Timestamp.now(),
 				updatedAt: null,
 			};
@@ -187,6 +190,7 @@ function OrderCompletePage() {
 		setStickerPhrase('');
 		setEmail('');
 		setOtherPhone('');
+		setHeating(undefined);
 	};
 
 	return (
@@ -207,7 +211,7 @@ function OrderCompletePage() {
 								<p className='md:text-lg text-[#0f0e0e] font-bold'>
 									주문번호: {vbankInfo?.orderId}
 								</p>
-								<p className='text-xs text-center text-[#0f0e0e] leading-[160%]'>
+								<p className='text-sm text-center text-[#0f0e0e] leading-[160%]'>
 									아래 가상계좌로 입금해주시면{' '}
 									<br className='md:hidden' />
 									정상적으로 결제처리가 완료됩니다.
@@ -246,6 +250,9 @@ function OrderCompletePage() {
 										까지
 									</p>
 								</div>
+								<p className='text-sm text-center text-[#0f0e0e] leading-[160%]'>
+									24시간 이내로 입금 부탁드립니다.
+								</p>
 							</div>
 						)}
 						<ButtonRect

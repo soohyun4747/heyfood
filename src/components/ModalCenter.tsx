@@ -12,7 +12,7 @@ interface IModalCenterProps {
 
 export function ModalCenter(props: IModalCenterProps) {
 	return (
-		<div className='fixed top-0 left-0 w-[100vw] h-[100vh] bg-black/40 flex items-center justify-center px-[20px] md:px-0'>
+		<div className='fixed top-0 left-0 w-[100vw] h-[100vh] bg-black/40 flex items-center justify-center px-[20px] md:px-0 z-[2]'>
 			<div
 				className='flex flex-col justify-start items-end w-[490px] gap-8 md:gap-12 p-12 rounded-3xl bg-white'
 				style={{ boxShadow: '0px 4px 20px 0 rgba(0,0,0,0.1)' }}>

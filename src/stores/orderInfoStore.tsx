@@ -8,6 +8,7 @@ export interface IOrderInfo {
 	stickerPhrase: string;
 	email: string;
 	otherPhone: string;
+	heating: boolean;
 }
 
 interface OrderCommentStore {
@@ -97,5 +98,20 @@ export const useOrderOtherPhoneStore = create(
 			setOtherPhone: (value) => set(() => ({ otherPhone: value })),
 		}),
 		{ name: 'order-other-phone' }
+	)
+);
+
+interface OrderHeatingStore {
+	heating: boolean | undefined;
+	setHeating: (value: boolean | undefined) => void;
+}
+
+export const useOrderHeatingStore = create(
+	persist<OrderHeatingStore>(
+		(set) => ({
+			heating: undefined,
+			setHeating: (value) => set(() => ({ heating: value })),
+		}),
+		{ name: 'order-heating' }
 	)
 );

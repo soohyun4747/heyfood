@@ -6,7 +6,7 @@ export function Profile() {
 			viewBox='0 0 48 52'
 			fill='none'
 			xmlns='http://www.w3.org/2000/svg'
-			className='w-12 h-[51.53px] relative'
+			className='min-w-7 w-7 min-h-8 h-8 md:min-w-12 md:min-h-[52px] md:w-12 md:h-[52px] relative'
 			preserveAspectRatio='none'>
 			<circle
 				cx='24.3531'
