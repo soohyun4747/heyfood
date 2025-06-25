@@ -44,7 +44,7 @@ export function ReviewItem(props: IReview) {
 										width={652}
 										height={652}
 										objectFit='cover'
-                                        className='max-w-[300px] md:max-w-[652px]'
+										className='max-w-[300px] md:max-w-[652px]'
 									/>
 								))}
 							</div>
@@ -56,6 +56,7 @@ export function ReviewItem(props: IReview) {
 				{!open &&
 					props.imagePaths.map((path, i) => (
 						<Image
+							key={i}
 							src={path}
 							alt={'preview'}
 							width={120}
