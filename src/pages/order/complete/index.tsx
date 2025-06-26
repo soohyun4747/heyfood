@@ -126,6 +126,7 @@ function OrderCompletePage() {
 	): Promise<boolean> => {
 		try {
 			const orderData: IOrder =
+				//heating이 없는경우 아예 넣지 않도록
 				typeof heating === 'boolean'
 					? {
 							id: orderQ.orderId,

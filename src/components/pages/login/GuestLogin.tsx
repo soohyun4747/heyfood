@@ -51,7 +51,10 @@ export function GuestLogin() {
 	// 인증번호(OTP) 전송 함수
 	const onClickSendCode = async (appVerifier?: ApplicationVerifier) => {
 		// 입력된 번호를 E.164 형식으로 변환
-		const confirmResult = await sendVerificationCode(phoneNumber, appVerifier);
+		const confirmResult = await sendVerificationCode(
+			phoneNumber,
+			appVerifier
+		);
 		setConfirmationResult(confirmResult);
 	};
 
@@ -209,7 +212,9 @@ export function GuestLogin() {
 						<ButtonRectYellow
 							value='인증번호 발송'
 							disabled={phoneNumber ? false : true}
-							onClick={() => onClickSendCode(window.recaptchaVerifier)}
+							onClick={() =>
+								onClickSendCode(window.recaptchaVerifier)
+							}
 							className='w-full md:min-h-[68px] min-h-[64px]'
 						/>
 					</div>

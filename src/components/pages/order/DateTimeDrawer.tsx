@@ -84,6 +84,12 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 		if (dateTime) {
 			clickedDate.setHours(dateTime.getHours());
 			clickedDate.setMinutes(dateTime.getMinutes());
+		} else {
+			if (selectedTime) {
+				const [hour, minute] = selectedTime.split(':').map(Number);
+				clickedDate.setHours(hour);
+				clickedDate.setMinutes(minute);
+			}
 		}
 		setDateTime(clickedDate);
 
@@ -144,20 +150,22 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 	};
 
 	const handleTimeClick = (time: string) => {
-		const newDate = dateTime ?? new Date();
 		setSelectedTime(time);
 		const [hour, minute] = time.split(':').map(Number);
 		// 현재 날짜에 선택된 시간 적용 (초와 밀리초는 0으로 초기화)
-		const newDateTime = new Date(
-			newDate.getFullYear(),
-			newDate.getMonth(),
-			newDate.getDate(),
-			hour,
-			minute,
-			0,
-			0
-		);
-		setDateTime(newDateTime);
+
+		if (dateTime) {
+			const newDateTime = new Date(
+				dateTime.getFullYear(),
+				dateTime.getMonth(),
+				dateTime.getDate(),
+				hour,
+				minute,
+				0,
+				0
+			);
+			setDateTime(newDateTime);
+		}
 	};
 
 	const isDateDisabled = (d: Date, j: number) => {
@@ -170,7 +178,7 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 		if (j % 7 === 0) {
 			return true;
 		}
-		
+
 		if (isMoreThanThreeMonthsLater(d)) {
 			return true;
 		}
@@ -292,7 +300,8 @@ export function DateTimeDrawer(props: IDateTimeDrawerProps) {
 						</div>
 						<div className='flex flex-col justify-center items-center self-stretch relative gap-1 px-3 py-2 bg-[#f8f8f8]'>
 							<p className='flex-grow w-[330px] text-[10px] text-center text-[#5c5c5c]'>
-								* 배송 날짜 기준 최소 이틀 전에 주문이 가능합니다
+								* 배송 날짜 기준 최소 이틀 전에 주문이
+								가능합니다
 							</p>
 							<p className='flex-grow w-[330px] text-[10px] text-center text-[#5c5c5c]'>
 								* 주문은 최대 3개월 이내로 가능합니다
