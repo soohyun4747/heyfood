@@ -10,7 +10,7 @@ import { useUserStore } from '@/stores/userStore';
 import { formatDateKR } from '@/utils/time';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { getDosirakCount, minimumCount } from '..';
+import { getDosirakCount, minDosirakCount } from '..';
 
 function CartPage() {
 	const router = useRouter();
@@ -25,7 +25,7 @@ function CartPage() {
 
 	const isOrderAvailable = () => {
 		for (const bundle of cart) {
-			if (getDosirakCount(bundle.items) < minimumCount) {
+			if (getDosirakCount(bundle.items) < minDosirakCount) {
 				return false;
 			}
 		}

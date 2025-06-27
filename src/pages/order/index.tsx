@@ -17,7 +17,7 @@ import { categorySideId } from './payment';
 import { useMenuCategoriesStore } from '@/stores/menuCategoriesStore';
 import { useMenusStore } from '@/stores/menusStore';
 
-export const minimumCount = 1;
+export const minDosirakCount = 30;
 
 function OrderPage() {
 	const categories = useMenuCategoriesStore((state) => state.menuCategories);
@@ -232,7 +232,7 @@ function OrderPage() {
 							count={getCartItemsCount()}
 							value={'장바구니에 넣기'}
 							disabled={
-								getDosirakCount(items) < minimumCount
+								getDosirakCount(items) < minDosirakCount
 									? true
 									: false
 							}
