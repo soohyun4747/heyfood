@@ -16,8 +16,11 @@ import { ModalCenter } from '@/components/ModalCenter';
 import { categorySideId } from './payment';
 import { useMenuCategoriesStore } from '@/stores/menuCategoriesStore';
 import { useMenusStore } from '@/stores/menusStore';
+import { MenuCardOrderSnack } from '@/components/MenuCardOrderSnack';
 
 export const minDosirakCount = 30;
+
+const customDessertBox = '내마음대로 다과박스';
 
 function OrderPage() {
 	const categories = useMenuCategoriesStore((state) => state.menuCategories);
@@ -32,7 +35,7 @@ function OrderPage() {
 		useState(false);
 
 	const { user } = useUserStore();
-	const { items, setItem, onPlusItem, onMinusItem, onResetItems } =
+	const { items, onAddItem, setItem, onPlusItem, onMinusItem, onResetItems } =
 		useItemsStore();
 	const { cart, onAddCart, onRemoveCart } = useCartStore();
 
@@ -189,6 +192,24 @@ function OrderPage() {
 							const count = items.find(
 								(item) => item.menu.id === menu.id
 							)?.count;
+
+							if (menu.id === customDessertBox) {
+								return (
+									<MenuCardOrderSnack
+										key={menu.id}
+										menu={menu}
+										onAdd={(menu, count) =>
+											onAddItem(menu, count)
+										}
+										isAddressFilled={
+											addressFull ? true : false
+										}
+										isDateTimeFilled={
+											dateTime ? true : false
+										}
+									/>
+								);
+							}
 
 							return (
 								<MenuCardOrder

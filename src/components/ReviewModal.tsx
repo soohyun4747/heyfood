@@ -1,12 +1,10 @@
-import { Close } from '@/icons/Close';
-import { ButtonIcon } from './ButtonIcon';
 import { ChangeEvent, useState } from 'react';
 import { ImagesUpload } from './ImageUpload';
-import { ButtonRectYellow } from './ButtonRectYellow';
 import { addData, uploadFileData } from '@/utils/firebase';
 import { useUserStore } from '@/stores/userStore';
 import { v4 as uuidv4 } from 'uuid';
 import { Timestamp } from 'firebase/firestore';
+import { Modal2 } from './Modal2';
 
 const maxWordCount = 3000;
 const minWordCount = 10;
@@ -57,19 +55,12 @@ export function ReviewModal({
 	};
 
 	return (
-		<div className='fixed top-0 left-0 w-[100vw] h-[100vh] bg-black/40 flex items-center justify-center px-[20px] md:px-0 z-[2]'>
-			<div className='flex flex-col justify-start items-start md:w-[612px] relative w-full'>
-				<div className='self-stretch h-[76px] flex items-center justify-center relative rounded-tl-3xl rounded-tr-3xl bg-white border-t-0 border-r-0 border-b border-l-0 border-neutral-200 relative'>
-					<p className='text-lg font-bold text-left text-[#0f0e0e]'>
-						후기 작성
-					</p>
-					<ButtonIcon
-						icon={Close}
-						className='absolute top-1/2 -translate-y-1/2 right-[20px] md:right-[30px]'
-						onClick={onClose}
-					/>
-				</div>
-				<div className='flex flex-col justify-start items-center self-stretch gap-8 md:px-9 md:py-8 p-5 rounded-bl-3xl rounded-br-3xl bg-white'>
+		<Modal2
+			title={'후기 작성'}
+			btnValue={'등록'}
+			btnDisabled={wordCount < minWordCount}
+			content={
+				<div className='flex flex-col justify-start items-center self-stretch gap-8'>
 					<div className='flex flex-col justify-start items-center self-stretch gap-6'>
 						<p className='self-stretch md:text-[22px] font-bold text-left text-[#5c5c5c]'>
 							어떤 점이 좋았나요?
@@ -98,15 +89,11 @@ export function ReviewModal({
 								</p>
 							</div>
 						</div>
-						<ButtonRectYellow
-							value={'등록'}
-							onClick={onAddComment}
-							disabled={wordCount < minWordCount}
-							className='w-full md:min-h-[68px] min-h-[58px]'
-						/>
 					</div>
 				</div>
-			</div>
-		</div>
+			}
+			onBtnClick={onAddComment}
+			onClose={onClose}
+		/>
 	);
 }

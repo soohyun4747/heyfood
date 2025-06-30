@@ -22,6 +22,7 @@ import {
 import { CheckRect } from '@/components/CheckRect';
 import { Dropdown } from '@/components/Dropdown';
 import { ButtonRadio } from '@/components/ButtonRadio';
+import { getCompositionString } from '@/utils/string';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 const stickerPrice = 300;
@@ -526,7 +527,10 @@ function PaymentPage() {
 												<div className='flex flex-col justify-start relative gap-1 md:gap-2'>
 													<div className='flex items-center gap-2 md:gap-[12px]'>
 														<p className=' md:text-[22px] text-left text-[#0f0e0e]'>
-															{item.menu.name}
+															{item.menu.name}{' '}
+															{getCompositionString(
+																item.menu
+															)}
 														</p>
 													</div>
 													<div className='flex items-center gap-2 md:gap-3'>

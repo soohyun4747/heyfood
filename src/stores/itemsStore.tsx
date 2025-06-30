@@ -9,6 +9,7 @@ export interface IItem {
 interface IItemsStore {
 	items: IItem[];
 	setItems: (items: IItem[]) => void;
+	onAddItem: (menu: IMenu, count: number) => void;
 	setItem: (menu: IMenu, count: number) => void;
 	onPlusItem: (menu: IMenu) => void;
 	onMinusItem: (menu: IMenu) => void;
@@ -21,6 +22,11 @@ export const useItemsStore = create<IItemsStore>((set) => {
 		setItems: (items) =>
 			set((state) => {
 				state.items = items;
+				return { ...state };
+			}),
+		onAddItem: (menu, count) =>
+			set((state) => {
+				state.items.push({ menu, count });
 				return { ...state };
 			}),
 		setItem: (menu, count) =>

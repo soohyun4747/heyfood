@@ -18,6 +18,18 @@ export interface IMenu {
 	price: number;
 	imagePaths: string[];
 	imageDetailPath: string;
+	composition: CompositionDesserts;
+}
+
+export interface CompositionItem {
+	id: string;
+	name: string;
+	price: number;
+}
+
+export interface CompositionDesserts {
+	snacks: CompositionItem[];
+	drinks: CompositionItem[];
 }
 
 export interface ICategory {
@@ -130,10 +142,10 @@ export function LandingMenusTab() {
 						icon={ChevronRight}
 						onClick={onClickMenusRight}
 						disabled={
-							slideIdx < maxSlideIdx 
-							// &&
-							// filteredCategoryMenus.length > (isMobile ? 1 : 3)
-								? false
+							slideIdx < maxSlideIdx
+								? // &&
+								  // filteredCategoryMenus.length > (isMobile ? 1 : 3)
+								  false
 								: true
 						}
 					/>

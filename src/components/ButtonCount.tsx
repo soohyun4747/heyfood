@@ -4,6 +4,7 @@ interface IButtonCountProps {
 	value: string;
 	count?: number;
 	disabled?: boolean;
+	minCount?: number;
 	onBlurValue?: (numVal: number) => void;
 	onClickPlus?: () => void;
 	onClickMinus?: () => void;
@@ -30,8 +31,10 @@ export function ButtonCount(props: IButtonCountProps) {
 		if (props.onBlurValue) {
 			const numVal = Number(e.target.value);
 			if (isNaN(numVal)) {
-				props.onBlurValue(props.count ?? 0);
-				setInputVal(props.count?.toString() ?? '0');
+				props.onBlurValue(props.count ?? props.minCount ?? 0);
+				setInputVal(
+					props.count?.toString() ?? props.minCount?.toString() ?? '0'
+				);
 			} else {
 				props.onBlurValue(Math.trunc(numVal));
 				setInputVal(Math.trunc(numVal).toString());

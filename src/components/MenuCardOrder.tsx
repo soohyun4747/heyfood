@@ -1,7 +1,7 @@
 import { ButtonCount } from './ButtonCount';
 import Image from 'next/image';
 
-interface IMenuCardOrderProps {
+export interface IMenuCardOrderProps {
 	src: string;
 	title: string;
 	price: number;

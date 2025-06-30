@@ -1,3 +1,5 @@
+import { CompositionItem, IMenu } from "@/components/LandingMenusTab";
+
 // E.164 형식으로 변환하는 헬퍼 함수 (대한민국 예시)
 export const formatPhoneNumberE164 = (num: string) => {
 	// 숫자만 남기기 (공백, 하이픈 등 제거)
@@ -17,4 +19,22 @@ export const regex = /^(?=.*[A-Za-z])(?=.*\d).{8,16}$/;
 
 export function extractNumbers(input: string): string {
 	return input.replace(/\D/g, '');
-  }
+}
+
+export const getCompositionString = (menu: IMenu) => {
+	let compStr = '';
+
+	if (menu.composition) {
+		const values: CompositionItem[][] = Object.values(menu.composition);
+		for (const list of values) {
+			for (const item of list) {
+				if (compStr) {
+					compStr += ` + ${item.name}`;
+				} else {
+					compStr = item.name;
+				}
+			}
+		}
+	}
+	return compStr ? `(${compStr})` : '';
+};

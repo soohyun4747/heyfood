@@ -11,6 +11,7 @@ import { formatDateKR } from '@/utils/time';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { getDosirakCount, minDosirakCount } from '..';
+import { getCompositionString } from '@/utils/string';
 
 function CartPage() {
 	const router = useRouter();
@@ -128,7 +129,10 @@ function CartPage() {
 													<div className='flex justify-start items-center self-stretch gap-6 relative'>
 														<div className='flex flex-col justify-start items-start flex-grow relative gap-2'>
 															<p className='text-[20px] md:text-[28px] font-bold text-left text-[#0f0e0e]'>
-																{item.menu.name}
+																{item.menu.name}{' '}
+																{getCompositionString(
+																	item.menu
+																)}
 															</p>
 															<p className='text-lg md:text-[26px] font-light text-left text-[#0f0e0e]'>
 																{item.menu.price.toLocaleString()}
