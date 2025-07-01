@@ -76,7 +76,8 @@ export interface IOrderItem {
 	orderId: string;
 	ordererName: string;
 	categoryId: string;
-	menuId: string;
+	menuName: string;
+	menuPrice: number;
 	quantity: number;
 	deliveryDate: Timestamp;
 	address: string;
@@ -421,7 +422,7 @@ export function OrderInfo() {
 															key={j}
 															className='flex justify-start items-center self-stretch gap-1.5'>
 															<p className=' md:text-xl text-[#0f0e0e]'>
-																{item.menuId}
+																{item.menuName}
 															</p>
 															<p className='md:text-[22px] font-bold md:font-light text-[#0f0e0e]'>
 																{item.quantity.toLocaleString()}

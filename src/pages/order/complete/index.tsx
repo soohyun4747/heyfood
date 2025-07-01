@@ -24,6 +24,7 @@ import {
 	addMultipleDatas,
 	fetchDataWithDocId,
 } from '@/utils/firebase';
+import { getCompositionString } from '@/utils/string';
 import { convertDateStrToTimestamp } from '@/utils/time';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Timestamp } from 'firebase/firestore';
@@ -181,7 +182,12 @@ function OrderCompletePage() {
 						orderId: newOrderData.id,
 						ordererName: user.name,
 						categoryId: item.menu.categoryId,
-						menuId: item.menu.id,
+						menuName: item.menu.composition
+							? `${item.menu.name} ${getCompositionString(
+									item.menu
+							  )}`
+							: item.menu.name,
+						menuPrice: item.menu.price,
 						quantity: item.count,
 						deliveryDate: convertDateStrToTimestamp(
 							data.dateTime.toString()
