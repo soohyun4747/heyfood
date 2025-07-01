@@ -435,8 +435,8 @@ export function OrderInfo() {
 													(item, j) => (
 														<div
 															key={j}
-															className='flex justify-start items-center self-stretch gap-1.5'>
-															<p className=' md:text-xl text-[#0f0e0e]'>
+															className='flex justify-between items-center self-stretch gap-1.5'>
+															<p className='max-w-[240px] md:max-w-[unset] md:text-xl text-[#0f0e0e]'>
 																{item.menuName}
 															</p>
 															<p className='md:text-[22px] font-bold md:font-light text-[#0f0e0e]'>
