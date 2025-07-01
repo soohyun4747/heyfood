@@ -142,7 +142,7 @@ function OrderPage() {
 					주문하기
 				</p>
 				<div className='flex flex-col justify-start items-center md:w-[1200px] gap-7 md:gap-[60px]'>
-					<div className='flex md:flex-row flex-col justify-start items-start max-w-[100vw] md:w-full'>
+					<div className='flex md:flex-row flex-col justify-start items-start max-w-[100vw] md:w-full self-stretch'>
 						<div className='flex justify-between md:justify-start items-center flex-1 gap-3 px-5 md:px-6 py-4 border border-neutral-200 md:h-[62px] self-stretch md:self-auto'>
 							<p className='min-w-[76px] md:min-w-[70px] text-sm md:text-base font-bold text-left text-[#0f0e0e]'>
 								배달주소

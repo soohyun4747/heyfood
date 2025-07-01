@@ -171,21 +171,21 @@ export function MenuCardOrderSnack(props: MenuCardOrderSnack) {
 					btnDisabled={selectedSnacks.length < 2 || !selectedDrink}
 					content={
 						<>
-							<div className='flex flex-col justify-start items-center relative gap-1 bg-white'>
+							<div className='flex flex-col justify-start items-center relative gap-1 bg-white self-stretch'>
 								<div className='flex justify-start items-start self-stretch  relative gap-8'>
 									<p className=' text-xl font-bold text-left text-[#0f0e0e]'>
 										내맘대로 다과박스
 									</p>
 								</div>
-								<p className='self-stretch  w-[540px] text-xs text-left text-[#5c5c5c]'>
+								<p className='self-stretch text-xs text-left text-[#5c5c5c]'>
 									구성: 메인류 2개 + 작은다과류 4개(랜덤) +
 									팩음료 1개
 								</p>
 							</div>
-							<div className='flex flex-col justify-start items-center relative gap-5 px-9 bg-white'>
+							<div className='flex flex-col justify-start items-center relative gap-5 bg-white self-stretch'>
 								<div className='flex flex-col justify-start items-start self-stretch  gap-3'>
 									<div className='flex justify-start items-center self-stretch  relative gap-2'>
-										<p className='flex-grow w-[497px] text-base font-bold text-left text-[#0f0e0e]'>
+										<p className='flex-grow text-base font-bold text-left text-[#0f0e0e]'>
 											메인류 선택 (2개 선택)
 										</p>
 										<div className='flex justify-center items-center  relative gap-2 px-1.5 py-1 rounded-[100px] bg-[#ffebc4]'>
@@ -194,7 +194,7 @@ export function MenuCardOrderSnack(props: MenuCardOrderSnack) {
 											</p>
 										</div>
 									</div>
-									<div className='grid grid-cols-2 justify-start items-start self-stretch  gap-3'>
+									<div className='grid grid-cols-1 md:grid-cols-2 justify-start items-start self-stretch  gap-3'>
 										{snacks?.map((snack) => (
 											<div
 												key={snack.id}
@@ -220,24 +220,10 @@ export function MenuCardOrderSnack(props: MenuCardOrderSnack) {
 										))}
 									</div>
 								</div>
-								<svg
-									width={540}
-									height={2}
-									viewBox='0 0 540 2'
-									fill='none'
-									xmlns='http://www.w3.org/2000/svg'
-									className='self-stretch '
-									preserveAspectRatio='none'>
-									<line
-										y1={1}
-										x2={540}
-										y2={1}
-										stroke='#E5E5E5'
-									/>
-								</svg>
+								<div className='self-stretch h-[1px] bg-[#E5E5E5]' />
 								<div className='flex flex-col justify-start items-start self-stretch  gap-3'>
 									<div className='flex justify-start items-center self-stretch  relative gap-2'>
-										<p className='flex-grow w-[497px] text-base font-bold text-left text-[#0f0e0e]'>
+										<p className='flex-grow text-base font-bold text-left text-[#0f0e0e]'>
 											음료 선택
 										</p>
 										<div className='flex justify-center items-center  relative gap-2 px-1.5 py-1 rounded-[100px] bg-[#ffebc4]'>
@@ -246,7 +232,7 @@ export function MenuCardOrderSnack(props: MenuCardOrderSnack) {
 											</p>
 										</div>
 									</div>
-									<div className='grid grid-cols-2 items-start self-stretch  gap-3'>
+									<div className='grid grid-cols-1 md:grid-cols-2 items-start self-stretch  gap-3'>
 										{drinks.map((drink) => (
 											<div
 												key={drink.id}
@@ -274,7 +260,7 @@ export function MenuCardOrderSnack(props: MenuCardOrderSnack) {
 								</div>
 							</div>
 							<div className='flex w-full justify-end'>
-								<div className='w-[200px]'>
+								<div className='w-[130px] md:w-[200px]'>
 									<ButtonCount
 										value={''}
 										count={count}

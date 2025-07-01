@@ -139,7 +139,7 @@ export function BasicInfo() {
 			</div>
 			<div className='flex flex-col gap-2 md:gap-6 self-stretch md:self-auto'>
 				<div className='flex md:flex-row flex-col md:items-center self-stretch gap-4 md:gap-12'>
-					<p className='w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
+					<p className='min-w-[110px]  md:text-lg text-left text-[#0f0e0e]'>
 						비밀번호
 					</p>
 					<div className='self-stretch w-[1px] bg-[#E5E5E5] md:block hidden' />

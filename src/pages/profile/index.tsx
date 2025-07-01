@@ -7,10 +7,31 @@ import { useRouter } from 'next/router';
 import { BasicInfo } from '@/components/pages/profile/BasicInfo';
 import { OrderInfo } from '@/components/pages/profile/OrderInfo';
 import { useProfileTabIdxStore } from '@/stores/profileTabIdxStore';
+import { useItemsStore } from '@/stores/itemsStore';
+import { useCartStore } from '@/stores/cartStore';
+import {
+	useOrderCommentStore,
+	useOrderCompanyNameStore,
+	useOrderEmailStore,
+	useOrderHeatingStore,
+	useOrderOtherPhoneStore,
+	useOrderStickerFileStore,
+	useOrderStickerPhraseStore,
+} from '@/stores/orderInfoStore';
 
 function ProfilePage() {
 	const user = useUserStore((state) => state.user);
 	const { tabIdx, setTabIdx } = useProfileTabIdxStore();
+	const onResetItems = useItemsStore((state) => state.onResetItems);
+	const { setCart } = useCartStore();
+
+	const { setComment } = useOrderCommentStore();
+	const { setCompanyName } = useOrderCompanyNameStore();
+	const { setStickerPhrase } = useOrderStickerPhraseStore();
+	const { setIsFile } = useOrderStickerFileStore();
+	const { setEmail } = useOrderEmailStore();
+	const { setOtherPhone } = useOrderOtherPhoneStore();
+	const { setHeating } = useOrderHeatingStore();
 
 	const router = useRouter();
 
@@ -28,6 +49,27 @@ function ProfilePage() {
 
 		return () => clearInterval(interval); // cleanup
 	}, []);
+
+	const onLogout = async () => {
+		await logout();
+		resetCartItems();
+		resetOrderInfo();
+	};
+
+	const resetCartItems = () => {
+		setCart([]);
+		onResetItems();
+	};
+
+	const resetOrderInfo = () => {
+		setComment('');
+		setCompanyName('');
+		setIsFile(false);
+		setStickerPhrase('');
+		setEmail('');
+		setOtherPhone('');
+		setHeating(undefined);
+	};
 
 	return (
 		<Common meta={<Meta />}>
@@ -59,7 +101,7 @@ function ProfilePage() {
 				</div>
 				{tabIdx === 1 ? (
 					<div
-						onClick={logout}
+						onClick={onLogout}
 						className='hover:cursor-pointer flex justify-center items-center relative gap-2 px-6 py-3 rounded-lg'>
 						<p className='select-none md:text-xl font-medium text-left text-[#909090] underline underline-offset-4'>
 							로그아웃

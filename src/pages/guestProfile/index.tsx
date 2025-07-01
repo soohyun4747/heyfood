@@ -23,7 +23,7 @@ function GuestProfilePage() {
 						{user?.name}<span className='text-xl md:text-[36px] font-semibold'>님 ({user?.phone})</span> 
 					</p>
 				</div>
-				<div className='select-none flex justify-start items-start gap-8'>
+				<div className='select-none flex justify-start items-start gap-8 self-stretch'>
 					<div className='hidden md:flex flex-col justify-start items-start w-[276px] gap-6'>
 						{['주문내역'].map((value, idx) => (
 							<div

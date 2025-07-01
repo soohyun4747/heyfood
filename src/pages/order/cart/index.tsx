@@ -128,7 +128,7 @@ function CartPage() {
 												<div className='flex flex-col self-stretch'>
 													<div className='flex justify-start items-center self-stretch gap-6 relative'>
 														<div className='flex flex-col justify-start items-start flex-grow relative gap-2'>
-															<p className='text-[20px] md:text-[28px] font-bold text-left text-[#0f0e0e]'>
+															<p className='text-[20px] md:text-[28px] font-bold text-left text-[#0f0e0e] max-w-[260px] md:max-w-[unset]'>
 																{item.menu.name}{' '}
 																{getCompositionString(
 																	item.menu

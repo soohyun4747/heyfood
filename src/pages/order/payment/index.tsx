@@ -526,7 +526,7 @@ function PaymentPage() {
 												className='flex justify-between items-end self-stretch md:gap-0 gap-1'>
 												<div className='flex flex-col justify-start relative gap-1 md:gap-2'>
 													<div className='flex items-center gap-2 md:gap-[12px]'>
-														<p className=' md:text-[22px] text-left text-[#0f0e0e]'>
+														<p className=' md:text-[22px] text-left text-[#0f0e0e] max-w-[210px] md:max-w-[unset]'>
 															{item.menu.name}{' '}
 															{getCompositionString(
 																item.menu

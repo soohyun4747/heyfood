@@ -5,6 +5,7 @@ import { ModalCenter } from '@/components/ModalCenter';
 import { DateTimeDrawer } from '@/components/pages/order/DateTimeDrawer';
 import { PaymentStatus } from '@/components/PaymentStatus';
 import { TextField } from '@/components/TextField';
+import { db } from '@/configs/firebaseConfig';
 import { ChevronDown } from '@/icons/ChevronDown';
 import { Vbank } from '@/pages/api/nicepay/approve';
 import { IUser, IUserType, useUserStore } from '@/stores/userStore';
@@ -12,7 +13,6 @@ import {
 	fetchCollectionData,
 	fetchCollectionDataWithConstraints,
 	fetchCollectionTableDataWithConstraints,
-	getDataCount,
 	updateData,
 	updateMultipleDatas,
 } from '@/utils/firebase';
@@ -24,8 +24,11 @@ import {
 	isMoreThanTwoDaysLeft,
 } from '@/utils/time';
 import {
+	collection,
 	DocumentData,
+	getDocs,
 	orderBy,
+	query,
 	QueryDocumentSnapshot,
 	Timestamp,
 	where,
@@ -122,8 +125,13 @@ export function OrderInfo() {
 
 	useEffect(() => {
 		fetchCollectionData('menus', setMenus);
-		getSetWholeDataCnt();
 	}, []);
+
+	useEffect(() => {
+		if (user) {
+			getSetWholeDataCnt(user);
+		}
+	}, [user]);
 
 	useEffect(() => {
 		if (menus.length > 0 && user) {
@@ -139,9 +147,16 @@ export function OrderInfo() {
 		}
 	}, [ordersWithItems.length, wholeDataCnt]);
 
-	const getSetWholeDataCnt = async () => {
-		const dataCnt = await getDataCount('orders');
-		setWholeDataCnt(dataCnt);
+	const getSetWholeDataCnt = async (user: IUser) => {
+		try {
+			const ordersRef = collection(db, 'orders');
+			const q = query(ordersRef, where('ordererId', '==', user.id));
+			const snapshot = await getDocs(q);
+			setWholeDataCnt(snapshot.size);
+		} catch (error) {
+			console.error('Error getting order count:', error);
+			throw error;
+		}
 	};
 
 	const onClickMore = () => {
@@ -363,7 +378,7 @@ export function OrderInfo() {
 	};
 
 	return (
-		<div className='flex flex-col gap-[36px] md:w-[892px]'>
+		<div className='flex flex-col gap-[36px] md:w-[892px] w-full'>
 			{ordersWithItems.length > 0 ? (
 				ordersWithItems.map((data, i) => (
 					<div

@@ -26,7 +26,7 @@ export function Modal2(props: Modal2) {
 						onClick={props.onClose}
 					/>
 				</div>
-				<div className='flex flex-col justify-start items-center self-stretch gap-6 md:px-9 md:py-8 p-5 rounded-bl-3xl rounded-br-3xl bg-white'>
+				<div className='flex flex-col justify-start items-center self-stretch gap-6 md:px-9 md:py-8 p-5 rounded-bl-3xl rounded-br-3xl bg-white max-h-[300px] overflow-auto md:max-h-[unset]'>
 					{props.content}
 					<ButtonRectYellow
 						disabled={props.btnDisabled}
