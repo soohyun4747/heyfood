@@ -415,7 +415,6 @@ function PaymentPage() {
 									setStickerPhrase(e.target.value)
 								}
 								placeholder='스티커 문구를 작성해주세요'
-								style={{ height: '-webkit-fill-available' }}
 								multiline
 								rows={2}
 							/>
