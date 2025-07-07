@@ -46,13 +46,13 @@ export function GNB({ type }: { type: IUserType }) {
 	};
 
 	return (
-		<div className='fixed top-0 flex w-full justify-between items-center px-[20px] md:px-[120px] py-[16px] md:py-[30px] bg-white z-[1]'>
+		<div className='fixed top-0 flex w-full justify-between items-center px-[20px] md:px-[120px] bg-white z-[1]'>
 			<div className='flex items-center md:gap-[200px]'>
 				<Image
 					src={'/images/logo1.svg'}
 					alt={'logo'}
-					width={165}
-					height={24}
+					width={180}
+					height={90}
 					onClick={() => router.push('/')}
 					className='cursor-pointer hidden md:block'
 				/>

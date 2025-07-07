@@ -22,15 +22,22 @@ export function Footer() {
 				<div className='flex flex-col justify-start items-start self-stretch  gap-10'>
 					<div className='self-stretch  h-0.5 opacity-[0.24] bg-[#0f0e0e]' />
 					<div className='flex flex-col md:flex-row justify-start items-start self-stretch gap-4 md:gap-[50px]'>
-						<div className='flex md:flex-row flex-col justify-start items-start flex-grow relative gap-[50px]'>
-							<div className='w-[190px] h-[26px] relative overflow-hidden'>
+						<div className='flex md:flex-row flex-col justify-start items-start flex-grow relative md:gap-[50px] gap-[30px]'>
+							<div className='w-[164.6px] h-[141.6px] relative hidden md:block'>
 								<Image
 									src={'/images/logo2.svg'}
 									alt={'logo'}
 									fill
 								/>
 							</div>
-							<div className='flex md:flex-col flex-col-reverse justify-center items-start gap-10'>
+							<div className='w-[180px] h-[47.5px] relative md:hidden'>
+								<Image
+									src={'/images/logo3.svg'}
+									alt={'logo'}
+									fill
+								/>
+							</div>
+							<div className='flex md:flex-col flex-col-reverse justify-center items-start md:gap-10 gap-[30px]'>
 								<div className='flex flex-col justify-start items-start gap-4 md:gap-2.5'>
 									<div className='flex md:flex-row flex-col justify-start items-start gap-4 md:gap-6'>
 										<p className=' text-[15px] font-bold text-center text-[#0f0e0e]'>

@@ -19,7 +19,7 @@ export function Common(props: ICommonProps) {
 		<div className='max-h-[100vh] md:h-screen md:min-w-[1366px] flex flex-col overflow-y-hidden md:overflow-auto'>
 			{props.meta}
 			{!props.hideGnb && <GNB type={user?.userType ?? UserType.guest} />}
-			<div className='flex flex-col overflow-y-auto md:h-full pt-[70.4px] md:pt-[112px]'>
+			<div className='flex flex-col overflow-y-auto md:h-full pt-[70.4px] md:pt-[90px]'>
 				{props.children}
 				{!props.hideFooter && <Footer />}
 			</div>
