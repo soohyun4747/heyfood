@@ -1,3 +1,7 @@
+import {
+	IPaymentMethod,
+	PaymentMethod,
+} from '@/components/pages/profile/OrderInfo';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
@@ -113,5 +117,50 @@ export const useOrderHeatingStore = create(
 			setHeating: (value) => set(() => ({ heating: value })),
 		}),
 		{ name: 'order-heating' }
+	)
+);
+
+interface OrderPaymentMethodStore {
+	paymentMethod: IPaymentMethod;
+	setPaymentMethod: (value: IPaymentMethod) => void;
+}
+
+export const useOrderPaymentMethodStore = create(
+	persist<OrderPaymentMethodStore>(
+		(set) => ({
+			paymentMethod: PaymentMethod.vbank,
+			setPaymentMethod: (value) => set(() => ({ paymentMethod: value })),
+		}),
+		{ name: 'payment-method' }
+	)
+);
+
+interface OrderIdStore {
+	orderId: string;
+	setOrderId: (value: string) => void;
+}
+
+export const useOrderIdStore = create(
+	persist<OrderIdStore>(
+		(set) => ({
+			orderId: '',
+			setOrderId: (value) => set(() => ({ orderId: value })),
+		}),
+		{ name: 'order-id' }
+	)
+);
+
+interface OrderPriceStore {
+	orderPrice: number;
+	setOrderPrice: (value: number) => void;
+}
+
+export const useOrderPriceStore = create(
+	persist<OrderPriceStore>(
+		(set) => ({
+			orderPrice: 0,
+			setOrderPrice: (value) => set(() => ({ orderPrice: value })),
+		}),
+		{ name: 'order-price' }
 	)
 );

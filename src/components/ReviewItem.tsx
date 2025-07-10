@@ -29,7 +29,7 @@ export function ReviewItem(props: IReview) {
 					</div>
 					<div className='flex flex-col gap-6'>
 						<p
-							className={`self-stretch text-sm md:text-lg text-left text-[#0f0e0e] ${
+							className={`self-stretch text-sm md:text-lg text-left text-[#0f0e0e] max-w-[880px] ${
 								!open && 'max-h-[80px] line-clamp-3'
 							}`}>
 							{props.comment}

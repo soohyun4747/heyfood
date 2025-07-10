@@ -3,6 +3,8 @@ import {
 	IOrder,
 	IOrderItem,
 	IOrderStatus,
+	OrderStatus,
+	PaymentMethod,
 } from '@/components/pages/profile/OrderInfo';
 import { Common } from '@/layouts/Common';
 import { Meta } from '@/layouts/Meta';
@@ -13,12 +15,16 @@ import {
 	useOrderCompanyNameStore,
 	useOrderEmailStore,
 	useOrderHeatingStore,
+	useOrderIdStore,
 	useOrderOtherPhoneStore,
+	useOrderPaymentMethodStore,
+	useOrderPriceStore,
 	useOrderStickerFileStore,
 	useOrderStickerPhraseStore,
 } from '@/stores/orderInfoStore';
 import { useProfileTabIdxStore } from '@/stores/profileTabIdxStore';
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
+import { cleanObject } from '@/utils/\bobject';
 import {
 	addData,
 	addMultipleDatas,
@@ -59,7 +65,15 @@ function OrderCompletePage() {
 	const { otherPhone, setOtherPhone } = useOrderOtherPhoneStore();
 	const { heating, setHeating } = useOrderHeatingStore();
 	const { cart, setCart } = useCartStore();
+	const { paymentMethod, setPaymentMethod } = useOrderPaymentMethodStore();
+	const { orderId, setOrderId } = useOrderIdStore();
+	const { orderPrice, setOrderPrice } = useOrderPriceStore();
+
 	const onResetItems = useItemsStore((state) => state.onResetItems);
+
+	useEffect(() => {
+		return () => resetCartOrderData();
+	}, []);
 
 	//guest에 대해서만 complete 페이지에서 (users는 _app.tsx에서 디폴트로 실행)
 	useEffect(() => {
@@ -83,32 +97,41 @@ function OrderCompletePage() {
 	}, [setUser]);
 
 	useEffect(() => {
-		if (router.query.resultCode && user && cart.length > 0) {
-			const query = router.query as any;
-
-			//승인요청 성공
-			if (query.resultCode === '0000') {
+		if (user && cart.length > 0) {
+			if (paymentMethod === PaymentMethod.offline) {
 				setIsSuccess(true);
-				setVbankInfo(query);
-				updateAndResetOrder(query, user, cart);
+				updateOrderData(undefined, user, cart);
 			} else {
-				setIsSuccess(false);
+				if (router.query.resultCode) {
+					const query = router.query as any;
+
+					//승인요청 성공
+					if (query.resultCode === '0000') {
+						setIsSuccess(true);
+						setVbankInfo(query);
+						updateOrderData(query, user, cart);
+					} else {
+						setIsSuccess(false);
+					}
+				}
 			}
 		}
 	}, [router.query, user, cart]);
 
-	const updateAndResetOrder = async (
-		orderQ: OrderQuery,
+	const updateOrderData = async (
+		orderQ: OrderQuery | undefined,
 		user: IUser,
 		cart: IItemsBundle[]
 	) => {
 		const succeed = await addOrderDataToDB(orderQ, user, cart);
-		if (succeed) {
-			resetCartItems();
-			resetOrderInfo();
-		} else {
+		if (!succeed) {
 			alert('주문을 실패하였습니다.');
 		}
+	};
+
+	const resetCartOrderData = () => {
+		resetCartItems();
+		resetOrderInfo();
 	};
 
 	const goToOrderHistory = () => {
@@ -121,55 +144,33 @@ function OrderCompletePage() {
 	};
 
 	const addOrderDataToDB = async (
-		orderQ: OrderQuery,
+		orderQ: OrderQuery | undefined,
 		user: IUser,
 		cart: IItemsBundle[]
 	): Promise<boolean> => {
 		try {
-			const orderData: IOrder =
-				//heating이 없는경우 아예 넣지 않도록
-				typeof heating === 'boolean'
-					? {
-							id: orderQ.orderId,
-							email,
-							otherPhone,
-							ordererId: user.id,
-							ordererType: user.userType,
-							stickerFile: isFile,
-							stickerPhrase,
-							companyName,
-							comment,
-							heating,
-							orderStatus: orderQ.status,
-							vbankName: orderQ.vbankName,
-							vbankNumber: orderQ.vbankNumber,
-							vbankHolder: orderQ.vbankHolder,
-							vbankExpDate: orderQ.vbankExpDate,
-							price: Number(orderQ.amount),
-							paymentId: orderQ.tid,
-							createdAt: Timestamp.now(),
-							updatedAt: null,
-					  }
-					: {
-							id: orderQ.orderId,
-							email,
-							otherPhone,
-							ordererId: user.id,
-							ordererType: user.userType,
-							stickerFile: isFile,
-							stickerPhrase,
-							companyName,
-							comment,
-							orderStatus: orderQ.status,
-							vbankName: orderQ.vbankName,
-							vbankNumber: orderQ.vbankNumber,
-							vbankHolder: orderQ.vbankHolder,
-							vbankExpDate: orderQ.vbankExpDate,
-							price: Number(orderQ.amount),
-							paymentId: orderQ.tid,
-							createdAt: Timestamp.now(),
-							updatedAt: null,
-					  };
+			const orderData: IOrder = cleanObject({
+				id: orderId,
+				email,
+				otherPhone,
+				ordererId: user.id,
+				ordererType: user.userType,
+				stickerFile: isFile,
+				stickerPhrase,
+				companyName,
+				comment,
+				heating,
+				orderStatus: orderQ ? orderQ.status : OrderStatus.complete, //현장결제의 경우 바로 "주문완료"
+				vbankName: orderQ?.vbankName,
+				vbankNumber: orderQ?.vbankNumber,
+				vbankHolder: orderQ?.vbankHolder,
+				vbankExpDate: orderQ?.vbankExpDate,
+				price: orderPrice,
+				paymentId: orderQ?.tid,
+				paymentMethod,
+				createdAt: Timestamp.now(),
+				updatedAt: null,
+			}) as IOrder;
 
 			const newOrderData = (await addData('orders', orderData)) as IOrder;
 			if (!newOrderData) return false;
@@ -220,6 +221,9 @@ function OrderCompletePage() {
 		setEmail('');
 		setOtherPhone('');
 		setHeating(undefined);
+		setPaymentMethod(PaymentMethod.vbank);
+		setOrderId('');
+		setOrderPrice(0);
 	};
 
 	return (
@@ -235,17 +239,31 @@ function OrderCompletePage() {
 						<p className='text-2xl md:text-[32px] font-bold text-center text-[#0f0e0e]'>
 							주문이 완료되었습니다!
 						</p>
-						{vbankInfo && (
-							<div className='flex flex-col justify-start items-center relative gap-[12px]'>
-								<p className='md:text-lg text-[#0f0e0e] font-bold'>
-									주문번호: {vbankInfo?.orderId}
-								</p>
+						<div className='flex flex-col justify-start items-center relative gap-[12px]'>
+							<p className='md:text-lg text-[#0f0e0e] font-bold'>
+								주문번호: {orderId}
+							</p>
+							{paymentMethod === PaymentMethod.vbank ? (
 								<p className='text-sm text-center text-[#0f0e0e] leading-[160%]'>
 									아래 가상계좌로 입금해주시면{' '}
 									<br className='md:hidden' />
 									정상적으로 결제처리가 완료됩니다.
 								</p>
-								<div className='bg-gray-100 p-[24px] flex flex-col gap-[12px]'>
+							) : (
+								<p className='text-sm text-center text-[#0f0e0e] leading-[160%]'>
+									아래 금액으로 현장에서 결제가 진행됩니다.
+								</p>
+							)}
+							<div className='bg-gray-100 p-[24px] flex flex-col gap-[12px] min-w-[260px] min-h-[100px]'>
+								<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
+									<span className='opacity-40 text-sm'>
+										결제방법:
+									</span>{' '}
+									{paymentMethod === PaymentMethod.vbank
+										? '가상계좌'
+										: '현장결제'}
+								</p>
+								{paymentMethod === PaymentMethod.vbank && (
 									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											계좌정보:
@@ -253,21 +271,22 @@ function OrderCompletePage() {
 										{vbankInfo?.vbankName}{' '}
 										{vbankInfo?.vbankNumber}
 									</p>
+								)}
+								{paymentMethod === PaymentMethod.vbank && (
 									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											예금주:
 										</span>{' '}
 										{vbankInfo?.vbankHolder}
 									</p>
-									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
-										<span className='opacity-40 text-sm'>
-											결제금액:
-										</span>{' '}
-										{Number(
-											vbankInfo?.amount
-										).toLocaleString()}
-										원
-									</p>
+								)}
+								<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
+									<span className='opacity-40 text-sm'>
+										결제금액:
+									</span>{' '}
+									{orderPrice.toLocaleString()}원
+								</p>
+								{paymentMethod === PaymentMethod.vbank && (
 									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											입금기한:
@@ -278,12 +297,14 @@ function OrderCompletePage() {
 											).toLocaleString()}{' '}
 										까지
 									</p>
-								</div>
+								)}
+							</div>
+							{paymentMethod === PaymentMethod.vbank && (
 								<p className='text-sm text-center leading-[160%] text-blue-500'>
 									24시간 이내로 입금 부탁드립니다.
 								</p>
-							</div>
-						)}
+							)}
+						</div>
 						<ButtonRect
 							value={'주문내역 확인하기'}
 							style={{ width: 211, alignSelf: 'center' }}

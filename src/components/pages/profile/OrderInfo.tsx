@@ -39,6 +39,7 @@ import { v4 as uuidv4 } from 'uuid';
 const eachFetchOrders = 5;
 
 export const orderStatusLabels = {
+	complete: '주문완료',
 	paid: '결제완료',
 	ready: '결제확인중',
 	failed: '결제실패',
@@ -47,6 +48,7 @@ export const orderStatusLabels = {
 };
 
 export const OrderStatus = {
+	complete: 'complete',
 	paid: 'paid',
 	ready: 'ready',
 	failed: 'failed',
@@ -70,9 +72,18 @@ export interface IOrder extends Omit<Vbank, 'vbankCode'> {
 	price: number;
 	paymentId: string;
 	heating?: boolean;
+	paymentMethod: IPaymentMethod;
 	createdAt: Timestamp;
 	updatedAt: Timestamp | null;
 }
+
+export const PaymentMethod = {
+	offline: 'offline',
+	vbank: 'vbank',
+	card: 'card', //심사 이후 삭제
+} as const;
+
+export type IPaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod];
 
 export interface IOrderItem {
 	id: string;
@@ -569,43 +580,55 @@ export function OrderInfo() {
 										</p>
 									</div>
 									<p className=' md:text-lg text-[#5c5c5c]'>
-										가상계좌
+										{data.orderData.paymentMethod ===
+										PaymentMethod.vbank
+											? '가상계좌'
+											: '현장결제'}
 									</p>
 								</div>
-								<div className='flex justify-start items-center self-stretch gap-3'>
-									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow  md:text-base font-bold text-[#5c5c5c] min-w-[62px] md:min-w-auto'>
-											계좌정보
+								{data.orderData.paymentMethod ===
+									PaymentMethod.vbank && (
+									<div className='flex justify-start items-center self-stretch gap-3'>
+										<div className='flex justify-center items-center gap-2 pt-0.5'>
+											<p className='flex-grow  md:text-base font-bold text-[#5c5c5c] min-w-[62px] md:min-w-auto'>
+												계좌정보
+											</p>
+										</div>
+										<p className=' md:text-lg text-[#5c5c5c]'>
+											{data.orderData.vbankName}{' '}
+											{data.orderData.vbankNumber}
 										</p>
 									</div>
-									<p className=' md:text-lg text-[#5c5c5c]'>
-										{data.orderData.vbankName}{' '}
-										{data.orderData.vbankNumber}
-									</p>
-								</div>
-								<div className='flex justify-start items-center self-stretch gap-3'>
-									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow  md:text-base font-bold text-[#5c5c5c]'>
-											예금주
+								)}
+								{data.orderData.paymentMethod ===
+									PaymentMethod.vbank && (
+									<div className='flex justify-start items-center self-stretch gap-3'>
+										<div className='flex justify-center items-center gap-2 pt-0.5'>
+											<p className='flex-grow  md:text-base font-bold text-[#5c5c5c]'>
+												예금주
+											</p>
+										</div>
+										<p className=' md:text-lg text-[#5c5c5c]'>
+											{data.orderData.vbankHolder}
 										</p>
 									</div>
-									<p className=' md:text-lg text-[#5c5c5c]'>
-										{data.orderData.vbankHolder}
-									</p>
-								</div>
-								<div className='flex justify-start items-center self-stretch gap-3'>
-									<div className='flex justify-center items-center gap-2 pt-0.5'>
-										<p className='flex-grow  md:text-base font-bold text-[#5c5c5c]'>
-											입금기한
+								)}
+								{data.orderData.paymentMethod ===
+									PaymentMethod.vbank && (
+									<div className='flex justify-start items-center self-stretch gap-3'>
+										<div className='flex justify-center items-center gap-2 pt-0.5'>
+											<p className='flex-grow  md:text-base font-bold text-[#5c5c5c]'>
+												입금기한
+											</p>
+										</div>
+										<p className=' md:text-lg text-[#5c5c5c]'>
+											{data.orderData.vbankExpDate &&
+												new Date(
+													data.orderData.vbankExpDate
+												).toLocaleString()}
 										</p>
 									</div>
-									<p className=' md:text-lg text-[#5c5c5c]'>
-										{data.orderData.vbankExpDate &&
-											new Date(
-												data.orderData.vbankExpDate
-											).toLocaleString()}
-									</p>
-								</div>
+								)}
 							</div>
 						</div>
 						{isOrderCancelAvailable(data) && (
@@ -644,16 +667,19 @@ export function OrderInfo() {
 					description={
 						<>
 							{selectedOrderData?.orderData.orderStatus ===
-							'ready' ? (
+								OrderStatus.ready || OrderStatus.complete ? (
 								<div className='flex flex-col gap-2'>
 									<p className='text-md font-bold'>
 										주문을 취소하시겠습니까?
 									</p>
-									<p className='text-sm'>
-										입금한지 얼마 안되신 경우 &quot;결제
-										확인중&quot;이 &quot;결제 완료&quot;로
-										바뀐 후 취소해주세요.
-									</p>
+									{selectedOrderData?.orderData
+										.orderStatus === OrderStatus.ready && (
+										<p className='text-sm'>
+											입금한지 얼마 안되신 경우 &quot;결제
+											확인중&quot;이 &quot;결제
+											완료&quot;로 바뀐 후 취소해주세요.
+										</p>
+									)}
 								</div>
 							) : (
 								<div className='flex flex-col gap-[24px]'>

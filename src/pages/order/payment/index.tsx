@@ -15,7 +15,10 @@ import {
 	useOrderCompanyNameStore,
 	useOrderEmailStore,
 	useOrderHeatingStore,
+	useOrderIdStore,
 	useOrderOtherPhoneStore,
+	useOrderPaymentMethodStore,
+	useOrderPriceStore,
 	useOrderStickerFileStore,
 	useOrderStickerPhraseStore,
 } from '@/stores/orderInfoStore';
@@ -23,6 +26,9 @@ import { CheckRect } from '@/components/CheckRect';
 import { Dropdown } from '@/components/Dropdown';
 import { ButtonRadio } from '@/components/ButtonRadio';
 import { getCompositionString } from '@/utils/string';
+import {
+	PaymentMethod,
+} from '@/components/pages/profile/OrderInfo';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 const stickerPrice = 300;
@@ -50,10 +56,6 @@ function PaymentPage() {
 	const [file, setFile] = useState<File>();
 	const [coupon, setCoupon] = useState<string>('');
 
-	const [paymentMethod, setPaymentMethod] = useState<'card' | 'vbank'>(
-		'card'
-	);
-
 	const user = useUserStore((state) => state.user);
 	const { comment, setComment } = useOrderCommentStore();
 	const { companyName, setCompanyName } = useOrderCompanyNameStore();
@@ -62,11 +64,16 @@ function PaymentPage() {
 	const { email, setEmail } = useOrderEmailStore();
 	const { otherPhone, setOtherPhone } = useOrderOtherPhoneStore();
 	const { heating, setHeating } = useOrderHeatingStore();
+	const { setOrderId } = useOrderIdStore();
+	const { setOrderPrice } = useOrderPriceStore();
+	const { paymentMethod, setPaymentMethod } = useOrderPaymentMethodStore();
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
 	const cart = useCartStore((state) => state.cart);
 
 	const router = useRouter();
+
+	console.log({ paymentMethod });
 
 	useEffect(() => {
 		if (!user) {
@@ -152,17 +159,26 @@ function PaymentPage() {
 				await uploadFileData(file, `stickers/${orderDocId}`);
 			}
 
-			await serverAuthVBank(
-				orderDocId,
-				wholePrice,
-				`${cart.at(0)?.items.at(0)?.menu.name} 외 ${totalCount - 1}건`,
-				'정수현',
-				`${originPath}/api/nicepay/approve`,
-				//'vbank'
-				paymentMethod,
-				user.phone,
-				email
-			);
+			setOrderId(orderDocId);
+			setOrderPrice(wholePrice);
+
+			if (paymentMethod === PaymentMethod.offline) {
+				router.push('/order/complete');
+			} else {
+				await serverAuthVBank(
+					orderDocId,
+					wholePrice,
+					`${cart.at(0)?.items.at(0)?.menu.name} 외 ${
+						totalCount - 1
+					}건`,
+					'정수현',
+					`${originPath}/api/nicepay/approve`,
+					//'vbank'
+					paymentMethod,
+					user.phone,
+					email
+				);
+			}
 		}
 	};
 
@@ -647,28 +663,56 @@ function PaymentPage() {
 						{/* <p className='text-left text-[#0f0e0e]'>
 							결제는 가상계좌로만 진행됩니다.
 						</p> */}
-						<div className='flex items-center gap-4'>
-							<div
-								className='hover:cursor-pointer flex items-center gap-1'
-								onClick={() => setPaymentMethod('card')}>
-								<input
-									type='radio'
-									checked={
-										paymentMethod === 'card' ? true : false
-									}
-								/>
-								<label>신용카드</label>
-							</div>
-							<div
-								className='hover:cursor-pointer flex items-center gap-1'
-								onClick={() => setPaymentMethod('vbank')}>
-								<input
-									type='radio'
-									checked={
-										paymentMethod === 'vbank' ? true : false
-									}
-								/>
-								<label>가상계좌</label>
+						<div className='flex flex-col justify-start items-start self-stretch gap-6 md:gap-9 p-6 bg-white'>
+							<div className='flex flex-row justify-between items-center self-stretch relative gap-2'>
+								<p className='md:text-lg font-bold text-left text-[#0f0e0e]'>
+									결제 방법
+								</p>
+								<div className='flex items-center gap-5'>
+									<div
+										className='hover:cursor-pointer flex items-center gap-2'
+										onClick={() =>
+											setPaymentMethod(PaymentMethod.card)
+										}>
+										<ButtonRadio
+											checked={
+												paymentMethod ===
+												PaymentMethod.card
+											}
+										/>
+										<label>카드</label>
+									</div>
+									<div
+										className='hover:cursor-pointer flex items-center gap-2'
+										onClick={() =>
+											setPaymentMethod(
+												PaymentMethod.vbank
+											)
+										}>
+										<ButtonRadio
+											checked={
+												paymentMethod ===
+												PaymentMethod.vbank
+											}
+										/>
+										<label>가상계좌</label>
+									</div>
+									<div
+										className='hover:cursor-pointer flex items-center gap-2'
+										onClick={() =>
+											setPaymentMethod(
+												PaymentMethod.offline
+											)
+										}>
+										<ButtonRadio
+											checked={
+												paymentMethod ===
+												PaymentMethod.offline
+											}
+										/>
+										<label>현장결제</label>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
