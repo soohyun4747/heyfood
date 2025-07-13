@@ -113,9 +113,10 @@ export function FaqPage() {
 										<Image
 											src={faq.imagePath}
 											alt={faq.title}
-											width={300}
-											height={600}
+											width={1200}
+											height={2400}
 											className='w-[320px] md:w-[1200px] h-auto object-cover relative'
+											priority
 										/>
 									) : (
 										<></>
