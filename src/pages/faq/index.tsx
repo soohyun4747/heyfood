@@ -76,7 +76,7 @@ export function FaqPage() {
 
 	return (
 		<Common meta={<Meta />}>
-			<div className='flex flex-col items-center self-stretch  gap-[60px] px-[20px] md:px-[120px] pt-[40px] md:pt-[100px] pb-40 h-screen min-h-fit'>
+			<div className='flex flex-col items-center self-stretch  gap-[60px] px-[20px] md:px-[120px] pt-[40px] md:pt-[100px] pb-40 md:h-screen min-h-fit'>
 				<div className='flex flex-col justify-center items-center self-stretch gap-2 md:gap-4'>
 					<p className='text-[28px] md:text-5xl font-bold text-center text-[#0f0e0e] leading-[150%]'>
 						자주묻는 질문

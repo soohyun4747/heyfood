@@ -29,7 +29,7 @@ export function Accordion(props: IAccordionProps) {
 				)}
 			</div>
 			{open && (
-				<div className='w-[1200px] max-w-[1200px]'>{props.content}</div>
+				<div className='md:w-[1200px] max-w-[1200px]'>{props.content}</div>
 			)}
 		</div>
 	);
