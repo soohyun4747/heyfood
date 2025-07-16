@@ -60,3 +60,4 @@ export const bankOptions = [
 	{ id: '089', label: '케이뱅크' },
 	{ id: '090', label: '카카오뱅크' },
 ];
+

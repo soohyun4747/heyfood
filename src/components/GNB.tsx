@@ -14,7 +14,6 @@ export function GNB({ type }: { type: IUserType }) {
 
 	const router = useRouter();
 	const user = useUserStore((state) => state.user);
-	
 
 	useEffect(() => {
 		// Add click listener to the document
@@ -36,7 +35,6 @@ export function GNB({ type }: { type: IUserType }) {
 
 	const handleClickOutside = (e: MouseEvent) => {
 		const target = e.target as HTMLElement | undefined;
-		
 
 		if (target && target.id === domId) {
 			setMenuOpen(true);
@@ -71,7 +69,7 @@ export function GNB({ type }: { type: IUserType }) {
 						헤이델리박스
 					</div>
 					<div
-						onClick={() => router.push('/menu/kimbabDosirak')}
+						onClick={() => router.push('/menu')}
 						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
 						메뉴
 					</div>
@@ -145,7 +143,7 @@ const MenuDrawer = ({ type }: { type: IUserType }) => {
 				헤이델리박스
 			</p>
 			<p
-				onClick={() => router.push('/menu/kimbabDosirak')}
+				onClick={() => router.push('/menu')}
 				className='text-lg font-bold text-left text-[#1f2023]'>
 				메뉴
 			</p>

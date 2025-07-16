@@ -24,7 +24,7 @@ import {
 } from '@/stores/orderInfoStore';
 import { useProfileTabIdxStore } from '@/stores/profileTabIdxStore';
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
-import { cleanObject } from '@/utils/\bobject';
+import { cleanObject } from '@/utils/object';
 import {
 	addData,
 	addMultipleDatas,
