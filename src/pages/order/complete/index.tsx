@@ -56,7 +56,7 @@ interface OrderQuery {
 
 function OrderCompletePage() {
 	const [isSuccess, setIsSuccess] = useState(true);
-	const [vbankInfo, setVbankInfo] = useState<OrderQuery>();
+	// const [vbankInfo, setVbankInfo] = useState<OrderQuery>();
 
 	const router = useRouter();
 	const { user, setUser } = useUserStore();

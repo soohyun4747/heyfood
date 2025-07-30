@@ -9,7 +9,6 @@ import { fetchDistanceInKmCost } from '@/utils/distance';
 import { createDocId, uploadFileData } from '@/utils/firebase';
 import { useRouter } from 'next/router';
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
-import { serverAuthVBank } from '@/utils/payment';
 import {
 	useOrderCommentStore,
 	useOrderCompanyNameStore,
@@ -34,7 +33,7 @@ const heyfoodAddress = '해운대구 송정2로 13번길 40';
 const stickerPrice = 300;
 // const originPath = 'https://heyfood-iota.vercel.app'
 //const originPath = 'http://localhost:3000'
-const originPath = 'https://www.heydelibox.com';
+// const originPath = 'https://www.heydelibox.com';
 
 const stickerCoupon = 'stickerCoupon';
 const sideMenuCoupon = 'sideMenuCoupon';
@@ -83,17 +82,17 @@ function PaymentPage() {
 		}
 	}, [user]);
 
-	const totalCount = useMemo(() => {
-		let totalCount = 0;
+	// const totalCount = useMemo(() => {
+	// 	let totalCount = 0;
 
-		cart.forEach((bundle) => {
-			bundle.items.forEach((item) => {
-				totalCount += item.count;
-			});
-		});
+	// 	cart.forEach((bundle) => {
+	// 		bundle.items.forEach((item) => {
+	// 			totalCount += item.count;
+	// 		});
+	// 	});
 
-		return totalCount;
-	}, [cart]);
+	// 	return totalCount;
+	// }, [cart]);
 
 	const dosirakCount = useMemo(() => {
 		let dosirakCount = 0;

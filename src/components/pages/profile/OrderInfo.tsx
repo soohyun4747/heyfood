@@ -269,25 +269,25 @@ export function OrderInfo() {
 		}
 	};
 
-	const fetchCancelPayment = async (paymentId: string, orderId: string) => {
-		const response = await fetch('/api/nicepay/cancel', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-			},
-			body: JSON.stringify({
-				paymentId: paymentId,
-				orderId: orderId,
-				reason: '사용자 요청 취소',
-				refundAccount: refundAccount,
-				refundBankCode: refundBankCode,
-				refundHolder: refundHolder,
-			}),
-		});
+	// const fetchCancelPayment = async (paymentId: string, orderId: string) => {
+	// 	const response = await fetch('/api/nicepay/cancel', {
+	// 		method: 'POST',
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 		},
+	// 		body: JSON.stringify({
+	// 			paymentId: paymentId,
+	// 			orderId: orderId,
+	// 			reason: '사용자 요청 취소',
+	// 			refundAccount: refundAccount,
+	// 			refundBankCode: refundBankCode,
+	// 			refundHolder: refundHolder,
+	// 		}),
+	// 	});
 
-		const result = await response.json();
-		return result;
-	};
+	// 	const result = await response.json();
+	// 	return result;
+	// };
 
 	const onCancelOrder = async () => {
 		if (!selectedOrderData || !user) return;
