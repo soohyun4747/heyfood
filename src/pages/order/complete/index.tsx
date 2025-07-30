@@ -1,5 +1,8 @@
 import { ButtonRect } from '@/components/ButtonRect';
 import {
+	bankHolder,
+	bankName,
+	bankNumber,
 	IOrder,
 	IOrderItem,
 	IOrderStatus,
@@ -13,6 +16,7 @@ import { useItemsStore } from '@/stores/itemsStore';
 import {
 	useOrderCommentStore,
 	useOrderCompanyNameStore,
+	useOrderDeliveryPriceStore,
 	useOrderEmailStore,
 	useOrderHeatingStore,
 	useOrderIdStore,
@@ -21,6 +25,7 @@ import {
 	useOrderPriceStore,
 	useOrderStickerFileStore,
 	useOrderStickerPhraseStore,
+	useOrderStickerPriceStore,
 } from '@/stores/orderInfoStore';
 import { useProfileTabIdxStore } from '@/stores/profileTabIdxStore';
 import { IUser, UserType, useUserStore } from '@/stores/userStore';
@@ -68,6 +73,8 @@ function OrderCompletePage() {
 	const { paymentMethod, setPaymentMethod } = useOrderPaymentMethodStore();
 	const { orderId, setOrderId } = useOrderIdStore();
 	const { orderPrice, setOrderPrice } = useOrderPriceStore();
+	const { deliveryPrice, setDeliveryPrice } = useOrderDeliveryPriceStore();
+	const { stickerPrice, setStickerPrice } = useOrderStickerPriceStore();
 
 	const onResetItems = useItemsStore((state) => state.onResetItems);
 
@@ -98,23 +105,25 @@ function OrderCompletePage() {
 
 	useEffect(() => {
 		if (user && cart.length > 0) {
-			if (paymentMethod === PaymentMethod.offline) {
-				setIsSuccess(true);
-				updateOrderData(undefined, user, cart);
-			} else {
-				if (router.query.resultCode) {
-					const query = router.query as any;
+			// if (paymentMethod === PaymentMethod.offline) {
+			// 	setIsSuccess(true);
+			// 	updateOrderData(undefined, user, cart);
+			// } else {
+			// 	if (router.query.resultCode) {
+			// 		const query = router.query as any;
 
-					//승인요청 성공
-					if (query.resultCode === '0000') {
-						setIsSuccess(true);
-						setVbankInfo(query);
-						updateOrderData(query, user, cart);
-					} else {
-						setIsSuccess(false);
-					}
-				}
-			}
+			// 		//승인요청 성공
+			// 		if (query.resultCode === '0000') {
+			// 			setIsSuccess(true);
+			// 			setVbankInfo(query);
+			// 			updateOrderData(query, user, cart);
+			// 		} else {
+			// 			setIsSuccess(false);
+			// 		}
+			// 	}
+			// }
+			setIsSuccess(true);
+			updateOrderData(undefined, user, cart);
 		}
 	}, [router.query, user, cart]);
 
@@ -154,19 +163,23 @@ function OrderCompletePage() {
 				email,
 				otherPhone,
 				ordererId: user.id,
+				ordererName: user.name,
 				ordererType: user.userType,
 				stickerFile: isFile,
 				stickerPhrase,
 				companyName,
 				comment,
 				heating,
-				orderStatus: orderQ ? orderQ.status : OrderStatus.complete, //현장결제의 경우 바로 "주문완료"
-				vbankName: orderQ?.vbankName,
-				vbankNumber: orderQ?.vbankNumber,
-				vbankHolder: orderQ?.vbankHolder,
-				vbankExpDate: orderQ?.vbankExpDate,
+				orderStatus: OrderStatus.complete,
+				//orderStatus: orderQ ? orderQ.status : OrderStatus.complete, //현장결제의 경우 바로 "주문완료"
+				// vbankName: orderQ?.vbankName,
+				// vbankNumber: orderQ?.vbankNumber,
+				// vbankHolder: orderQ?.vbankHolder,
+				// vbankExpDate: orderQ?.vbankExpDate,
+				deliveryPrice,
+				stickerPrice,
 				price: orderPrice,
-				paymentId: orderQ?.tid,
+				// paymentId: orderQ?.tid,
 				paymentMethod,
 				createdAt: Timestamp.now(),
 				updatedAt: null,
@@ -221,9 +234,11 @@ function OrderCompletePage() {
 		setEmail('');
 		setOtherPhone('');
 		setHeating(undefined);
-		setPaymentMethod(PaymentMethod.vbank);
+		setPaymentMethod(PaymentMethod.card);
 		setOrderId('');
 		setOrderPrice(0);
+		setDeliveryPrice(0);
+		setStickerPrice(0);
 	};
 
 	return (
@@ -243,15 +258,16 @@ function OrderCompletePage() {
 							<p className='md:text-lg text-[#0f0e0e] font-bold'>
 								주문번호: {orderId}
 							</p>
-							{paymentMethod === PaymentMethod.vbank ? (
+							{paymentMethod === PaymentMethod.transfer ? (
 								<p className='text-sm text-center text-[#0f0e0e] leading-[160%]'>
-									아래 가상계좌로 입금해주시면{' '}
+									아래 계좌로 입금해주시면{' '}
 									<br className='md:hidden' />
 									정상적으로 결제처리가 완료됩니다.
 								</p>
 							) : (
 								<p className='text-sm text-center text-[#0f0e0e] leading-[160%]'>
-									아래 금액으로 현장에서 결제가 진행됩니다.
+									카드로 결제 가능한 링크를 이메일/문자로
+									보내드립니다.
 								</p>
 							)}
 							<div className='bg-gray-100 p-[24px] flex flex-col gap-[12px] min-w-[260px] min-h-[100px]'>
@@ -259,25 +275,24 @@ function OrderCompletePage() {
 									<span className='opacity-40 text-sm'>
 										결제방법:
 									</span>{' '}
-									{paymentMethod === PaymentMethod.vbank
-										? '가상계좌'
-										: '현장결제'}
+									{paymentMethod === PaymentMethod.transfer
+										? '계좌이체'
+										: '카드결제'}
 								</p>
-								{paymentMethod === PaymentMethod.vbank && (
+								{paymentMethod === PaymentMethod.transfer && (
 									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											계좌정보:
 										</span>{' '}
-										{vbankInfo?.vbankName}{' '}
-										{vbankInfo?.vbankNumber}
+										{bankName} {bankNumber}
 									</p>
 								)}
-								{paymentMethod === PaymentMethod.vbank && (
+								{paymentMethod === PaymentMethod.transfer && (
 									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											예금주:
 										</span>{' '}
-										{vbankInfo?.vbankHolder}
+										{bankHolder}
 									</p>
 								)}
 								<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
@@ -286,7 +301,7 @@ function OrderCompletePage() {
 									</span>{' '}
 									{orderPrice.toLocaleString()}원
 								</p>
-								{paymentMethod === PaymentMethod.vbank && (
+								{/* {paymentMethod === PaymentMethod.bank && (
 									<p className='md:text-base text-sm text-[#0f0e0e] flex items-center gap-[10px]'>
 										<span className='opacity-40 text-sm'>
 											입금기한:
@@ -297,9 +312,9 @@ function OrderCompletePage() {
 											).toLocaleString()}{' '}
 										까지
 									</p>
-								)}
+								)} */}
 							</div>
-							{paymentMethod === PaymentMethod.vbank && (
+							{paymentMethod === PaymentMethod.transfer && (
 								<p className='text-sm text-center leading-[160%] text-blue-500'>
 									24시간 이내로 입금 부탁드립니다.
 								</p>

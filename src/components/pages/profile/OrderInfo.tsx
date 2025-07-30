@@ -38,6 +38,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 const eachFetchOrders = 5;
 
+export const bankName = '기업은행';
+export const bankNumber = '602-046048-04-014';
+export const bankHolder = '주식회사 헤이푸드서비스';
+
 export const orderStatusLabels = {
 	complete: '주문완료',
 	paid: '결제완료',
@@ -61,6 +65,7 @@ export type IOrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
 export interface IOrder extends Omit<Vbank, 'vbankCode'> {
 	id: string;
 	ordererId: string;
+	ordererName: string;
 	ordererType: IUserType;
 	orderStatus: IOrderStatus;
 	comment?: string;
@@ -69,18 +74,22 @@ export interface IOrder extends Omit<Vbank, 'vbankCode'> {
 	companyName: string;
 	email: string;
 	otherPhone?: string;
+	stickerPrice: number;
+	deliveryPrice: number;
 	price: number;
 	paymentId: string;
 	heating?: boolean;
 	paymentMethod: IPaymentMethod;
+	refundBankCode?: string;
+	refundAccount?: string;
+	refundHolder?: string;
 	createdAt: Timestamp;
 	updatedAt: Timestamp | null;
 }
 
 export const PaymentMethod = {
-	offline: 'offline',
-	vbank: 'vbank',
-	card: 'card', //심사 이후 삭제
+	transfer: 'transfer',
+	card: 'card',
 } as const;
 
 export type IPaymentMethod = (typeof PaymentMethod)[keyof typeof PaymentMethod];
@@ -129,7 +138,7 @@ export function OrderInfo() {
 	const [isMoreDisabled, setIsMoreDisabled] = useState(false);
 	const [wholeDataCnt, setWholeDataCnt] = useState(0);
 	const [refundAccount, setRefundAccount] = useState('');
-	const [refundBankCode, setRefundBankCode] = useState(bankOptions[3].id);
+	const [refundBankCode, setRefundBankCode] = useState<string>('');
 	const [refundHolder, setRefundHolder] = useState('');
 
 	const user = useUserStore((state) => state.user);
@@ -283,59 +292,79 @@ export function OrderInfo() {
 	const onCancelOrder = async () => {
 		if (!selectedOrderData || !user) return;
 
-		if (!refundHolder) {
-			alert('예금주명을 입력하여주세요');
-			return;
-		}
+		// if (!refundHolder) {
+		// 	alert('예금주명을 입력하여주세요');
+		// 	return;
+		// }
 
-		if (!refundAccount) {
-			alert('계좌번호를 입력하여주세요');
-			return;
-		}
+		// if (!refundAccount) {
+		// 	alert('계좌번호를 입력하여주세요');
+		// 	return;
+		// }
 
 		try {
-			const result = await fetchCancelPayment(
-				selectedOrderData.orderData.paymentId,
-				selectedOrderData.orderData.id
-			);
+			// const result = await fetchCancelPayment(
+			// 	selectedOrderData.orderData.paymentId,
+			// 	selectedOrderData.orderData.id
+			// );
 
-			if (result.resultCode === '0000') {
-				const updatedAt = Timestamp.now();
+			// if (result.resultCode === '0000') {
+			// 	const updatedAt = Timestamp.now();
 
-				const succeedOrder = await updateData(
-					'orders',
-					selectedOrderData.orderData.id,
-					{
-						orderStatus: OrderStatus.cancelled,
-						updatedAt,
-					}
-				);
+			// 	const succeedOrder = await updateData(
+			// 		'orders',
+			// 		selectedOrderData.orderData.id,
+			// 		{
+			// 			orderStatus: OrderStatus.cancelled,
+			// 			updatedAt,
+			// 		}
+			// 	);
 
-				const updatingItems: { id: string; data: any }[] = [];
-				selectedOrderData.orderItemsWithDeliveryDate.forEach(
-					(orderItems) => {
-						orderItems.items.forEach((item) => {
-							updatingItems.push({
-								id: item.id,
-								data: { updatedAt },
-							});
-						});
-					}
-				);
+			// 	const updatingItems: { id: string; data: any }[] = [];
+			// 	selectedOrderData.orderItemsWithDeliveryDate.forEach(
+			// 		(orderItems) => {
+			// 			orderItems.items.forEach((item) => {
+			// 				updatingItems.push({
+			// 					id: item.id,
+			// 					data: { updatedAt },
+			// 				});
+			// 			});
+			// 		}
+			// 	);
 
-				const succeedItems = await updateMultipleDatas(
-					'orderItems',
-					updatingItems
-				);
+			// 	const succeedItems = await updateMultipleDatas(
+			// 		'orderItems',
+			// 		updatingItems
+			// 	);
 
-				if (succeedOrder && succeedItems) {
-					updateLocalStatusToCancel();
-					alert('주문이 취소되었습니다.');
-				} else {
-					alert('주문 취소를 실패하였습니다.');
+			// 	if (succeedOrder && succeedItems) {
+			// 		updateLocalStatusToCancel();
+			// 		alert('주문이 취소되었습니다.');
+			// 	} else {
+			// 		alert('주문 취소를 실패하였습니다.');
+			// 	}
+			// } else {
+			// 	alert(result.resultMsg);
+			// }
+
+			const updatedAt = Timestamp.now();
+
+			const succeedOrderCancel = await updateData(
+				'orders',
+				selectedOrderData.orderData.id,
+				{
+					orderStatus: OrderStatus.cancelled,
+					refundBankCode: refundBankCode,
+					refundAccount: refundAccount,
+					refundHolder: refundHolder,
+					updatedAt,
 				}
+			);
+			if (succeedOrderCancel) {
+				updateLocalStatusToCancel();
+				alert('주문이 취소되었습니다.');
 			} else {
-				alert(result.resultMsg);
+				alert('주문 취소를 실패하였습니다.');
 			}
 		} catch (error) {
 			console.error('주문 취소 에러:', error);
@@ -581,13 +610,13 @@ export function OrderInfo() {
 									</div>
 									<p className=' md:text-lg text-[#5c5c5c]'>
 										{data.orderData.paymentMethod ===
-										PaymentMethod.vbank
-											? '가상계좌'
-											: '현장결제'}
+										PaymentMethod.transfer
+											? '계좌이체'
+											: '카드결제'}
 									</p>
 								</div>
 								{data.orderData.paymentMethod ===
-									PaymentMethod.vbank && (
+									PaymentMethod.transfer && (
 									<div className='flex justify-start items-center self-stretch gap-3'>
 										<div className='flex justify-center items-center gap-2 pt-0.5'>
 											<p className='flex-grow  md:text-base font-bold text-[#5c5c5c] min-w-[62px] md:min-w-auto'>
@@ -595,13 +624,12 @@ export function OrderInfo() {
 											</p>
 										</div>
 										<p className=' md:text-lg text-[#5c5c5c]'>
-											{data.orderData.vbankName}{' '}
-											{data.orderData.vbankNumber}
+											{bankName} {bankNumber}
 										</p>
 									</div>
 								)}
 								{data.orderData.paymentMethod ===
-									PaymentMethod.vbank && (
+									PaymentMethod.transfer && (
 									<div className='flex justify-start items-center self-stretch gap-3'>
 										<div className='flex justify-center items-center gap-2 pt-0.5'>
 											<p className='flex-grow  md:text-base font-bold text-[#5c5c5c]'>
@@ -609,11 +637,11 @@ export function OrderInfo() {
 											</p>
 										</div>
 										<p className=' md:text-lg text-[#5c5c5c]'>
-											{data.orderData.vbankHolder}
+											{bankHolder}
 										</p>
 									</div>
 								)}
-								{data.orderData.paymentMethod ===
+								{/* {data.orderData.paymentMethod ===
 									PaymentMethod.vbank && (
 									<div className='flex justify-start items-center self-stretch gap-3'>
 										<div className='flex justify-center items-center gap-2 pt-0.5'>
@@ -628,7 +656,7 @@ export function OrderInfo() {
 												).toLocaleString()}
 										</p>
 									</div>
-								)}
+								)} */}
 							</div>
 						</div>
 						{isOrderCancelAvailable(data) && (
@@ -665,74 +693,49 @@ export function OrderInfo() {
 				<ModalCenter
 					title={'주문 취소'}
 					description={
-						<>
-							{selectedOrderData?.orderData.orderStatus ===
-								OrderStatus.ready || OrderStatus.complete ? (
-								<div className='flex flex-col gap-2'>
-									<p className='text-md font-bold'>
-										주문을 취소하시겠습니까?
+						<div className='flex flex-col gap-[24px]'>
+							<p className=''>
+								입금하신 경우 환불받을 계좌정보를 입력해주세요
+							</p>
+							<div className='flex flex-col gap-[12px]'>
+								<div className='flex items-center gap-[6px]'>
+									<p className='min-w-[60px] md:w-[90px] md:text-base  text-left'>
+										예금주명
 									</p>
-									{selectedOrderData?.orderData
-										.orderStatus === OrderStatus.ready && (
-										<p className='text-sm'>
-											입금한지 얼마 안되신 경우 &quot;결제
-											확인중&quot;이 &quot;결제
-											완료&quot;로 바뀐 후 취소해주세요.
-										</p>
-									)}
+									<TextField
+										value={refundHolder}
+										onChange={(e) =>
+											setRefundHolder(e.target.value)
+										}
+										style={{ flex: 1 }}
+									/>
 								</div>
-							) : (
-								<div className='flex flex-col gap-[24px]'>
-									<p className=''>
-										환불받을 계좌정보를 입력해주세요
+								<div className='flex items-center gap-[6px]'>
+									<p className='min-w-[60px] md:w-[90px] md:text-base  text-left'>
+										은행
 									</p>
-									<div className='flex flex-col gap-[12px]'>
-										<div className='flex items-center gap-[6px]'>
-											<p className='min-w-[60px] md:w-[90px] md:text-base  text-left'>
-												예금주명
-											</p>
-											<TextField
-												value={refundHolder}
-												onChange={(e) =>
-													setRefundHolder(
-														e.target.value
-													)
-												}
-												style={{ flex: 1 }}
-											/>
-										</div>
-										<div className='flex items-center gap-[6px]'>
-											<p className='min-w-[60px] md:w-[90px] md:text-base  text-left'>
-												은행
-											</p>
-											<Dropdown
-												domId={dropdownDomId}
-												list={bankOptions}
-												selectedId={refundBankCode}
-												onClick={(id) =>
-													setRefundBankCode(id)
-												}
-												style={{ flex: 1 }}
-											/>
-										</div>
-										<div className='flex items-center gap-[6px]'>
-											<p className='min-w-[60px] md:w-[90px] md:text-base  text-left'>
-												계좌번호
-											</p>
-											<TextField
-												value={refundAccount}
-												onChange={(e) =>
-													setRefundAccount(
-														e.target.value
-													)
-												}
-												style={{ flex: 1 }}
-											/>
-										</div>
-									</div>
+									<Dropdown
+										domId={dropdownDomId}
+										list={bankOptions}
+										selectedId={refundBankCode}
+										onClick={(id) => setRefundBankCode(id)}
+										style={{ flex: 1 }}
+									/>
 								</div>
-							)}
-						</>
+								<div className='flex items-center gap-[6px]'>
+									<p className='min-w-[60px] md:w-[90px] md:text-base  text-left'>
+										계좌번호
+									</p>
+									<TextField
+										value={refundAccount}
+										onChange={(e) =>
+											setRefundAccount(e.target.value)
+										}
+										style={{ flex: 1 }}
+									/>
+								</div>
+							</div>
+						</div>
 					}
 					btn1st={{
 						value: '주문 취소',

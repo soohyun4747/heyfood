@@ -128,7 +128,7 @@ interface OrderPaymentMethodStore {
 export const useOrderPaymentMethodStore = create(
 	persist<OrderPaymentMethodStore>(
 		(set) => ({
-			paymentMethod: PaymentMethod.offline,
+			paymentMethod: PaymentMethod.card,
 			setPaymentMethod: (value) => set(() => ({ paymentMethod: value })),
 		}),
 		{ name: 'payment-method' }
@@ -162,5 +162,36 @@ export const useOrderPriceStore = create(
 			setOrderPrice: (value) => set(() => ({ orderPrice: value })),
 		}),
 		{ name: 'order-price' }
+	)
+);
+
+
+interface OrderDeliveryPriceStore {
+	deliveryPrice: number;
+	setDeliveryPrice: (value: number) => void;
+}
+
+export const useOrderDeliveryPriceStore = create(
+	persist<OrderDeliveryPriceStore>(
+		(set) => ({
+			deliveryPrice: 0,
+			setDeliveryPrice: (value) => set(() => ({ deliveryPrice: value })),
+		}),
+		{ name: 'delivery-price' }
+	)
+);
+
+interface OrderStickerPriceStore {
+	stickerPrice: number;
+	setStickerPrice: (value: number) => void;
+}
+
+export const useOrderStickerPriceStore = create(
+	persist<OrderStickerPriceStore>(
+		(set) => ({
+			stickerPrice: 0,
+			setStickerPrice: (value) => set(() => ({ stickerPrice: value })),
+		}),
+		{ name: 'sticker-price' }
 	)
 );

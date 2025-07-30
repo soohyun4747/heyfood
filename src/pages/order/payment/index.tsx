@@ -13,6 +13,7 @@ import { serverAuthVBank } from '@/utils/payment';
 import {
 	useOrderCommentStore,
 	useOrderCompanyNameStore,
+	useOrderDeliveryPriceStore,
 	useOrderEmailStore,
 	useOrderHeatingStore,
 	useOrderIdStore,
@@ -21,14 +22,13 @@ import {
 	useOrderPriceStore,
 	useOrderStickerFileStore,
 	useOrderStickerPhraseStore,
+	useOrderStickerPriceStore,
 } from '@/stores/orderInfoStore';
 import { CheckRect } from '@/components/CheckRect';
 import { Dropdown } from '@/components/Dropdown';
 import { ButtonRadio } from '@/components/ButtonRadio';
 import { getCompositionString } from '@/utils/string';
-import {
-	PaymentMethod,
-} from '@/components/pages/profile/OrderInfo';
+import { PaymentMethod } from '@/components/pages/profile/OrderInfo';
 
 const heyfoodAddress = '해운대구 송정2로 13번길 40';
 const stickerPrice = 300;
@@ -66,6 +66,8 @@ function PaymentPage() {
 	const { heating, setHeating } = useOrderHeatingStore();
 	const { setOrderId } = useOrderIdStore();
 	const { setOrderPrice } = useOrderPriceStore();
+	const { setDeliveryPrice } = useOrderDeliveryPriceStore();
+	const { setStickerPrice } = useOrderStickerPriceStore();
 	const { paymentMethod, setPaymentMethod } = useOrderPaymentMethodStore();
 
 	const fileInputRef = useRef<HTMLInputElement>(null);
@@ -106,6 +108,10 @@ function PaymentPage() {
 
 		return dosirakCount;
 	}, [cart]);
+
+	useEffect(() => {
+		setStickerPrice(stickerPrice * dosirakCount);
+	}, [dosirakCount]);
 
 	const sideTotalPrice = useMemo(() => {
 		let sideTotalPrice = 0;
@@ -159,24 +165,24 @@ function PaymentPage() {
 
 			setOrderId(orderDocId);
 			setOrderPrice(wholePrice);
-
-			if (paymentMethod === PaymentMethod.offline) {
-				router.push('/order/complete');
-			} else {
-				await serverAuthVBank(
-					orderDocId,
-					wholePrice,
-					`${cart.at(0)?.items.at(0)?.menu.name} 외 ${
-						totalCount - 1
-					}건`,
-					'정수현',
-					`${originPath}/api/nicepay/approve`,
-					//'vbank'
-					paymentMethod,
-					user.phone,
-					email
-				);
-			}
+			router.push('/order/complete');
+			// if (paymentMethod === PaymentMethod.offline) {
+			// 	router.push('/order/complete');
+			// } else {
+			// 	await serverAuthVBank(
+			// 		orderDocId,
+			// 		wholePrice,
+			// 		`${cart.at(0)?.items.at(0)?.menu.name} 외 ${
+			// 			totalCount - 1
+			// 		}건`,
+			// 		'정수현',
+			// 		`${originPath}/api/nicepay/approve`,
+			// 		//'vbank'
+			// 		paymentMethod,
+			// 		user.phone,
+			// 		email
+			// 	);
+			// }
 		}
 	};
 
@@ -184,12 +190,17 @@ function PaymentPage() {
 		setLoading(true);
 		Promise.all(cart.map((bundle) => getDeliveryPrice(bundle.address)))
 			// 혹시라도 undefined가 섞일 수 있다면 필터링
-			.then((prices) =>
-				setDeliveryPrices(prices.filter((p): p is number => p != null))
-			)
+			.then((prices) => {
+				const purePrices = prices.filter((p): p is number => p != null);
+				setDeliveryPrices(purePrices);
+				setDeliveryPrice(
+					purePrices.reduce((prev, curr) => prev + curr)
+				);
+			})
 			.catch((err) => {
 				console.error('배송비 계산 중 오류:', err);
 				setDeliveryPrices([]);
+				setDeliveryPrice(0);
 			})
 			.finally(() => {
 				setLoading(false);
@@ -277,6 +288,15 @@ function PaymentPage() {
 		} catch (error) {
 			console.log(error);
 		}
+	};
+
+	const onClickCoupon = (id: string) => {
+		if (id === stickerCoupon) {
+			setStickerPrice(0);
+		} else {
+			setStickerPrice(stickerPrice * dosirakCount);
+		}
+		setCoupon(id);
 	};
 
 	return (
@@ -479,7 +499,7 @@ function PaymentPage() {
 								domId={'coupon'}
 								list={openEventCoupons}
 								style={{ width: '100%' }}
-								onClick={(id) => setCoupon(id)}
+								onClick={onClickCoupon}
 								selectedId={coupon}
 							/>
 						</div>
@@ -667,7 +687,7 @@ function PaymentPage() {
 									결제 방법
 								</p>
 								<div className='flex items-center gap-5'>
-									{/* <div
+									<div
 										className='hover:cursor-pointer flex items-center gap-2'
 										onClick={() =>
 											setPaymentMethod(PaymentMethod.card)
@@ -684,31 +704,16 @@ function PaymentPage() {
 										className='hover:cursor-pointer flex items-center gap-2'
 										onClick={() =>
 											setPaymentMethod(
-												PaymentMethod.vbank
+												PaymentMethod.transfer
 											)
 										}>
 										<ButtonRadio
 											checked={
 												paymentMethod ===
-												PaymentMethod.vbank
+												PaymentMethod.transfer
 											}
 										/>
-										<label>가상계좌</label>
-									</div> */}
-									<div
-										className='hover:cursor-pointer flex items-center gap-2'
-										onClick={() =>
-											setPaymentMethod(
-												PaymentMethod.offline
-											)
-										}>
-										<ButtonRadio
-											checked={
-												paymentMethod ===
-												PaymentMethod.offline
-											}
-										/>
-										<label>현장결제</label>
+										<label>계좌이체</label>
 									</div>
 								</div>
 							</div>
