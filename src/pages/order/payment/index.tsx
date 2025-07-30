@@ -73,8 +73,6 @@ function PaymentPage() {
 
 	const router = useRouter();
 
-	console.log({ paymentMethod });
-
 	useEffect(() => {
 		if (!user) {
 			router.push('/login');
@@ -669,7 +667,7 @@ function PaymentPage() {
 									결제 방법
 								</p>
 								<div className='flex items-center gap-5'>
-									<div
+									{/* <div
 										className='hover:cursor-pointer flex items-center gap-2'
 										onClick={() =>
 											setPaymentMethod(PaymentMethod.card)
@@ -696,7 +694,7 @@ function PaymentPage() {
 											}
 										/>
 										<label>가상계좌</label>
-									</div>
+									</div> */}
 									<div
 										className='hover:cursor-pointer flex items-center gap-2'
 										onClick={() =>

@@ -128,7 +128,7 @@ interface OrderPaymentMethodStore {
 export const useOrderPaymentMethodStore = create(
 	persist<OrderPaymentMethodStore>(
 		(set) => ({
-			paymentMethod: PaymentMethod.vbank,
+			paymentMethod: PaymentMethod.offline,
 			setPaymentMethod: (value) => set(() => ({ paymentMethod: value })),
 		}),
 		{ name: 'payment-method' }
