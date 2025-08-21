@@ -38,6 +38,8 @@ const stickerPrice = 300;
 const stickerCoupon = 'stickerCoupon';
 const sideMenuCoupon = 'sideMenuCoupon';
 
+const deliveryFreeMinPrice = 600000;
+
 const openEventCoupons = [
 	{ id: '', label: '-선택안함-' },
 	{ id: stickerCoupon, label: '오픈기념 스티커 무료' },
@@ -50,7 +52,7 @@ export const categoryDeopbabId = '덮밥도시락';
 function PaymentPage() {
 	const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 	const [deliveryPrices, setDeliveryPrices] = useState<number[]>([]);
-	const [loading, setLoading] = useState<boolean>(true);
+	const [loading, setLoading] = useState<boolean>(false);
 	const [stickerCheck, setStickerCheck] = useState(false);
 	const [file, setFile] = useState<File>();
 	const [coupon, setCoupon] = useState<string>('');
@@ -185,39 +187,56 @@ function PaymentPage() {
 		}
 	};
 
-	useEffect(() => {
-		setLoading(true);
-		Promise.all(cart.map((bundle) => getDeliveryPrice(bundle.address)))
-			// 혹시라도 undefined가 섞일 수 있다면 필터링
-			.then((prices) => {
-				const purePrices = prices.filter((p): p is number => p != null);
-				setDeliveryPrices(purePrices);
-				setDeliveryPrice(
-					purePrices.reduce((prev, curr) => prev + curr)
+	const itemsPrice = useMemo(
+		() =>
+			cart.reduce((sum, bundle) => {
+				return (
+					sum +
+					bundle.items.reduce(
+						(bundleSum, item) =>
+							bundleSum + item.menu.price * item.count,
+						0
+					)
 				);
-			})
-			.catch((err) => {
-				console.error('배송비 계산 중 오류:', err);
-				setDeliveryPrices([]);
-				setDeliveryPrice(0);
-			})
-			.finally(() => {
-				setLoading(false);
-			});
-	}, [cart]);
+			}, 0),
+		[cart]
+	);
+
+	//배송비 계산
+	useEffect(() => {
+		getSetDeliveryPrice();
+	}, [itemsPrice]);
+
+	const getSetDeliveryPrice = () => {
+		if (deliveryFreeMinPrice <= itemsPrice) {
+			setDeliveryPrice(0);
+			setDeliveryPrices([]);
+		} else {
+			
+			setLoading(true);
+			Promise.all(cart.map((bundle) => getDeliveryPrice(bundle.address)))
+				// 혹시라도 undefined가 섞일 수 있다면 필터링
+				.then((prices) => {
+					const purePrices = prices.filter(
+						(p): p is number => p != null
+					);
+					setDeliveryPrices(purePrices);
+					setDeliveryPrice(
+						purePrices.reduce((prev, curr) => prev + curr)
+					);
+				})
+				.catch((err) => {
+					console.error('배송비 계산 중 오류:', err);
+					setDeliveryPrices([]);
+					setDeliveryPrice(0);
+				})
+				.finally(() => {
+					setLoading(false);
+				});
+		}
+	};
 
 	const wholePrice = useMemo(() => {
-		const itemsTotal = cart.reduce((sum, bundle) => {
-			return (
-				sum +
-				bundle.items.reduce(
-					(bundleSum, item) =>
-						bundleSum + item.menu.price * item.count,
-					0
-				)
-			);
-		}, 0);
-
 		const deliveryTotal = (deliveryPrices ?? []).reduce(
 			(sum, d) => sum + d,
 			0
@@ -226,15 +245,15 @@ function PaymentPage() {
 		if (stickerCheck) {
 			return (
 				stickerPrice * dosirakCount +
-				itemsTotal +
+				itemsPrice +
 				deliveryTotal -
 				openEventCouponSalePrice
 			);
 		}
 
-		return itemsTotal + deliveryTotal - openEventCouponSalePrice;
+		return itemsPrice + deliveryTotal - openEventCouponSalePrice;
 	}, [
-		cart,
+		itemsPrice,
 		deliveryPrices,
 		stickerCheck,
 		dosirakCount,
@@ -510,7 +529,7 @@ function PaymentPage() {
 							주문내역
 						</p>
 						<p className='text-sm md:text-sm text-center text-[#0f0e0e]'>
-							배송비는 거리 기반으로 책정됩니다
+							배송비는 거리 기반으로 책정됩니다 (60만원 이상시 무료)
 						</p>
 					</div>
 					<div className='flex flex-col justify-start items-start self-stretch gap-5'>
