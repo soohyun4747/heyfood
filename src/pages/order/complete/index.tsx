@@ -41,6 +41,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { Timestamp } from 'firebase/firestore';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 interface OrderQuery {
 	resultCode: string;
@@ -214,10 +215,56 @@ function OrderCompletePage() {
 			});
 
 			const result = await addMultipleDatas('orderItems', orderItems);
+			sendEmailtoHey(
+				user.name,
+				orderItems,
+				stickerPrice,
+				deliveryPrice,
+				orderPrice
+			);
 			return !!result;
 		} catch (err) {
 			console.error('addOrderDataToDB error:', err);
 			return false;
+		}
+	};
+
+	const sendEmailtoHey = async (
+		ordererName: string,
+		orderItems: Omit<IOrderItem, 'id'>[],
+		stickerPrice: number,
+		deliveryPrice: number,
+		totalPrice: number
+	) => {
+		const dateFixedOrderItems: any[] = JSON.parse(
+			JSON.stringify(orderItems)
+		);
+
+		dateFixedOrderItems.forEach((item, i) => {
+			item.deliveryDate = orderItems[i].deliveryDate.toDate().toLocaleString();
+		});
+
+		const templateParams = {
+			ordererName,
+			orderItems: dateFixedOrderItems,
+			stickerPrice,
+			deliveryPrice,
+			totalPrice,
+		};
+
+		try {
+			// EmailJS 서비스 호출
+			// 'YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', 'YOUR_PUBLIC_KEY'를 EmailJS 콘솔에서 발급받은 값으로 대체해야 합니다.
+			await emailjs.send(
+				process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID ?? '',
+				process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID2 ?? '',
+				templateParams,
+				process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+			);
+			console.log('이메일 전송 성공');
+			// 전송 성공 후 상태 초기화 또는 다른 처리를 할 수 있습니다.
+		} catch (error) {
+			console.error('이메일 전송 실패:', error);
 		}
 	};
 
