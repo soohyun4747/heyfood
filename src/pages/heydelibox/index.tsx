@@ -70,14 +70,6 @@ function HeyDeliBoxPage() {
 		<Common meta={<Meta />}>
 			<>
 				<div className='flex flex-col justify-start items-center self-stretch h-[1001px] relative gap-[60px] bg-white'>
-					{/* <div className='flex flex-col justify-start items-center self-stretch relative gap-2'>
-						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
-							헤이델리박스
-						</p>
-						<p className='text-sm md:text-lg text-center text-[#0f0e0e]'>
-							우리는 더 좋은 헤이델리박스를 위해 매일 노력합니다.
-						</p>
-					</div> */}
 					<div className='self-stretch h-[600px] md:h-[731px] relative overflow-hidden'>
 						{/* 데스크탑 슬라이드 (vw 단위로 컨테이너 지정) */}
 						<motion.div
@@ -215,7 +207,7 @@ function HeyDeliBoxPage() {
 					<div className='w-full h-[623px] bg-[#fffbea] absolute top-[1138px]' />
 					<div className='flex flex-col justify-start items-center relative gap-2'>
 						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
-							헤이델리박스의 약속
+							헤이푸드의 약속
 						</p>
 						<p className='text-sm md:text-lg text-center text-[#0f0e0e]'>
 							<span>

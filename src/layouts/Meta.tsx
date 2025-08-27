@@ -65,7 +65,7 @@ const Meta = (props: IMetaProps) => {
         additionalMetaTags={[
           {
             name: 'author',
-            content: '헤이델리박스',
+            content: '헤이푸드',
           },
           {
             name: 'keywords',

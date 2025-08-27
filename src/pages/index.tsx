@@ -187,7 +187,7 @@ function LandingPage() {
 				<div className='flex flex-col justify-start items-center self-stretch  gap-[40px] md:px-[120px] py-40 bg-[#ffc966]'>
 					<div className='flex flex-col justify-start items-center  gap-5'>
 						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
-							헤이델리박스 메뉴
+							헤이푸드 메뉴
 						</p>
 						<LandingMenusTab />
 					</div>
@@ -203,7 +203,7 @@ function LandingPage() {
 							서비스 이용 후기
 						</p>
 						<p className='md:text-lg text-center text-[#0f0e0e]'>
-							헤이델리박스를 만나고 <br className='md:hidden' />
+							헤이푸드를 만나고 <br className='md:hidden' />
 							달라진 고객 후기를 살펴보세요
 						</p>
 					</div>

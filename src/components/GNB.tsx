@@ -47,7 +47,7 @@ export function GNB({ type }: { type: IUserType }) {
 		<div className='fixed top-0 flex w-full justify-between items-center px-[20px] md:px-[120px] bg-white z-[1]'>
 			<div className='flex items-center md:gap-[200px]'>
 				<Image
-					src={'/images/logo1.svg'}
+					src={'/images/logo1.png'}
 					alt={'logo'}
 					width={180}
 					height={90}
@@ -55,7 +55,7 @@ export function GNB({ type }: { type: IUserType }) {
 					className='cursor-pointer hidden md:block'
 				/>
 				<Image
-					src={'/images/logo1.svg'}
+					src={'/images/logo1.png'}
 					alt={'logo'}
 					width={146.15}
 					height={20}
@@ -66,7 +66,7 @@ export function GNB({ type }: { type: IUserType }) {
 					<div
 						onClick={() => router.push('/heydelibox')}
 						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
-						헤이델리박스
+						헤이푸드
 					</div>
 					<div
 						onClick={() => router.push('/menu')}
@@ -140,7 +140,7 @@ const MenuDrawer = ({ type }: { type: IUserType }) => {
 			<p
 				onClick={() => router.push('/heydelibox')}
 				className='text-lg font-bold text-left text-[#1f2023]'>
-				헤이델리박스
+				헤이푸드
 			</p>
 			<p
 				onClick={() => router.push('/menu')}
