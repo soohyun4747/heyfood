@@ -82,7 +82,7 @@ function LandingPage() {
 							<p className='text-[37.5px] md:text-[50px] font-bold text-[#0f0e0e]'>
 								<span>도시락, 고민될 땐 </span>
 								<br />
-								<span>HEYDELIBOX</span>
+								<span>HEYFOOD</span>
 							</p>
 							<p className='text-[13.5px] md:text-lg text-[#0f0e0e]'>
 								<span>행사 도시락, 어떻게 준비하지?”</span>
@@ -93,7 +93,7 @@ function LandingPage() {
 								</span>
 								<br />
 								<span className='font-bold'>
-									고민하는 당신을 위해 HEYDELIBOX가{' '}
+									고민하는 당신을 위해 HEYFOOD가{' '}
 									<br className='md:hidden' />
 									해결해 드리겠습니다!
 								</span>
@@ -121,7 +121,7 @@ function LandingPage() {
 					<div className='flex flex-col justify-start items-center relative gap-5'>
 						<p className='text-[28px] md:text-5xl font-bold text-center text-[#0f0e0e]'>
 							&nbsp;해결의 제안: <br className='md:hidden' />
-							HEYDELIBOX 도시락
+							HEYFOOD 도시락
 						</p>
 						<p className='text-sm md:text-lg text-center text-[#0f0e0e]'>
 							<span>
