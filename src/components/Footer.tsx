@@ -69,7 +69,7 @@ export function Footer() {
 									</div>
 								</div>
 								<p className='text-sm font-light md:text-center text-[#0f0e0e]'>
-									COPYRIGHT © 2025 HEYFOOD. ALL RIGHTS
+									COPYRIGHT © 2025 HEYFOODSERVICE. ALL RIGHTS
 									RESERVED.
 								</p>
 							</div>

@@ -122,7 +122,7 @@ export function GuestLogin() {
 		<div className='flex flex-col justify-start items-start self-stretch  gap-10'>
 			<div className='flex flex-col justify-start items-center self-stretch  gap-6'>
 				<p className='text-xs md:text-[15px] text-center text-[#909090]'>
-					헤이푸드 회원이 되시면 다양한 혜택을 누리실 수 있습니다.
+					헤이푸드박스 회원이 되시면 다양한 혜택을 누리실 수 있습니다.
 				</p>
 				<div className='flex justify-end items-center self-stretch  gap-2'>
 					<div
@@ -147,7 +147,7 @@ export function GuestLogin() {
 				<div className='md:bg-transparent bg-white flex justify-start items-start self-stretch  h-[238px] relative overflow-hidden gap-2 p-4 border border-[#d9d9d9] overflow-y-auto'>
 					<p className='flex-grow md:w-[416px] text-sm md:text-[13px] text-left text-[#909090]'>
 						<span>
-							헤이푸드는 비회원 주문 서비스를 위하여 다음과
+							헤이푸드박스는 비회원 주문 서비스를 위하여 다음과
 							같이 귀하의 개인정보를 수집·이용합니다.
 						</span>
 						<br />

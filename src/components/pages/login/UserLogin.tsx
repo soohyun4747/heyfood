@@ -49,7 +49,7 @@ export function UserLogin() {
 		<div className='flex flex-col justify-start items-start self-stretch  gap-12'>
 			<div className='flex flex-col justify-start items-center self-stretch  gap-10'>
 				<p className='text-xs md:text-[15px] text-center text-[#909090] leading-[150%]'>
-					<span>헤이푸드 회원으로 로그인하시면 제공하는</span>
+					<span>헤이푸드박스 회원으로 로그인하시면 제공하는</span>
 					<br />
 					<span>다양한 서비스를 이용할 수 있습니다.</span>
 				</p>

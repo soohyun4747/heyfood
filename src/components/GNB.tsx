@@ -66,7 +66,7 @@ export function GNB({ type }: { type: IUserType }) {
 					<div
 						onClick={() => router.push('/heydelibox')}
 						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
-						헤이푸드
+						헤이푸드박스
 					</div>
 					<div
 						onClick={() => router.push('/menu')}
@@ -140,7 +140,7 @@ const MenuDrawer = ({ type }: { type: IUserType }) => {
 			<p
 				onClick={() => router.push('/heydelibox')}
 				className='text-lg font-bold text-left text-[#1f2023]'>
-				헤이푸드
+				헤이푸드박스
 			</p>
 			<p
 				onClick={() => router.push('/menu')}

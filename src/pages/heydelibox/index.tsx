@@ -207,7 +207,7 @@ function HeyDeliBoxPage() {
 					<div className='w-full h-[623px] bg-[#fffbea] absolute top-[1138px]' />
 					<div className='flex flex-col justify-start items-center relative gap-2'>
 						<p className='text-[28px] md:text-[50px] font-bold text-center text-[#0f0e0e]'>
-							헤이푸드의 약속
+							헤이푸드박스의 약속
 						</p>
 						<p className='text-sm md:text-lg text-center text-[#0f0e0e]'>
 							<span>

@@ -22,7 +22,7 @@ function SignUpCompletePage() {
 							<span>{user?.name}님 </span>
 							<br />
 							<span>
-								헤이푸드 회원이 되신 것을{' '}
+								헤이푸드박스 회원이 되신 것을{' '}
 								<br className='md:hidden' />
 								환영합니다!
 							</span>
