@@ -64,7 +64,7 @@ export function GNB({ type }: { type: IUserType }) {
 				/>
 				<div className='hidden md:flex items-center gap-[44px]'>
 					<div
-						onClick={() => router.push('/heydelibox')}
+						onClick={() => router.push('/heyfoodbox')}
 						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
 						헤이푸드박스
 					</div>
@@ -138,7 +138,7 @@ const MenuDrawer = ({ type }: { type: IUserType }) => {
 				홈
 			</p>
 			<p
-				onClick={() => router.push('/heydelibox')}
+				onClick={() => router.push('/heyfoodbox')}
 				className='text-lg font-bold text-left text-[#1f2023]'>
 				헤이푸드박스
 			</p>

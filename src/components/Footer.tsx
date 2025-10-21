@@ -19,7 +19,7 @@ export function Footer() {
 						이용약관
 					</p>
 				</div>
-				<div className='flex flex-col justify-start items-start self-stretch  gap-10'>
+				<div className='flex flex-col justify-start items-start self-stretch  gap-2'>
 					<div className='self-stretch  h-0.5 opacity-[0.24] bg-[#0f0e0e]' />
 					<div className='flex flex-col md:flex-row justify-start items-start self-stretch gap-4 md:gap-[50px]'>
 						<div className='flex md:flex-row flex-col justify-start items-start flex-grow relative md:gap-[50px] gap-[30px]'>
@@ -37,7 +37,7 @@ export function Footer() {
 									fill
 								/>
 							</div>
-							<div className='flex md:flex-col flex-col-reverse justify-center items-start md:gap-10 gap-[30px]'>
+							<div className='flex md:flex-col flex-col-reverse justify-center items-start md:gap-10 gap-[30px] md:pt-6'>
 								<div className='flex flex-col justify-start items-start gap-4 md:gap-2.5'>
 									<div className='flex md:flex-row flex-col justify-start items-start gap-4 md:gap-6'>
 										<p className=' text-[15px] font-bold text-center text-[#0f0e0e]'>
@@ -74,7 +74,7 @@ export function Footer() {
 								</p>
 							</div>
 						</div>
-						<div className='flex flex-col justify-start items-start  gap-3'>
+						<div className='flex flex-col justify-start items-start  gap-3  md:pt-6'>
 							<div className='flex justify-start items-start  gap-4'>
 								<p className=' text-[15px] font-bold text-center text-[#0f0e0e]'>
 									통신판매업신고
