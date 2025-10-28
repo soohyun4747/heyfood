@@ -18,6 +18,7 @@ export interface IMenu {
 	price: number;
 	imagePaths: string[];
 	imageDetailPath: string;
+	order?: number;
 	composition: CompositionDesserts;
 }
 

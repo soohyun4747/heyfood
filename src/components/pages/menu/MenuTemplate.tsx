@@ -21,7 +21,7 @@ export function MenuTemplate({ categoryIdx }: { categoryIdx: number }) {
 		useState<number>(categoryIdx);
 	const { setMenu } = useMenuStore();
 	const categories = useMenuCategoriesStore((state) => state.menuCategories);
-	const menus = useMenusStore((state) => state.menus);	
+	const menus = useMenusStore((state) => state.menus);
 
 	const router = useRouter();
 
@@ -42,7 +42,22 @@ export function MenuTemplate({ categoryIdx }: { categoryIdx: number }) {
 	const filteredCategoryMenus = useMemo(() => {
 		if (!categories[selectedCategoryIdx]) return [];
 		const selectedCategory = categories[selectedCategoryIdx];
-		return menus.filter((menu) => menu.categoryId === selectedCategory.id);
+		return menus
+			.filter((menu) => menu.categoryId === selectedCategory.id)
+			.sort((a, b) => {
+				const hasOrderA = typeof a.order === 'number';
+				const hasOrderB = typeof b.order === 'number';
+
+				// ✅ order가 있는 항목을 먼저
+				if (hasOrderA && !hasOrderB) return -1;
+				if (!hasOrderA && hasOrderB) return 1;
+
+				// ✅ 둘 다 order가 있을 때: 내림차순 정렬
+				if (hasOrderA && hasOrderB) return a.order! - b.order!;
+
+				// ✅ 둘 다 없을 때는 그대로
+				return 0;
+			});
 	}, [menus, categories, selectedCategoryIdx]);
 
 	return (
