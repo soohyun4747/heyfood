@@ -13,7 +13,7 @@ export function TabMenu(props: ITabMenuProps) {
 	return (
 		<div
 			style={props.style}
-			className={`flex items-center md:justify-center gap-[12px] md:gap-6 w-full max-w-[1200px] overflow-x-auto ${props.className}`}>
+			className={`flex items-center md:justify-center gap-[12px] md:gap-6 w-full max-w-[1200px] overflow-x-auto ${props.className} bg-[#fffbea] p-2`}>
 			{props.menus.map((category, i) => (
 				<div
 					key={i}
@@ -29,7 +29,7 @@ export function TabMenu(props: ITabMenuProps) {
 								i === props.selectedIdx ? '#f2ab27' : '#909090',
 							fontWeight: i === props.selectedIdx ? '700' : '400',
 						}}
-						className='text-sm md:text-xl text-center w-max'>
+						className='text-sm md:text-2xl text-center w-max'>
 						{category.name}
 					</p>
 				</div>

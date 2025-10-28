@@ -65,22 +65,22 @@ export function GNB({ type }: { type: IUserType }) {
 				<div className='hidden md:flex items-center gap-[44px]'>
 					<div
 						onClick={() => router.push('/heyfoodbox')}
-						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
+						className='select-none text-lg p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
 						헤이푸드박스
 					</div>
 					<div
 						onClick={() => router.push('/menu')}
-						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
+						className='select-none p-[6px] text-lg font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
 						메뉴
 					</div>
 					<div
 						onClick={() => router.push('/faq')}
-						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
+						className='select-none p-[6px] text-lg font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
 						자주묻는 질문
 					</div>
 					<div
 						onClick={() => router.push('/review')}
-						className='select-none p-[6px] font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
+						className='select-none p-[6px] text-lg font-bold leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
 						후기
 					</div>
 				</div>
@@ -89,13 +89,13 @@ export function GNB({ type }: { type: IUserType }) {
 				<div className='hidden md:flex items-center gap-[44px]'>
 					<div
 						onClick={() => router.push('/inquiry')}
-						className='select-none p-[6px] text-sm leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
+						className='select-none p-[6px] text-md leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
 						문의하기
 					</div>
 					{type === UserType.guest ? (
 						<div
 							onClick={() => router.push('/login')}
-							className='select-none p-[6px] text-sm leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
+							className='select-none p-[6px] text-md leading-[normal] text-gray-900 hover:text-sub-01 hover:cursor-pointer'>
 							로그인
 						</div>
 					) : (

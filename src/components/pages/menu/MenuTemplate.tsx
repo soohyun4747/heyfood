@@ -21,10 +21,7 @@ export function MenuTemplate({ categoryIdx }: { categoryIdx: number }) {
 		useState<number>(categoryIdx);
 	const { setMenu } = useMenuStore();
 	const categories = useMenuCategoriesStore((state) => state.menuCategories);
-	const menus = useMenusStore((state) => state.menus);
-
-	console.log(categories);
-	
+	const menus = useMenusStore((state) => state.menus);	
 
 	const router = useRouter();
 
