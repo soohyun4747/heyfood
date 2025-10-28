@@ -78,6 +78,8 @@ export function LandingMenusTab() {
 		router.push('/menu/detail');
 	};
 
+	console.log({ slideIdx });
+
 	return (
 		<div className='flex flex-col justify-center gap-[40px]'>
 			{/* 카테고리 버튼 */}
@@ -115,7 +117,10 @@ export function LandingMenusTab() {
 					{/* 내부 컨테이너: 모든 카드가 한 줄에 있고, translateX와 transition이 적용됨 */}
 					{filteredCategoryMenus.length > 0 ? (
 						<div
-							className='flex gap-[32px] transition-transform ease-out duration-300 md:justify-center'
+							className={`flex gap-[32px] transition-transform ease-out duration-300 ${
+								filteredCategoryMenus.length < 3 &&
+								'md:justify-center'
+							}`}
 							style={{
 								transform: `translateX(-${
 									slideIdx * (isMobile ? 332 : 1236)

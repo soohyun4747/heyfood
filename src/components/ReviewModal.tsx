@@ -45,6 +45,7 @@ export function ReviewModal({
 			await addData('reviews', {
 				id: id,
 				email: user?.email,
+				name: user?.name,
 				comment: comment,
 				imagePaths: imagePaths,
 				createdAt: Timestamp.now(),

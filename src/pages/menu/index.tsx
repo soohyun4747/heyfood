@@ -1,7 +1,7 @@
 import { MenuTemplate } from '@/components/pages/menu/MenuTemplate';
 
-function KimbabDosirakPage() {
+function MenuPage() {
 	return <MenuTemplate categoryIdx={0} />;
 }
 
-export default KimbabDosirakPage
+export default MenuPage

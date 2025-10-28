@@ -10,9 +10,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 
 const menuUrls = [
-	'/menu/kimbabDosirak',
-	'/menu/deopbabDosirak',
-	'/menu/vipDosirak',
+	'/menu/69dosirak',
+	'/menu/99dosirak',
 	'/menu/snackBox',
 	'/menu/side',
 ];
@@ -23,6 +22,9 @@ export function MenuTemplate({ categoryIdx }: { categoryIdx: number }) {
 	const { setMenu } = useMenuStore();
 	const categories = useMenuCategoriesStore((state) => state.menuCategories);
 	const menus = useMenusStore((state) => state.menus);
+
+	console.log(categories);
+	
 
 	const router = useRouter();
 

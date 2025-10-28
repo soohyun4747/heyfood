@@ -5,6 +5,7 @@ import { useState } from 'react';
 
 export interface IReview {
 	id: string;
+	name: string;
 	email: string;
 	comment: string;
 	imagePaths: string[];
@@ -23,7 +24,7 @@ export function ReviewItem(props: IReview) {
 				<div className='flex flex-col justify-center items-start flex-grow relative gap-3 mt-[6px]'>
 					<div className='flex flex-col justify-start items-start self-stretch relative gap-2'>
 						<p className='self-stretch text-[13px] md:text-base text-left text-[#0f0e0e]'>
-							{props.email} |{' '}
+							{props.name} |{' '}
 							{props.createdAt.toDate().toLocaleDateString()}
 						</p>
 					</div>

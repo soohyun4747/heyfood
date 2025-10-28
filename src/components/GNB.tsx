@@ -44,7 +44,7 @@ export function GNB({ type }: { type: IUserType }) {
 	};
 
 	return (
-		<div className='fixed top-0 flex w-full justify-between items-center px-[20px] md:px-[120px] bg-white z-[1]'>
+		<div className='fixed h-[90px] flex w-full justify-between items-center px-[20px] md:px-[120px] bg-white z-[1]'>
 			<div className='flex items-center md:gap-[200px]'>
 				<Image
 					src={'/images/logo1.png'}

@@ -111,7 +111,7 @@ function LandingPage() {
 								value={'도시락 메뉴 보기'}
 								icon={ArrowRight}
 								onClick={() =>
-									router.push('/menu/kimbabDosirak')
+									router.push('/menu')
 								}
 							/>
 						</div>
@@ -194,7 +194,7 @@ function LandingPage() {
 					<ButtonMono
 						value={'더보기'}
 						icon={ArrowRight}
-						onClick={() => router.push('/menu/kimbabDosirak')}
+						onClick={() => router.push('/menu')}
 					/>
 				</div>
 				<div className='flex justify-center items-start self-stretch h-[900px] md:h-[890px] relative py-40 md:pt-40'>
