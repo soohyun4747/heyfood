@@ -79,8 +79,6 @@ export function LandingMenusTab() {
 		router.push('/menu/detail');
 	};
 
-	console.log({ slideIdx });
-
 	return (
 		<div className='flex flex-col justify-center gap-[40px]'>
 			{/* 카테고리 버튼 */}
