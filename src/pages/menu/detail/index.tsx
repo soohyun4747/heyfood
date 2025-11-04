@@ -98,9 +98,9 @@ function MenuDetailPage() {
 								{menu?.ingredient}
 							</p>
 							<div className='bg-[#D9D9D9] self-stretch md:w-[540px] h-[1px]' />
-							<p className='flex-grow w-full md:h-[264px] text-sm md:text-lg text-left text-[#0f0e0e]'>
-								{menu?.description}
-							</p>
+                                                        <p className='flex-grow w-full md:h-[264px] text-sm md:text-lg text-left text-[#0f0e0e] whitespace-pre-line'>
+                                                                {menu?.description}
+                                                        </p>
 						</div>
 
 						<div className='flex flex-col gap-2 self-stretch'>
