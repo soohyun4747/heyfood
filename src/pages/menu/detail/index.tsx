@@ -13,8 +13,7 @@ function MenuDetailPage() {
 	const router = useRouter();
 
 	const [currentIndex, setCurrentIndex] = useState(0);
-	const [opacity, setOpacity] = useState(1);
-	const [detailSrc, setDetailSrc] = useState<string>('');
+        const [detailSrc, setDetailSrc] = useState<string>('');
 
 	const imagePaths = menu?.imagePaths ?? [];
 
@@ -28,25 +27,16 @@ function MenuDetailPage() {
 		};
 	}, [menu]);
 
-	// 이미지 자동 전환
-	useEffect(() => {
-		if (imagePaths.length <= 1) return;
+        // 이미지 자동 전환
+        useEffect(() => {
+                if (imagePaths.length <= 1) return;
 
-		const interval = setInterval(() => {
-			// 먼저 opacity를 0으로 만들고 300ms 후 이미지 교체 및 opacity 복원
-			setOpacity(0);
+                const interval = setInterval(() => {
+                        setCurrentIndex((prev) => (prev + 1) % imagePaths.length);
+                }, 4000);
 
-			setTimeout(() => {
-				setCurrentIndex((prev) => (prev + 1) % imagePaths.length);
-			}, 200);
-
-			setTimeout(() => {
-				setOpacity(1);
-			}, 400);
-		}, 4000);
-
-		return () => clearInterval(interval);
-	}, [imagePaths]);
+                return () => clearInterval(interval);
+        }, [imagePaths]);
 
 	useEffect(() => {
 		if (menu) {
@@ -75,13 +65,22 @@ function MenuDetailPage() {
 					</p>
 				</div>
 				<div className='flex md:flex-row flex-col justify-center items-start md:gap-[60px] gap-[32px]'>
-					<img
-						src={imagePaths[currentIndex] ?? ''}
-						alt={menu?.name}
-						style={{ opacity }}
-						className='size-[320px] md:size-[600px] object-cover rounded-3xl transition-opacity duration-500'
-						loading='lazy'
-					/>
+                                        <div className='overflow-hidden rounded-3xl size-[320px] md:size-[600px]'>
+                                                <div
+                                                        className='flex h-full w-full transition-transform duration-500 ease-in-out'
+                                                        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                                                >
+                                                        {imagePaths.map((path, index) => (
+                                                                <img
+                                                                        key={`${path}-${index}`}
+                                                                        src={path ?? ''}
+                                                                        alt={`${menu?.name ?? '메뉴 이미지'}-${index + 1}`}
+                                                                        className='size-[320px] md:size-[600px] flex-shrink-0 object-cover'
+                                                                        loading='lazy'
+                                                                />
+                                                        ))}
+                                                </div>
+                                        </div>
 					<div className='flex flex-col justify-start items-start self-stretch md:w-[540px] relative gap-10 md:py-4'>
 						<div className='flex flex-col gap-4 md:gap-5'>
 							<div className='flex flex-col justify-start items-start self-stretch gap-[12px] md:gap-6'>
