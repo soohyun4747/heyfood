@@ -38,8 +38,11 @@ function MenuDetailPage() {
 
 			setTimeout(() => {
 				setCurrentIndex((prev) => (prev + 1) % imagePaths.length);
+			}, 200);
+
+			setTimeout(() => {
 				setOpacity(1);
-			}, 500);
+			}, 400);
 		}, 4000);
 
 		return () => clearInterval(interval);
